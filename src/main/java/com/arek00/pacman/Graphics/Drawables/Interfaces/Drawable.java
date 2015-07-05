@@ -13,4 +13,14 @@ public interface Drawable {
      * @param canvas
      */
     public void draw(Canvas canvas);
+
+    /**
+     * Draw this Drawable object in given position.
+     *
+     * @param canvas
+     * @param x
+     * @param y
+     */
+    public void draw(Canvas canvas, float x, float y);
+
 }
