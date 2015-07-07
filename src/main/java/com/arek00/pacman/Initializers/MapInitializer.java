@@ -1,17 +1,17 @@
 package com.arek00.pacman.Initializers;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import com.arek00.pacman.Graphics.Renderers.ConcreteRenderers.MapRenderer;
-import com.arek00.pacman.Logics.Maps.ConcreteMap.ImageMap;
-import com.arek00.pacman.Logics.Maps.ConcreteMap.Tile;
+import com.arek00.pacman.Logics.Fields.MapField;
+import com.arek00.pacman.Logics.Maps.Generators.ImageMapGenerator;
+import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
+import com.arek00.pacman.Logics.Maps.IMap;
 import com.arek00.pacman.Utils.DataHelpers.AssetsHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 /**
  * Initialize basic map.
@@ -19,12 +19,15 @@ import java.io.InputStreamReader;
 public class MapInitializer {
 
     private MapRenderer mapRenderer;
+    private IMap map;
+    private ImageMapGenerator mapGenerator;
     private AssetsHelper helper;
 
     public MapInitializer(Context context) {
         helper = new AssetsHelper(context);
 
         this.mapRenderer = initializeMapRenderer();
+        this.mapGenerator = new ImageMapGenerator();
     }
 
 
@@ -32,9 +35,10 @@ public class MapInitializer {
         return this.mapRenderer;
     }
 
-    private Tile[] initializeTiles() {
+    private MapField[] initializeTiles() {
 
         InputStream bitmapFile = null;
+
 
         try {
             bitmapFile = helper.getFileByName("images/pacman_sprites.png");
@@ -43,17 +47,26 @@ public class MapInitializer {
         }
 
         Bitmap atlas = BitmapFactory.decodeStream(bitmapFile);
-        Tile tiles[] = {
+        Tile[] tiles = {
                 new Tile(atlas, 64, 128, 64, 64),
                 new Tile(atlas, 64, 64, 64, 64),
                 new Tile(atlas, 0, 64, 64, 64),
                 new Tile(atlas, 0, 128, 64, 64),
                 new Tile(atlas, 0, 128, 64, 64),
                 new Tile(atlas, 0, 128, 64, 64)};
-        return tiles;
+
+        MapField[] fields = {
+                new MapField(tiles[0], true),
+                new MapField(tiles[1], true),
+                new MapField(tiles[2], true),
+                new MapField(tiles[3], true),
+                new MapField(tiles[4], true),
+                new MapField(tiles[5], true)};
+
+        return fields;
     }
 
-    private ImageMap initializeMap() {
+    private IMap initializeMap() {
 
         InputStream bitmapStream = null;
 
@@ -64,13 +77,14 @@ public class MapInitializer {
         }
 
         Bitmap mapScheme = BitmapFactory.decodeStream(bitmapStream);
-        ImageMap imageMap = new ImageMap(mapScheme, initializeTiles());
+        ImageMapGenerator imageMapGenerator = new ImageMapGenerator();
+        IMap map = imageMapGenerator.generateMap("Basic Map", mapScheme);
 
-        return imageMap;
+        return map;
     }
 
     private MapRenderer initializeMapRenderer() {
-        MapRenderer mapRenderer = new MapRenderer(initializeMap(), 64);
+        MapRenderer mapRenderer = new MapRenderer(initializeMap(), initializeTiles(), 64);
         return mapRenderer;
     }
 

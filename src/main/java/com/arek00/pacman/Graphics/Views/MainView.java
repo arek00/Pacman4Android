@@ -23,8 +23,7 @@ public class MainView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        canvas.scale(0.1f, 0.1f, 0f,0f);
+        canvas.scale(0.25f, 0.25f, 0f, 0f);
         renderer.draw(canvas);
-
     }
 }

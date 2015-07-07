@@ -1,4 +1,4 @@
-package com.arek00.pacman.Logics.Maps.ConcreteMap;
+package com.arek00.pacman.Graphics.Drawables.ConcreteDrawables;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 
 /**
- * One tile that might be draw on map.
+ * One tile that holds bitmap.
  */
 public class Tile implements Drawable {
     private Bitmap bitmap;

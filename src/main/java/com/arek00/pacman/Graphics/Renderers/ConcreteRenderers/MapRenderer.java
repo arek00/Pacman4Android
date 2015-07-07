@@ -1,14 +1,12 @@
 package com.arek00.pacman.Graphics.Renderers.ConcreteRenderers;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
+import android.util.Log;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
+import com.arek00.pacman.Logics.Fields.MapField;
+import com.arek00.pacman.Logics.Maps.Generators.ValueObjects.ColorsMap;
 import com.arek00.pacman.Logics.Maps.IMap;
-
-import java.util.List;
+import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 /**
  * Draw the game map on given canvas.
@@ -17,11 +15,30 @@ public class MapRenderer extends Renderer {
 
 
     private IMap map;
-    private int tileSize;
+    private final int tileSize;
+    private MapField[] fields;
 
-    public MapRenderer(IMap map, int tileSize) {
+    /**
+     * @param map        Model of map
+     * @param fieldTiles Tiles to draw by renderer. Order of object in map is important. Array can't be smaller than
+     * @param tileSize   Size of tile on canvas. Preferred size should be power of 2.
+     */
+    public MapRenderer(IMap map, MapField[] fieldTiles, int tileSize) {
+        if (fieldTiles.length < ColorsMap.getFieldsKindsCount()) {
+            throw new IllegalArgumentException("Array of tiles is too short, some of tiles are undefined.");
+        }
+
+        if (tileSize <= 0) {
+            throw new IllegalArgumentException("Size of Tile must be positive.");
+        }
+
+        NullPointerValidator.validate(map);
+        NullPointerValidator.validate(fieldTiles);
+
+
         this.map = map;
         this.tileSize = tileSize;
+        fields = fieldTiles;
     }
 
     /**
@@ -38,7 +55,8 @@ public class MapRenderer extends Renderer {
     }
 
     public void draw(Canvas canvas, float x, float y) {
-        Drawable tile = map.getField((int) x, (int) y);
-        tile.draw(canvas, x * tileSize, y * tileSize);
+        int tile = map.getField((int) x, (int) y);
+        Log.d("Draw tile: ", x + " " + y + " " + tile);
+        fields[tile].draw(canvas, x * tileSize, y * tileSize);
     }
 }
