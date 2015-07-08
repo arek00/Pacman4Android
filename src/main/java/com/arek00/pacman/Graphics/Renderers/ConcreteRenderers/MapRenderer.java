@@ -1,6 +1,7 @@
 package com.arek00.pacman.Graphics.Renderers.ConcreteRenderers;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.util.Log;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
 import com.arek00.pacman.Logics.Fields.MapField;
@@ -17,6 +18,7 @@ public class MapRenderer extends Renderer {
     private IMap map;
     private final int tileSize;
     private MapField[] fields;
+    private int backgroundColor;
 
     /**
      * @param map        Model of map
@@ -39,6 +41,8 @@ public class MapRenderer extends Renderer {
         this.map = map;
         this.tileSize = tileSize;
         fields = fieldTiles;
+
+        backgroundColor = Color.BLACK;
     }
 
     /**
@@ -47,11 +51,22 @@ public class MapRenderer extends Renderer {
      * @param canvas
      */
     public void draw(Canvas canvas) {
+        canvas.drawColor(backgroundColor);
+
         for (int line = 0; line < map.getMapHeight(); line++) {
             for (int column = 0; column < map.getMapWidth(); column++) {
                 draw(canvas, column, line);
             }
         }
+    }
+
+    /**
+     * Set background color of map
+     *
+     * @param color Color of background
+     */
+    public void setBackgroundColor(int color) {
+        this.backgroundColor = color;
     }
 
     public void draw(Canvas canvas, float x, float y) {
