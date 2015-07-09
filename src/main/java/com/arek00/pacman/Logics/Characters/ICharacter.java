@@ -8,6 +8,10 @@ import com.arek00.pacman.Logics.Characters.MovementStrategies.IMovementStrategy;
  */
 public interface ICharacter {
 
+    //TODO Change idea of steering characters. Characters should be steer by level which gives more flexibility like
+    //easy settings and access to all characters. Level should convert user actions and inputs, from accelerometer, keys,
+    //touchscreen etc, to effective player move on the level matrix.
+
     /**
      * Set position of this character
      *

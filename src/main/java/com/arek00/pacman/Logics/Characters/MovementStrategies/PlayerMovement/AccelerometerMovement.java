@@ -23,6 +23,8 @@ public class AccelerometerMovement implements IMovementStrategy {
 
     public void executeMove(PointF characterPosition) {
         throw new UnsupportedOperationException("Accelerometer move not yet implemented");
+
+        //TODO implement Accelerometer move when players will be correctly displayed.
     }
 
     /**
