@@ -5,7 +5,11 @@ import android.graphics.Canvas;
 import android.view.View;
 import com.arek00.pacman.Graphics.Renderers.ConcreteRenderers.MapRenderer;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
+import com.arek00.pacman.Initializers.LevelInitializer;
 import com.arek00.pacman.Initializers.MapInitializer;
+import com.arek00.pacman.Inputs.ConcreteHandlers.TouchHandler;
+import com.arek00.pacman.Inputs.InputHandler;
+import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 
 /**
@@ -14,12 +18,15 @@ import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 public class MainView extends View {
 
     private Renderer renderer;
-    private MapInitializer initializer;
+    private TouchHandler handler;
+    private ILevel level;
+    private LevelInitializer levelInitializer;
 
     public MainView(Context context) {
         super(context);
-        initializer = new MapInitializer(context);
-        renderer = initializer.getMapRenderer();
+        handler = new TouchHandler();
+        setOnTouchListener(handler);
+        levelInitializer = new LevelInitializer(context, handler);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class NormalGameLevel implements ILevel {
 
     private InputHandler handler;
 
-    public NormalGameLevel(IMap levelMap, IPlayer player, ICharacter[] enemies, InputHandler input) {
+    public NormalGameLevel(IMap levelMap, IPlayer player, InputHandler input) {
         map = levelMap;
         this.player = player;
         this.enemies = enemies;
@@ -34,7 +34,7 @@ public class NormalGameLevel implements ILevel {
     public void startLevel() {
         fields = map.getMatrix();
         setPlayerPosition();
-        setEnemiesPosition();
+        //setEnemiesPosition();
 
         remainingBalls =
                 FieldsRetriever.getCountOfConcreteField(
