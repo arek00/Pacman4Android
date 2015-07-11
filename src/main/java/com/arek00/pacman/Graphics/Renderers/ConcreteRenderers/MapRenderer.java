@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
-import com.arek00.pacman.Logics.Fields.MapField;
+import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.MapTileField;
 import com.arek00.pacman.Logics.Maps.Generators.ValueObjects.ColorsMap;
 import com.arek00.pacman.Logics.Maps.IMap;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
@@ -12,12 +12,12 @@ import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 /**
  * Draw the game map on given canvas.
  */
-public class MapRenderer extends Renderer {
+public class MapRenderer implements Renderer {
 
 
     private IMap map;
     private final int tileSize;
-    private MapField[] fields;
+    private MapTileField[] fields;
     private int backgroundColor;
 
     /**
@@ -25,7 +25,7 @@ public class MapRenderer extends Renderer {
      * @param fieldTiles Tiles to draw by renderer. Order of object in map is important. Array can't be smaller than
      * @param tileSize   Size of tile on canvas. Preferred size should be power of 2.
      */
-    public MapRenderer(IMap map, MapField[] fieldTiles, int tileSize) {
+    public MapRenderer(IMap map, MapTileField[] fieldTiles, int tileSize) {
         if (fieldTiles.length < ColorsMap.getFieldsKindsCount()) {
             throw new IllegalArgumentException("Array of tiles is too short, some of tiles are undefined.");
         }

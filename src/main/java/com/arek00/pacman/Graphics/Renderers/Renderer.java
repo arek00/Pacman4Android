@@ -8,5 +8,5 @@ import java.util.List;
 /**
  * Renderer defines the way to render things.
  */
-public abstract class Renderer implements Drawable {
+public interface Renderer extends Drawable {
 }

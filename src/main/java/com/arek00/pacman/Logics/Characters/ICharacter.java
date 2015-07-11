@@ -1,7 +1,6 @@
 package com.arek00.pacman.Logics.Characters;
 
 import android.graphics.PointF;
-import com.arek00.pacman.Logics.Characters.MovementStrategies.IMovementStrategy;
 
 /**
  *
@@ -28,12 +27,11 @@ public interface ICharacter {
 
     /**
      * Move this character
-     *
-     * @param x
-     * @param y
      */
     public void move(PointF movement);
 
-    public void setMovementStrategy(IMovementStrategy strategy);
+    public float getSpeed();
+
+    public void setSpeed(float speed);
 
 }

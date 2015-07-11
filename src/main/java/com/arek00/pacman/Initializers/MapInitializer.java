@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import com.arek00.pacman.Graphics.Renderers.ConcreteRenderers.MapRenderer;
-import com.arek00.pacman.Logics.Fields.MapField;
+import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.MapTileField;
 import com.arek00.pacman.Logics.Maps.Generators.ImageMapGenerator;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
 import com.arek00.pacman.Logics.Maps.IMap;
@@ -35,7 +35,7 @@ public class MapInitializer {
         return this.mapRenderer;
     }
 
-    private MapField[] initializeTiles() {
+    private MapTileField[] initializeTiles() {
 
         InputStream bitmapFile = null;
 
@@ -55,13 +55,13 @@ public class MapInitializer {
                 new Tile(atlas, 0, 128, 64, 64),
                 new Tile(atlas, 0, 128, 64, 64)};
 
-        MapField[] fields = {
-                new MapField(tiles[0], true),
-                new MapField(tiles[1], true),
-                new MapField(tiles[2], true),
-                new MapField(tiles[3], true),
-                new MapField(tiles[4], true),
-                new MapField(tiles[5], true)};
+        MapTileField[] fields = {
+                new MapTileField(tiles[0], true),
+                new MapTileField(tiles[1], true),
+                new MapTileField(tiles[2], true),
+                new MapTileField(tiles[3], true),
+                new MapTileField(tiles[4], true),
+                new MapTileField(tiles[5], true)};
 
         return fields;
     }

@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Logics.Characters.ICharacter;
-import com.arek00.pacman.Logics.Characters.MovementStrategies.IMovementStrategy;
 
 /**
  * Concrete character with drawable.
@@ -39,7 +38,4 @@ public class CharacterDrawable implements Drawable, ICharacter {
         character.move(movement);
     }
 
-    public void setMovementStrategy(IMovementStrategy strategy) {
-        character.setMovementStrategy(strategy);
-    }
 }

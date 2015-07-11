@@ -1,12 +1,11 @@
-package com.arek00.pacman.Logics.Characters.MovementStrategies.PlayerMovement;
+package com.arek00.pacman.Inputs;
 
 import android.graphics.PointF;
-import com.arek00.pacman.Logics.Characters.MovementStrategies.IMovementStrategy;
 
 /**
  * Steering by using built-in accelerometer.
  */
-public class AccelerometerMovement implements IMovementStrategy {
+public class AccelerometerMovement {
 
     private PointF playerInput;
     private PointF accelerometerInfo;

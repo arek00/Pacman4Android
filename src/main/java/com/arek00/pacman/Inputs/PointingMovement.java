@@ -1,13 +1,12 @@
-package com.arek00.pacman.Logics.Characters.MovementStrategies.PlayerMovement;
+package com.arek00.pacman.Inputs;
 
 import android.graphics.PointF;
-import com.arek00.pacman.Logics.Characters.MovementStrategies.IMovementStrategy;
 import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 
 /**
  * Move character by clicking on the screen.
  */
-public class PointingMovement implements IMovementStrategy {
+public class PointingMovement{
 
     private PointF characterPosition;
     private PointF information;
