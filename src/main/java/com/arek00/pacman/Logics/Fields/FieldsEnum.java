@@ -13,10 +13,32 @@ public enum FieldsEnum {
     PLAYER_SPAWN(new Field(4, false)),
     ENEMY_SPAWN(new Field(5, false));
 
+    private static FieldsEnum[] values;
     public final IField field;
 
     FieldsEnum(IField field) {
         this.field = field;
+    }
+
+
+    /**
+     * Get information about field collision only by its value
+     *
+     * @param fieldValue
+     * @return true if field should collide false otherwise
+     */
+    public static boolean checkFieldCollision(int fieldValue) {
+        int fieldsNumber = FieldsEnum.values().length;
+
+        for (int i = 0; i < fieldsNumber; i++) {
+            IField currentField = FieldsEnum.values()[i].field;
+
+            if (currentField.getValue() == fieldValue) {
+                return currentField.isCollide();
+            }
+        }
+
+        return false;
     }
 
 }

@@ -16,10 +16,6 @@ import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
  */
 public class NormalGameLevel implements ILevel {
 
-    private static int WINNING_GAME_STATE = 2;
-    private static int LOSING_GAME_STATE = 1;
-    private static int GAME_CONTINUED = 0;
-
     private IMap map;
     private IPlayer player;
     private ICharacter[] enemies;
@@ -39,6 +35,7 @@ public class NormalGameLevel implements ILevel {
         fields = map.getMatrix();
         setPlayerPosition();
         setEnemiesPosition();
+
         remainingBalls =
                 FieldsRetriever.getCountOfConcreteField(
                         fields,
@@ -104,6 +101,16 @@ public class NormalGameLevel implements ILevel {
         PointF destinationPoint = handler.getActualInput();
         PointF playerMove = MovementEstimator.calculatePlayerMove(player, destinationPoint, TimeHelper.getDeltaTime());
 
+        player.move(playerMove);
+
+        if (isCharacterCollides(player)) {
+            undoCharacterMove(player, playerMove);
+        }
+
+        if (isPlayerCollectedBall(player)) {
+            collectBall(player.getPosition());
+        }
+
 
         //TODO
         //Get player input
@@ -112,6 +119,45 @@ public class NormalGameLevel implements ILevel {
         //update Map
         //go to step 1.
 
+    }
+
+    private void undoCharacterMove(ICharacter character, PointF playerMove) {
+        playerMove.x = Math.round(playerMove.x);
+        playerMove.y = Math.round(playerMove.y);
+        character.move(playerMove);
+    }
+
+    private boolean isCharacterCollides(ICharacter character) {
+        int positionX = (int) character.getPosition().x;
+        int positionY = (int) character.getPosition().y;
+
+        return FieldsEnum.checkFieldCollision(fields[positionX][positionY]);
+    }
+
+    private boolean isPlayerCollectedBall(ICharacter player) {
+        int positionX = (int) player.getPosition().x;
+        int positionY = (int) player.getPosition().y;
+
+        if (fields[positionX][positionY] == FieldsEnum.BIGBALL.field.getValue() ||
+                fields[positionX][positionY] == FieldsEnum.SMALLBALL.field.getValue()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void collectBall(PointF playerPosition) {
+
+        int ballX = Math.round(playerPosition.x);
+        int ballY = Math.round(playerPosition.y);
+
+        addPlayersPoint(1);
+        fields[ballX][ballY] = FieldsEnum.COLLECTED.field.getValue();
+        --remainingBalls;
+    }
+
+    private void addPlayersPoint(int pointsAmount) {
+        player.addPoints(pointsAmount);
     }
 
 
