@@ -46,11 +46,11 @@ public class Map implements IMap {
     }
 
     private PointF[] retrievePlayerStartingPositions() {
-        return FieldsRetriever.getPositionsOfConcreteFields(fields, FieldsEnum.PLAYER_SPAWN.value, size);
+        return FieldsRetriever.getPositionsOfConcreteFields(fields, FieldsEnum.PLAYER_SPAWN.field.getValue(), size);
     }
 
     private PointF[] retrieveEnemiesStartingPositions() {
-        return FieldsRetriever.getPositionsOfConcreteFields(fields, FieldsEnum.ENEMY_SPAWN.value, size);
+        return FieldsRetriever.getPositionsOfConcreteFields(fields, FieldsEnum.ENEMY_SPAWN.field.getValue(), size);
     }
 
     public int getMapWidth() {

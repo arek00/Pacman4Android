@@ -3,8 +3,6 @@ package com.arek00.pacman;
 import android.graphics.Point;
 import android.graphics.PointF;
 import com.arek00.pacman.Logics.Maps.Utils.FieldsRetriever;
-import junit.framework.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,9 +10,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static junit.framework.TestCase.assertTrue;
 

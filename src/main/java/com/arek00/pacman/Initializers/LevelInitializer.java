@@ -5,7 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.util.Log;
-import com.arek00.pacman.Inputs.ConcreteHandlers.TouchHandler;
+import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.DrawableCharacter;
+import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
+import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
+import com.arek00.pacman.Graphics.Renderers.ConcreteRenderers.SimpleLevelRenderer;
+import com.arek00.pacman.Graphics.Renderers.Renderer;
 import com.arek00.pacman.Inputs.InputHandler;
 import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Player;
 import com.arek00.pacman.Logics.Characters.IPlayer;
@@ -14,9 +18,7 @@ import com.arek00.pacman.Logics.Levels.LevelScenarios.NormalGameLevel;
 import com.arek00.pacman.Logics.Maps.Generators.ImageMapGenerator;
 import com.arek00.pacman.Logics.Maps.IMap;
 import com.arek00.pacman.Utils.DataHelpers.AssetsHelper;
-import jdk.internal.util.xml.impl.Input;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -26,6 +28,7 @@ import java.io.InputStream;
 public class LevelInitializer {
 
     private ILevel level;
+    private Renderer levelRenderer;
     private Context applicationContext;
     private AssetsHelper helper;
     private InputHandler handler;
@@ -36,7 +39,14 @@ public class LevelInitializer {
         helper = new AssetsHelper(context);
         applicationContext = context;
         this.handler = handler;
+        initialize();
     }
+
+    public void initialize() {
+        this.level = initializeLevel();
+        this.levelRenderer = initializeRenderer();
+    }
+
 
     private IMap initializeMap() {
         ImageMapGenerator generator = new ImageMapGenerator();
@@ -57,20 +67,53 @@ public class LevelInitializer {
 
 
     private IPlayer initializePlayer() {
-        IPlayer player = new Player(new PointF(0, 0), 5);
+        IPlayer player = new Player(new PointF(0, 0), 5, 5);
 
         return player;
     }
 
-    //IMap map, IPlayer player, InputHandler input
-    public ILevel getInitializedLevel() {
-        new NormalGameLevel(
+    private ILevel initializeLevel() {
+        ILevel level = new NormalGameLevel(
                 initializeMap(),
                 initializePlayer(),
                 handler
         );
 
         return level;
+    }
+
+
+    //IMap map, IPlayer player, InputHandler input
+    public ILevel getInitializedLevel() {
+        return this.level;
+    }
+
+    public Renderer getRenderer() {
+        return this.levelRenderer;
+    }
+
+    private Renderer initializeRenderer() {
+        //TODO define MapTiles
+        Renderer renderer = new SimpleLevelRenderer(getInitializedLevel(), initializePlayer(getInitializedLevel()),);
+        return renderer;
+    }
+
+    public Drawable initializePlayer(ILevel level) {
+        Tile playerTile;
+        InputStream bitmapStream = null;
+
+        try {
+            bitmapStream = helper.getFileByName("images/pacman_sprites.png");
+        } catch (IOException e) {
+            Log.e("LEVEL INITIALIZER ERROR", "Couldnt load image.");
+            e.printStackTrace();
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeStream(bitmapStream);
+
+        Drawable player = new DrawableCharacter(level.getPlayer(), new Tile(bitmap, 64, 0, 64, 64));
+
+        return player;
     }
 
 }

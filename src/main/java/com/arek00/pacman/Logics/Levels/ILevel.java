@@ -1,13 +1,15 @@
 package com.arek00.pacman.Logics.Levels;
 
+import android.graphics.Point;
+import android.graphics.PointF;
 import com.arek00.pacman.Inputs.InputHandler;
 import com.arek00.pacman.Logics.Characters.ICharacter;
+import com.arek00.pacman.Logics.Maps.IMap;
 
 /**
  * Abstraction of game level.
  */
 public interface ILevel {
-
 
     public void startLevel();
 
@@ -19,7 +21,11 @@ public interface ILevel {
 
     public ICharacter[] getEnemies();
 
-    public void getInputFromPlayer(InputHandler input);
+    public int[][] getCurrentMapFields();
+
+    public Point getMapSize();
+
+    public void setInputHandler(InputHandler input);
 
     /**
      * Do on every step of game

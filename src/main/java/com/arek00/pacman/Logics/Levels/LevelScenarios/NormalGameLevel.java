@@ -1,5 +1,6 @@
 package com.arek00.pacman.Logics.Levels.LevelScenarios;
 
+import android.graphics.Point;
 import android.graphics.PointF;
 import com.arek00.pacman.Inputs.InputHandler;
 import com.arek00.pacman.Logics.Characters.ICharacter;
@@ -92,7 +93,15 @@ public class NormalGameLevel implements ILevel {
         return enemies;
     }
 
-    public void getInputFromPlayer(InputHandler input) {
+    public int[][] getCurrentMapFields() {
+        return fields;
+    }
+
+    public Point getMapSize() {
+        return map.getSize();
+    }
+
+    public void setInputHandler(InputHandler input) {
         PointF playerInput = input.getInput();
     }
 

@@ -8,12 +8,12 @@ import com.arek00.pacman.Logics.Characters.ICharacter;
 /**
  * Concrete character with drawable.
  */
-public class CharacterDrawable implements Drawable, ICharacter {
+public class DrawableCharacter implements Drawable, ICharacter {
 
     private ICharacter character;
     private Drawable drawable;
 
-    public CharacterDrawable(ICharacter character, Drawable drawable) {
+    public DrawableCharacter(ICharacter character, Drawable drawable) {
         this.character = character;
         this.drawable = drawable;
     }
@@ -36,6 +36,14 @@ public class CharacterDrawable implements Drawable, ICharacter {
 
     public void move(PointF movement) {
         character.move(movement);
+    }
+
+    public float getSpeed() {
+        return character.getSpeed();
+    }
+
+    public void setSpeed(float speed) {
+        character.setSpeed(speed);
     }
 
 }

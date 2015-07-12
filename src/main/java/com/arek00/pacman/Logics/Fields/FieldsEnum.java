@@ -28,17 +28,20 @@ public enum FieldsEnum {
      * @return true if field should collide false otherwise
      */
     public static boolean checkFieldCollision(int fieldValue) {
+        return getFieldByIndex(fieldValue).isCollide();
+    }
+
+    public static IField getFieldByIndex(int index) {
         int fieldsNumber = FieldsEnum.values().length;
 
         for (int i = 0; i < fieldsNumber; i++) {
             IField currentField = FieldsEnum.values()[i].field;
 
-            if (currentField.getValue() == fieldValue) {
-                return currentField.isCollide();
-            }
+            if (index == currentField.getValue())
+                return currentField;
         }
 
-        return false;
+        return UNKNOWN_FIELD.field;
     }
 
 }

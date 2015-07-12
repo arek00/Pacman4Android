@@ -1,7 +1,6 @@
 package com.arek00.pacman.Graphics.Drawables.ConcreteDrawables;
 
 import android.graphics.Canvas;
-import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Logics.Fields.IField;
 
@@ -12,9 +11,9 @@ import com.arek00.pacman.Logics.Fields.IField;
 public class MapTileField implements Drawable, IField {
 
     private IField field;
-    private Tile fieldTile;
+    private Drawable fieldTile;
 
-    public MapTileField(Tile fieldTile, IField field) {
+    public MapTileField(Drawable fieldTile, IField field) {
         this.field = field;
         this.fieldTile = fieldTile;
     }
