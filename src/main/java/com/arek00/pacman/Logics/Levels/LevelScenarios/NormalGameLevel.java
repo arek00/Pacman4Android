@@ -2,6 +2,7 @@ package com.arek00.pacman.Logics.Levels.LevelScenarios;
 
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.util.Log;
 import com.arek00.pacman.Inputs.InputHandler;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IPlayer;
@@ -36,8 +37,8 @@ public class NormalGameLevel implements ILevel {
         this.player = player;
         this.enemies = enemies;
         this.handler = input;
-        fields = map.getMatrix();
-        setPlayerPosition();
+        //fields = map.getMatrix();
+        //setPlayerPosition();
     }
 
     public void startLevel() {
@@ -117,6 +118,14 @@ public class NormalGameLevel implements ILevel {
     public void update() {
 
         PointF destinationPoint = handler.getActualInput();
+        Log.i("DESTINATION POSITION", "X: " + destinationPoint.x
+                + " Y: " + destinationPoint.y);
+
+        if (destinationPoint.x < 0 || destinationPoint.y < 0) {
+            destinationPoint.x = player.getPosition().x;
+            destinationPoint.y = player.getPosition().y;
+        }
+
         PointF playerMove = MovementEstimator.calculatePlayerMove(player, destinationPoint, TimeHelper.getDeltaTime());
 
         player.move(playerMove);
@@ -129,6 +138,9 @@ public class NormalGameLevel implements ILevel {
             collectBall(player.getPosition());
         }
 
+
+        Log.i("PLAYER POSITION", "X: " + player.getPosition().x
+                + " Y: " + player.getPosition().y);
 
         //TODO
         //Get player input

@@ -43,6 +43,7 @@ public class Player implements IPlayer {
     public void move(PointF movement) {
         NullPointerValidator.validate(movement);
 
+
         this.playerPosition.x += movement.x;
         this.playerPosition.y += movement.y;
     }

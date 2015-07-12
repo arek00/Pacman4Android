@@ -6,8 +6,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import com.arek00.pacman.Graphics.Views.MainView;
+import com.arek00.pacman.Initializers.NormalLevelInitializer;
+import com.arek00.pacman.Inputs.ConcreteHandlers.TouchHandler;
+import com.arek00.pacman.Logics.Game.Game;
+import com.arek00.pacman.Logics.Game.IGame;
 
 public class HelloAndroidActivity extends Activity {
+
+    private IGame game;
+    private View view;
+    private TouchHandler handler;
+
 
     /**
      * Called when the activity is first created.
@@ -19,7 +28,9 @@ public class HelloAndroidActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(initialize(this));
+        initialize(this);
+        game.startGame();
+        setContentView(view);
         setTitle(R.string.app_name);
     }
 
@@ -30,9 +41,17 @@ public class HelloAndroidActivity extends Activity {
         return true;
     }
 
-    private View initialize(Context context) {
-        View view = new MainView(context);
-        return view;
+
+    /**
+     * Initialize all needed objects
+     *
+     * @param context
+     */
+    private void initialize(Context context) {
+        this.handler = new TouchHandler();
+        NormalLevelInitializer initializer = new NormalLevelInitializer(context, handler);
+        this.game = new Game(initializer.getInitializedLevel());
+        this.view = new MainView(context, handler, initializer.getRenderer());
     }
 }
 

@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- *
+ * Initialize ILevel object and Renderer of it.
  */
-public class LevelInitializer {
+public class NormalLevelInitializer {
 
     private ILevel level;
     private Renderer levelRenderer;
@@ -38,7 +38,7 @@ public class LevelInitializer {
     private final String DEFAULT_MAP_SCHEME = "images/map1.png";
     private final String TILESHEET = "images/pacman_sprites.png";
 
-    public LevelInitializer(Context context, InputHandler handler) {
+    public NormalLevelInitializer(Context context, InputHandler handler) {
         NullPointerValidator.validate(context);
         NullPointerValidator.validate(handler);
 

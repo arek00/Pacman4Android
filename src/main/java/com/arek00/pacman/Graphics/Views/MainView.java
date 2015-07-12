@@ -6,13 +6,9 @@ import android.view.View;
 import com.arek00.pacman.Graphics.Listeners.OnDrawListener;
 import com.arek00.pacman.Graphics.Listeners.OnDrawObservable;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
-import com.arek00.pacman.Initializers.LevelInitializer;
 import com.arek00.pacman.Inputs.ConcreteHandlers.TouchHandler;
-import com.arek00.pacman.Logics.Levels.ILevel;
-import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
-import javax.management.ListenerNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,18 +19,20 @@ public class MainView extends View implements OnDrawObservable {
 
     private Renderer renderer;
     private TouchHandler handler;
-    private ILevel level;
-    private LevelInitializer levelInitializer;
+    private Context context;
 
     private List<OnDrawListener> listeners = new ArrayList<OnDrawListener>();
 
-    public MainView(Context context) {
+    public MainView(Context context, TouchHandler handler, Renderer renderer) {
         super(context);
+
+        this.context = context;
         handler = new TouchHandler();
         setOnTouchListener(handler);
+        this.renderer = renderer;
 
-        levelInitializer = new LevelInitializer(context, handler);
-        this.renderer = levelInitializer.getRenderer();
+        //levelInitializer = new LevelInitializer(context, handler);
+        //this.renderer = levelInitializer.getRenderer();
     }
 
     @Override
