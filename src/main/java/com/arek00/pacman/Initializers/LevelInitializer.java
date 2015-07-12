@@ -32,8 +32,10 @@ public class LevelInitializer {
     private Context applicationContext;
     private AssetsHelper helper;
     private InputHandler handler;
+    private Bitmap tileSheet;
 
     private final String DEFAULT_MAP_SCHEME = "images/map1.png";
+    private final String TILESHEET = "images/pacman_sprites.png";
 
     public LevelInitializer(Context context, InputHandler handler) {
         helper = new AssetsHelper(context);
@@ -43,8 +45,22 @@ public class LevelInitializer {
     }
 
     public void initialize() {
+        this.tileSheet = initializeTileSheet();
         this.level = initializeLevel();
         this.levelRenderer = initializeRenderer();
+    }
+
+    private Bitmap initializeTileSheet() {
+        InputStream bitmapStream = null;
+
+        try {
+            bitmapStream = helper.getFileByName(TILESHEET);
+        } catch (IOException e) {
+            Log.e("INITIALIZE ERROR", "Couldn't load tilesheet");
+            e.printStackTrace();
+        }
+
+        return BitmapFactory.decodeStream(bitmapStream);
     }
 
 
@@ -65,6 +81,19 @@ public class LevelInitializer {
         return map;
     }
 
+    private Drawable[] initializeMapTiles() {
+        Drawable[] drawables = new Tile[]{
+                new Tile(tileSheet, 64, 128, 64, 64), //WALL
+                new Tile(tileSheet, 0, 128, 64, 64), //COLLECTED
+                new Tile(tileSheet, 64, 64, 64, 64), //SMALLBALL
+                new Tile(tileSheet, 0, 64, 64, 64), //BIGBALL
+                new Tile(tileSheet, 0, 128, 64, 64), //PLAYER_SPAWN
+                new Tile(tileSheet, 0, 128, 64, 64), //ENEMY_SPAWN
+        };
+
+        return drawables;
+    }
+
 
     private IPlayer initializePlayer() {
         IPlayer player = new Player(new PointF(0, 0), 5, 5);
@@ -82,7 +111,6 @@ public class LevelInitializer {
         return level;
     }
 
-
     //IMap map, IPlayer player, InputHandler input
     public ILevel getInitializedLevel() {
         return this.level;
@@ -94,7 +122,10 @@ public class LevelInitializer {
 
     private Renderer initializeRenderer() {
         //TODO define MapTiles
-        Renderer renderer = new SimpleLevelRenderer(getInitializedLevel(), initializePlayer(getInitializedLevel()),);
+        Renderer renderer = new SimpleLevelRenderer(
+                getInitializedLevel(),
+                initializePlayer(getInitializedLevel()),
+                initializeMapTiles());
         return renderer;
     }
 
