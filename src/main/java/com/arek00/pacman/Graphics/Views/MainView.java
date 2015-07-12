@@ -40,7 +40,7 @@ public class MainView extends View implements OnDrawObservable {
     @Override
     public void onDraw(Canvas canvas) {
         doDraw(canvas);
-        TimeHelper.tick();
+        informListeners();
     }
 
     private void doDraw(Canvas canvas) {

@@ -21,7 +21,7 @@ public interface ILevel {
 
     public ICharacter[] getEnemies();
 
-    public int[][] getCurrentMapFields();
+    public int getFieldValue(int x, int y);
 
     public Point getMapSize();
 

@@ -36,6 +36,7 @@ public class NormalGameLevel implements ILevel {
         this.player = player;
         this.enemies = enemies;
         this.handler = input;
+        fields = map.getMatrix();
     }
 
     public void startLevel() {
@@ -99,8 +100,8 @@ public class NormalGameLevel implements ILevel {
         return enemies;
     }
 
-    public int[][] getCurrentMapFields() {
-        return fields;
+    public int getFieldValue(int x, int y) {
+        return fields[x][y];
     }
 
     public Point getMapSize() {

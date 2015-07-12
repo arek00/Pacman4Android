@@ -80,7 +80,8 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
 
         for (int line = 0; line < mapSize.y; line++) {
             for (int column = 0; column < mapSize.x; column++) {
-                int field = level.getCurrentMapFields()[column][line];
+                int field = level.getFieldValue(column, line);
+
                 fields[field].draw(canvas, column * GraphicsConfig.getTileSize(), line * GraphicsConfig.getTileSize());
             }
         }
@@ -113,8 +114,8 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         return level.getEnemies();
     }
 
-    public int[][] getCurrentMapFields() {
-        return level.getCurrentMapFields();
+    public int getFieldValue(int x, int y) {
+        return level.getFieldValue(x, y);
     }
 
     public Point getMapSize() {
