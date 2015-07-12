@@ -3,6 +3,8 @@ package com.arek00.pacman.Logics.Maps.Utils;
 import android.graphics.Point;
 import android.graphics.PointF;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
+import com.arek00.pacman.Utils.Validators.NullPointerValidator;
+import com.arek00.pacman.Utils.Validators.NumberValidator;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,6 +24,10 @@ public class FieldsRetriever {
      * @return
      */
     public static PointF[] getPositionsOfConcreteFields(int[][] fields, int fieldValue, Point size) {
+
+        NullPointerValidator.validate(fields);
+        NullPointerValidator.validate(size);
+
         ArrayList<PointF> points = new ArrayList<PointF>();
 
         for (int line = 0; line < size.y; line++) {
@@ -45,6 +51,9 @@ public class FieldsRetriever {
      * @return
      */
     public static int getCountOfConcreteField(int[][] fields, int fieldValue, Point size) {
+        NullPointerValidator.validate(fields);
+        NullPointerValidator.validate(size);
+
         int amount = 0;
 
         for (int line = 0; line < size.y; line++) {
@@ -59,6 +68,8 @@ public class FieldsRetriever {
     }
 
     public static PointF getRandomField(PointF[] array) {
+        NullPointerValidator.validate(array);
+
         int maxRandom = array.length;
         Random random = new Random();
         int index = random.nextInt(maxRandom);

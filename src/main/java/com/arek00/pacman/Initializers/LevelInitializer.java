@@ -18,6 +18,7 @@ import com.arek00.pacman.Logics.Levels.LevelScenarios.NormalGameLevel;
 import com.arek00.pacman.Logics.Maps.Generators.ImageMapGenerator;
 import com.arek00.pacman.Logics.Maps.IMap;
 import com.arek00.pacman.Utils.DataHelpers.AssetsHelper;
+import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +39,9 @@ public class LevelInitializer {
     private final String TILESHEET = "images/pacman_sprites.png";
 
     public LevelInitializer(Context context, InputHandler handler) {
+        NullPointerValidator.validate(context);
+        NullPointerValidator.validate(handler);
+
         helper = new AssetsHelper(context);
         applicationContext = context;
         this.handler = handler;
@@ -60,7 +64,10 @@ public class LevelInitializer {
             e.printStackTrace();
         }
 
-        return BitmapFactory.decodeStream(bitmapStream);
+        Bitmap tileSheet = BitmapFactory.decodeStream(bitmapStream);
+
+        NullPointerValidator.validate(tileSheet);
+        return tileSheet;
     }
 
 
@@ -78,6 +85,8 @@ public class LevelInitializer {
         Bitmap schemeImage = BitmapFactory.decodeStream(bitmapStream);
         IMap map = generator.generateMap("Basic Map", schemeImage);
 
+        NullPointerValidator.validate(map);
+
         return map;
     }
 
@@ -91,6 +100,7 @@ public class LevelInitializer {
                 new Tile(tileSheet, 0, 128, 64, 64), //ENEMY_SPAWN
         };
 
+        NullPointerValidator.validate(drawables);
         return drawables;
     }
 
@@ -98,6 +108,7 @@ public class LevelInitializer {
     private IPlayer initializePlayer() {
         IPlayer player = new Player(new PointF(0, 0), 5, 5);
 
+        NullPointerValidator.validate(player);
         return player;
     }
 
@@ -108,6 +119,7 @@ public class LevelInitializer {
                 handler
         );
 
+        NullPointerValidator.validate(level);
         return level;
     }
 
@@ -126,10 +138,14 @@ public class LevelInitializer {
                 getInitializedLevel(),
                 initializePlayer(getInitializedLevel()),
                 initializeMapTiles());
+
+        NullPointerValidator.validate(renderer);
         return renderer;
     }
 
     public Drawable initializePlayer(ILevel level) {
+        NullPointerValidator.validate(level);
+
         Tile playerTile;
         InputStream bitmapStream = null;
 
@@ -142,8 +158,10 @@ public class LevelInitializer {
 
         Bitmap bitmap = BitmapFactory.decodeStream(bitmapStream);
 
-        Drawable player = new DrawableCharacter(level.getPlayer(), new Tile(bitmap, 64, 0, 64, 64));
+        playerTile = new Tile(bitmap, 64, 0, 64, 64);
+        Drawable player = new DrawableCharacter(level.getPlayer(), playerTile);
 
+        NullPointerValidator.validate(player);
         return player;
     }
 

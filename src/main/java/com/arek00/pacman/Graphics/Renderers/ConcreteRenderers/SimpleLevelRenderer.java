@@ -6,13 +6,13 @@ import android.graphics.PointF;
 import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.DrawableCharacter;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.MapTileField;
-import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
 import com.arek00.pacman.Inputs.InputHandler;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
 import com.arek00.pacman.Logics.Levels.ILevel;
+import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 /**
  * Renderer of level.
@@ -25,13 +25,33 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
     private MapTileField[] fields;
 
 
+    /**
+     * Define renderer with given level, player drawable and array of map tiles drawables.
+     * Map tiles drawables amount must be at least equal number of defined fields in FieldsEnum
+     * except UNKNOWN_FIELD value. It means that for 6 defined fields in FieldsEnum (counting with UNKNOWN_FIELD, array
+     * has to have at least 5 elements inside).
+     *
+     * @param level
+     * @param playerDrawable
+     * @param mapTiles
+     */
     public SimpleLevelRenderer(ILevel level, Drawable playerDrawable, Drawable[] mapTiles) {
+        NullPointerValidator.validate(level);
+        NullPointerValidator.validate(playerDrawable);
+        NullPointerValidator.validate(mapTiles);
+
+        if (mapTiles.length < FieldsEnum.values().length - 1) {
+            throw new IllegalArgumentException("mapTiles does not contains all required elements inside.");
+        }
+
         this.level = level;
         this.player = new DrawableCharacter(level.getPlayer(), playerDrawable);
         initializeFields(mapTiles);
     }
 
     private void initializeFields(Drawable[] mapTiles) {
+        NullPointerValidator.validate(mapTiles);
+
         this.fields = new MapTileField[mapTiles.length];
 
         for (int i = 0; i < mapTiles.length; i++) {
@@ -41,15 +61,21 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
 
 
     public void draw(Canvas canvas) {
+        NullPointerValidator.validate(canvas);
+
         drawMap(canvas);
         drawCharacters(canvas);
     }
 
     public void draw(Canvas canvas, float x, float y) {
+        NullPointerValidator.validate(canvas);
 
+        throw new UnsupportedOperationException("Operation not supported. Renderer should be use by method without extra position parameters.");
     }
 
     private void drawMap(Canvas canvas) {
+        NullPointerValidator.validate(canvas);
+
         Point mapSize = new Point(level.getMapSize());
 
         for (int line = 0; line < mapSize.y; line++) {
@@ -61,6 +87,8 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
     }
 
     private void drawCharacters(Canvas canvas) {
+        NullPointerValidator.validate(canvas);
+
         PointF position = player.getPosition();
         player.draw(canvas, position.x * GraphicsConfig.getTileSize(), position.y * GraphicsConfig.getTileSize());
     }
@@ -94,6 +122,8 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
     }
 
     public void setInputHandler(InputHandler input) {
+        NullPointerValidator.validate(input);
+
         level.setInputHandler(input);
     }
 

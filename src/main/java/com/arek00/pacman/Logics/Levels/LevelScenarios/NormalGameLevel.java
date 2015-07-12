@@ -11,6 +11,7 @@ import com.arek00.pacman.Logics.Maps.IMap;
 import com.arek00.pacman.Logics.Maps.Utils.FieldsRetriever;
 import com.arek00.pacman.Utils.DataHelpers.MovementEstimator;
 import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
+import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 /**
  * Manage logic of a level
@@ -26,6 +27,11 @@ public class NormalGameLevel implements ILevel {
     private InputHandler handler;
 
     public NormalGameLevel(IMap levelMap, IPlayer player, InputHandler input) {
+
+        NullPointerValidator.validate(levelMap);
+        NullPointerValidator.validate(player);
+        NullPointerValidator.validate(input);
+
         map = levelMap;
         this.player = player;
         this.enemies = enemies;
@@ -102,7 +108,8 @@ public class NormalGameLevel implements ILevel {
     }
 
     public void setInputHandler(InputHandler input) {
-        PointF playerInput = input.getInput();
+        NullPointerValidator.validate(input);
+        this.handler = input;
     }
 
     public void update() {
@@ -131,12 +138,17 @@ public class NormalGameLevel implements ILevel {
     }
 
     private void undoCharacterMove(ICharacter character, PointF playerMove) {
+        NullPointerValidator.validate(character);
+        NullPointerValidator.validate(playerMove);
+
         playerMove.x = Math.round(playerMove.x);
         playerMove.y = Math.round(playerMove.y);
         character.move(playerMove);
     }
 
     private boolean isCharacterCollides(ICharacter character) {
+        NullPointerValidator.validate(character);
+
         int positionX = (int) character.getPosition().x;
         int positionY = (int) character.getPosition().y;
 
@@ -144,6 +156,8 @@ public class NormalGameLevel implements ILevel {
     }
 
     private boolean isPlayerCollectedBall(ICharacter player) {
+        NullPointerValidator.validate(player);
+
         int positionX = (int) player.getPosition().x;
         int positionY = (int) player.getPosition().y;
 
@@ -156,6 +170,7 @@ public class NormalGameLevel implements ILevel {
     }
 
     private void collectBall(PointF playerPosition) {
+        NullPointerValidator.validate(playerPosition);
 
         int ballX = Math.round(playerPosition.x);
         int ballY = Math.round(playerPosition.y);

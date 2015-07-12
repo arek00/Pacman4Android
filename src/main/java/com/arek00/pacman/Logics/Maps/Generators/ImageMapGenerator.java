@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import com.arek00.pacman.Logics.Maps.ConcreteMap.Map;
 import com.arek00.pacman.Logics.Maps.Generators.ValueObjects.ColorsMap;
 import com.arek00.pacman.Logics.Maps.IMap;
+import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 /**
  * Generate IMap object from Bitmap, that stores info about map in specified way.
@@ -23,6 +24,9 @@ public class ImageMapGenerator {
     }
 
     public Map generateMap(String name, Bitmap mapScheme) {
+        NullPointerValidator.validate(name);
+        NullPointerValidator.validate(mapScheme);
+
         this.mapScheme = mapScheme;
         mapHeight = this.mapScheme.getHeight();
         mapWidth = this.mapScheme.getWidth();

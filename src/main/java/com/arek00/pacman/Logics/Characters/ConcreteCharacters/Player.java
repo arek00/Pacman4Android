@@ -2,6 +2,8 @@ package com.arek00.pacman.Logics.Characters.ConcreteCharacters;
 
 import android.graphics.PointF;
 import com.arek00.pacman.Logics.Characters.IPlayer;
+import com.arek00.pacman.Utils.Validators.NullPointerValidator;
+import com.arek00.pacman.Utils.Validators.NumberValidator;
 
 
 /**
@@ -17,9 +19,11 @@ public class Player implements IPlayer {
 
 
     public Player(PointF playerPosition, int startingLife, float speed) {
-        if (startingLife < 0) {
-            throw new IllegalArgumentException("Lifes amount can not be negative number");
-        }
+        NullPointerValidator.validate(playerPosition);
+        NumberValidator.checkNegativeNumber(startingLife);
+        NumberValidator.checkNegativeNumber(speed);
+        NumberValidator.checkNumberIsZero(startingLife);
+        NumberValidator.checkNumberIsZero(speed);
 
         this.playerPosition = playerPosition;
         this.life = startingLife;
@@ -27,6 +31,8 @@ public class Player implements IPlayer {
     }
 
     public void setPosition(PointF position) {
+        NullPointerValidator.validate(position);
+
         this.playerPosition = position;
     }
 
@@ -35,6 +41,10 @@ public class Player implements IPlayer {
     }
 
     public void move(PointF movement) {
+        NullPointerValidator.validate(movement);
+
+        this.playerPosition.x += movement.x;
+        this.playerPosition.y += movement.y;
     }
 
     public float getSpeed() {
@@ -42,6 +52,9 @@ public class Player implements IPlayer {
     }
 
     public void setSpeed(float speed) {
+        NumberValidator.checkNumberIsZero(speed);
+        NumberValidator.checkNegativeNumber(speed);
+
         this.speed = speed;
     }
 
@@ -50,6 +63,7 @@ public class Player implements IPlayer {
     }
 
     public void addPoints(int pointsAmount) {
+
         this.points += pointsAmount;
     }
 
@@ -62,7 +76,7 @@ public class Player implements IPlayer {
     }
 
     public void loseLife() {
-
+        this.life--;
     }
 
     public void setPoints(int points) {
@@ -82,6 +96,9 @@ public class Player implements IPlayer {
     }
 
     public void setLife(int life) {
+        NumberValidator.checkNegativeNumber(life);
+        NumberValidator.checkNumberIsZero(life);
+
         this.life = life;
     }
 }

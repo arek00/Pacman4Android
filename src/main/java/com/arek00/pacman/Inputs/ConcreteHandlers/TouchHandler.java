@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Inputs.InputHandler;
+import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 /**
  * Handler of touching screen
@@ -36,6 +37,9 @@ public class TouchHandler implements InputHandler, View.OnTouchListener {
      * @return
      */
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        NullPointerValidator.validate(view);
+        NullPointerValidator.validate(motionEvent);
+
         touchedPoint.x = motionEvent.getX();
         touchedPoint.y = motionEvent.getY();
 

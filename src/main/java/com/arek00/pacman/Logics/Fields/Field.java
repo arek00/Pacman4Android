@@ -1,5 +1,7 @@
 package com.arek00.pacman.Logics.Fields;
 
+import com.arek00.pacman.Utils.Validators.NumberValidator;
+
 /**
  * Simplest implementation of IField
  */
@@ -8,8 +10,8 @@ public class Field implements IField {
     private int value;
     private boolean collide;
 
-    public Field(int value, boolean collide) {
-        this.value = value;
+    public Field(int index, boolean collide) {
+        this.value = index;
         this.collide = collide;
     }
 

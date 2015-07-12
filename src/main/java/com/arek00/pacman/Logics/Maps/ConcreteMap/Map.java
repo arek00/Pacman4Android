@@ -5,6 +5,8 @@ import android.graphics.PointF;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
 import com.arek00.pacman.Logics.Maps.IMap;
 import com.arek00.pacman.Logics.Maps.Utils.FieldsRetriever;
+import com.arek00.pacman.Utils.Validators.NullPointerValidator;
+import com.arek00.pacman.Utils.Validators.NumberValidator;
 
 
 /**
@@ -18,6 +20,13 @@ public class Map implements IMap {
     private PointF[] enemiesStartingPositions;
 
     public Map(String name, int[][] fields, int width, int height) {
+        NullPointerValidator.validate(name);
+        NullPointerValidator.validate(fields);
+        NumberValidator.checkNumberIsZero(width);
+        NumberValidator.checkNumberIsZero(height);
+        NumberValidator.checkNegativeNumber(width);
+        NumberValidator.checkNegativeNumber(height);
+
         this.name = name;
         this.fields = fields;
         this.size = new Point(width, height);
@@ -25,6 +34,9 @@ public class Map implements IMap {
     }
 
     public int getField(int x, int y) {
+        NumberValidator.checkNegativeNumber(x);
+        NumberValidator.checkNegativeNumber(y);
+
         return fields[x][y];
     }
 

@@ -1,9 +1,11 @@
 package com.arek00.pacman.Utils.DataHelpers;
 
+import com.arek00.pacman.Graphics.Listeners.OnDrawListener;
+
 /**
  * Helps with time in game
  */
-public class TimeHelper {
+public class TimeHelper implements OnDrawListener{
 
     private static long lastFrameTime = System.nanoTime();
 
@@ -21,5 +23,9 @@ public class TimeHelper {
      */
     public static void tick() {
         lastFrameTime = System.nanoTime();
+    }
+
+    public void onDraw() {
+        TimeHelper.tick();
     }
 }

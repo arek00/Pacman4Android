@@ -10,6 +10,7 @@ import com.arek00.pacman.Logics.Characters.IPlayer;
 public class MovementEstimator {
 
     public static int calculateVector(float currentCoordinate, float destinationCoordinate) {
+
         if (destinationCoordinate > currentCoordinate) {
             return 1;
         } else if (destinationCoordinate < currentCoordinate) {
