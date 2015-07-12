@@ -2,6 +2,7 @@ package com.arek00.pacman.Inputs.ConcreteHandlers;
 
 import android.content.Context;
 import android.graphics.PointF;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import com.arek00.pacman.Config.GraphicsConfig;
@@ -43,7 +44,9 @@ public class TouchHandler implements InputHandler, View.OnTouchListener {
         touchedPoint.x = motionEvent.getX();
         touchedPoint.y = motionEvent.getY();
 
-        return true;
+        Log.i("TOUCH Handler", "Touched screen at: " + touchedPoint.x + " " + touchedPoint.y);
+
+        return false;
     }
 
     /**
@@ -54,8 +57,8 @@ public class TouchHandler implements InputHandler, View.OnTouchListener {
     public PointF getActualInput() {
         float destinationX, destinationY;
 
-        destinationX = touchedPoint.x / GraphicsConfig.getTileSize();
-        destinationY = touchedPoint.y / GraphicsConfig.getTileSize();
+        destinationX = touchedPoint.x / (GraphicsConfig.getTileSize() * GraphicsConfig.getMapScale());
+        destinationY = touchedPoint.y / (GraphicsConfig.getTileSize() * GraphicsConfig.getMapScale());
 
         return new PointF(destinationX, destinationY);
     }

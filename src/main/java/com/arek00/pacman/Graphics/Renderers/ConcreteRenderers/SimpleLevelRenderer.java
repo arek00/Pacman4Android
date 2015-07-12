@@ -1,6 +1,7 @@
 package com.arek00.pacman.Graphics.Renderers.ConcreteRenderers;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PointF;
 import com.arek00.pacman.Config.GraphicsConfig;
@@ -76,6 +77,8 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
     private void drawMap(Canvas canvas) {
         NullPointerValidator.validate(canvas);
 
+        canvas.drawColor(Color.BLACK);
+        
         Point mapSize = new Point(level.getMapSize());
 
         for (int line = 0; line < mapSize.y; line++) {

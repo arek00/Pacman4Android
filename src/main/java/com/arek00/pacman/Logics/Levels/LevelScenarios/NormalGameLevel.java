@@ -37,6 +37,7 @@ public class NormalGameLevel implements ILevel {
         this.enemies = enemies;
         this.handler = input;
         fields = map.getMatrix();
+        setPlayerPosition();
     }
 
     public void startLevel() {

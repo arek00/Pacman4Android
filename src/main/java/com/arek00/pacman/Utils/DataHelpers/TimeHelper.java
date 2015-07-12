@@ -1,11 +1,14 @@
 package com.arek00.pacman.Utils.DataHelpers;
 
+import android.util.Log;
 import com.arek00.pacman.Graphics.Listeners.OnDrawListener;
+
+import java.sql.Time;
 
 /**
  * Helps with time in game
  */
-public class TimeHelper implements OnDrawListener{
+public class TimeHelper implements OnDrawListener {
 
     private static long lastFrameTime = System.nanoTime();
 
@@ -27,5 +30,7 @@ public class TimeHelper implements OnDrawListener{
 
     public void onDraw() {
         TimeHelper.tick();
+
+        Log.i("TIME HELPER INFO", "Last interval between frames: " + TimeHelper.getDeltaTime());
     }
 }
