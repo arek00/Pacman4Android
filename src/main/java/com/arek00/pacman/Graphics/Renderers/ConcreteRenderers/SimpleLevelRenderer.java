@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.util.Log;
 import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.DrawableCharacter;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.MapTileField;
@@ -95,6 +96,9 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
 
         PointF position = player.getPosition();
         player.draw(canvas, position.x * GraphicsConfig.getTileSize(), position.y * GraphicsConfig.getTileSize());
+
+        Log.i("DRAW PlAYER", "X: " + position.x * GraphicsConfig.getTileSize() +
+                " Y: " + position.y * GraphicsConfig.getTileSize());
     }
 
     public void startLevel() {

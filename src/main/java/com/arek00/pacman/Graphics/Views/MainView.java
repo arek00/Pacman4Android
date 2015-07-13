@@ -2,6 +2,7 @@ package com.arek00.pacman.Graphics.Views;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
@@ -37,15 +38,21 @@ public class MainView extends View implements OnDrawObservable {
 
     @Override
     public void onDraw(Canvas canvas) {
+        invalidate();
+        refreshCanvas(canvas);
         doDraw(canvas);
         informListeners();
 
-       // Log.i("ONDRAW", "DRAW FRAME");
+        // Log.i("ONDRAW", "DRAW FRAME");
     }
 
     private void doDraw(Canvas canvas) {
         canvas.scale(GraphicsConfig.getMapScale(), GraphicsConfig.getMapScale());
         renderer.draw(canvas);
+    }
+
+    private void refreshCanvas(Canvas canvas) {
+        canvas.drawColor(Color.BLACK);
     }
 
     public void addListener(OnDrawListener listener) {

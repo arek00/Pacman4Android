@@ -1,5 +1,7 @@
 package com.arek00.pacman.Logics.Game;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.util.Log;
@@ -7,6 +9,8 @@ import android.view.View;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
+
+import java.awt.event.ActionListener;
 
 
 public class Game implements IGame {
@@ -16,15 +20,21 @@ public class Game implements IGame {
     private Thread mainLoop;
     private View view;
     private Canvas canvas;
+    private Activity activity;
 
     private boolean isPaused = false;
     private boolean isFinished = false;
 
-    public Game(ILevel level, View view) {
+    public Game(ILevel level, View view, Activity activity) {
+        NullPointerValidator.validate(level);
+        NullPointerValidator.validate(view);
+        NullPointerValidator.validate(activity);
+
         this.level = level;
-        mainLoop = new Thread(new MainLoopThread());
+        mainLoop = new Thread(new MainLoopThread(new ActivityDrawer()));
         this.view = view;
         this.canvas = new Canvas();
+        this.activity = activity;
     }
 
 
@@ -35,26 +45,26 @@ public class Game implements IGame {
     }
 
     public void finishGame() {
-        if (level.isFinished()) {
-            level.finishLevel();
-        }
-        isFinished = true;
+//        if (level.isFinished()) {
+//            level.finishLevel();
+//        }
+//        isFinished = true;
     }
 
     public void pauseGame() {
-        synchronized (mainLoop) {
-            try {
-                mainLoop.wait();
-            } catch (InterruptedException e) {
-                Log.e("PAUSE GAME", "Problem with wait main game loop");
-                e.printStackTrace();
-            }
-        }
+//        synchronized (mainLoop) {
+//            try {
+//                mainLoop.wait();
+//            } catch (InterruptedException e) {
+//                Log.e("PAUSE GAME", "Problem with wait main game loop");
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     public void continueGame() {
         synchronized (mainLoop) {
-            mainLoop.notify();
+            //mainLoop.notify();
         }
     }
 
@@ -67,6 +77,10 @@ public class Game implements IGame {
         level.movePlayer(move);
     }
 
+    public View getView() {
+        return this.view;
+    }
+
     public ICharacter getPlayer() {
         return level.getPlayer();
     }
@@ -77,10 +91,17 @@ public class Game implements IGame {
 
     private class MainLoopThread implements Runnable {
 
+        private ActivityDrawer drawer;
+
+        public MainLoopThread(ActivityDrawer drawer) {
+            this.drawer = drawer;
+        }
+
         public void run() {
             while (!isFinished) {
-                view.draw(canvas);
                 level.update();
+
+                activity.runOnUiThread(drawer);
 
                 try {
                     synchronized (this) {
@@ -91,6 +112,12 @@ public class Game implements IGame {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    private class ActivityDrawer implements Runnable {
+        public void run() {
+            view.draw(canvas);
         }
     }
 

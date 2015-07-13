@@ -47,6 +47,7 @@ public class NormalLevelInitializer {
 
         helper = new AssetsHelper(context);
         applicationContext = context;
+
         initialize();
     }
 
@@ -60,13 +61,13 @@ public class NormalLevelInitializer {
      */
 
     public void initialize() {
-        this.tileSheet = initializeTileSheet();
-        this.mapTiles = initializeMapTiles(getInitializedTileSheet());
-        this.map = initializeMap();
-        this.player = initializePlayer();
-        this.drawablePlayer = initializeDrawablePlayer(getInitializedPlayer());
-        this.level = initializeLevel(getInitializedMap(), getInitializedPlayer());
-        this.levelRenderer = initializeRenderer(getInitializedLevel(), getInitializedPlayerDrawable(), getInitializedMapTiles());
+        this.tileSheet = getInitializedTileSheet();
+        this.mapTiles = getInitializedMapTiles();
+        this.map = getInitializedMap();
+        this.player = getInitializedPlayer();
+        this.drawablePlayer = getInitializedPlayerDrawable();
+        this.level = getInitializedLevel();
+        this.levelRenderer = getInitializedRenderer();
     }
 
     private ILevel initializeLevel(IMap map, IPlayer player) {
@@ -76,7 +77,7 @@ public class NormalLevelInitializer {
         return level;
     }
 
-    private ILevel getInitializedLevel() {
+    public ILevel getInitializedLevel() {
         if (this.level == null) {
             this.level = initializeLevel(getInitializedMap(), getInitializedPlayer());
         }
@@ -118,7 +119,7 @@ public class NormalLevelInitializer {
         return map;
     }
 
-    private IMap getInitializedMap() {
+    public IMap getInitializedMap() {
         if (this.map == null) {
             this.map = initializeMap();
         }
@@ -133,11 +134,12 @@ public class NormalLevelInitializer {
         return player;
     }
 
-    private IPlayer getInitializedPlayer() {
+    public IPlayer getInitializedPlayer() {
         if (this.player == null) {
             this.player = initializePlayer();
         }
 
+        NullPointerValidator.validate(this.player);
         return this.player;
     }
 
@@ -161,7 +163,7 @@ public class NormalLevelInitializer {
         return tileSheet;
     }
 
-    private Bitmap getInitializedTileSheet() {
+    public Bitmap getInitializedTileSheet() {
         if (this.tileSheet == null) {
             this.tileSheet = initializeTileSheet();
         }
@@ -182,7 +184,7 @@ public class NormalLevelInitializer {
         return drawables;
     }
 
-    private Drawable[] getInitializedMapTiles() {
+    public Drawable[] getInitializedMapTiles() {
         if (this.mapTiles == null) {
             this.mapTiles = initializeMapTiles(getInitializedTileSheet());
         }
@@ -191,7 +193,7 @@ public class NormalLevelInitializer {
     }
 
     private Drawable initializeDrawablePlayer(IPlayer player) {
-        NullPointerValidator.validate(level);
+        NullPointerValidator.validate(player);
 
         Tile playerTile;
         InputStream bitmapStream = null;
@@ -212,7 +214,7 @@ public class NormalLevelInitializer {
         return playerDrawable;
     }
 
-    private Drawable getInitializedPlayerDrawable() {
+    public Drawable getInitializedPlayerDrawable() {
         if (this.drawablePlayer == null) {
             this.drawablePlayer = initializeDrawablePlayer(this.player);
         }

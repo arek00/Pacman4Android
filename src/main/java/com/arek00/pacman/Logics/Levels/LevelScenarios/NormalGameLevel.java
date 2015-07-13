@@ -106,6 +106,8 @@ public class NormalGameLevel implements ILevel {
     }
 
     public void movePlayer(PointF playerMove) {
+        isCharacterCollides();
+
         player.move(playerMove);
     }
 

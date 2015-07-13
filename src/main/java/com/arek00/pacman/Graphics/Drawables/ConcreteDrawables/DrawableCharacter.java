@@ -2,6 +2,7 @@ package com.arek00.pacman.Graphics.Drawables.ConcreteDrawables;
 
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
@@ -31,7 +32,12 @@ public class DrawableCharacter implements Drawable, ICharacter {
 
     public void draw(Canvas canvas, float x, float y) {
         NullPointerValidator.validate(canvas);
-        drawable.draw(canvas, x, y);
+        float tileSize = GraphicsConfig.getTileSize();
+
+        float drawX = x + tileSize/2;
+        float drawY = y + tileSize/2;
+
+        drawable.draw(canvas, drawX, drawY);
     }
 
     public void setPosition(PointF position) {

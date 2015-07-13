@@ -53,8 +53,8 @@ public class HelloAndroidActivity extends Activity implements View.OnTouchListen
     private void initialize(Context context) {
 
         NormalLevelInitializer initializer = new NormalLevelInitializer(context);
-        this.view = new MainView(context, initializer.getRenderer());
-        this.game = new Game(initializer.getInitializedLevel(), view);
+        this.view = new MainView(context, initializer.getInitializedRenderer());
+        this.game = new Game(initializer.getInitializedLevel(), view, this);
         this.touchHandler = new TouchHandler();
 
         //TODO Idea of steering must be change. Currently levels contains InputHandlers objects
