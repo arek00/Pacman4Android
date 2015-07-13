@@ -78,7 +78,7 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         NullPointerValidator.validate(canvas);
 
         canvas.drawColor(Color.BLACK);
-        
+
         Point mapSize = new Point(level.getMapSize());
 
         for (int line = 0; line < mapSize.y; line++) {
@@ -123,12 +123,6 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
 
     public Point getMapSize() {
         return level.getMapSize();
-    }
-
-    public void setInputHandler(InputHandler input) {
-        NullPointerValidator.validate(input);
-
-        level.setInputHandler(input);
     }
 
     public void update() {

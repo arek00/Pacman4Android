@@ -12,10 +12,10 @@ public interface InputHandler {
      * @param <T>
      * @return
      */
-    public <T> T getInput();
+    public PointF getInput();
 
     /**
      * Method should convert informations from handler to be ready to use in movement.
      */
-    public <T> T getActualInput();
+    public PointF getActualInput();
 }

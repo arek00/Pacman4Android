@@ -3,10 +3,11 @@ package com.arek00.pacman;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import com.arek00.pacman.Graphics.Views.MainView;
 import com.arek00.pacman.Initializers.NormalLevelInitializer;
+import com.arek00.pacman.Inputs.ConcreteHandlers.ClickHandler;
+import com.arek00.pacman.Inputs.ConcreteHandlers.KeyHandler;
 import com.arek00.pacman.Inputs.ConcreteHandlers.TouchHandler;
 import com.arek00.pacman.Logics.Game.Game;
 import com.arek00.pacman.Logics.Game.IGame;
@@ -16,6 +17,8 @@ public class HelloAndroidActivity extends Activity {
     private IGame game;
     private View view;
     private TouchHandler handler;
+    private KeyHandler keyHandler;
+    private ClickHandler clickHandler;
 
 
     /**
@@ -31,15 +34,16 @@ public class HelloAndroidActivity extends Activity {
         initialize(this);
         game.startGame();
         setContentView(view);
+        view.setOnKeyListener(keyHandler);
         setTitle(R.string.app_name);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(com.arek00.pacman.R.menu.main, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(com.arek00.pacman.R.menu.main, menu);
+//        return true;
+//    }
 
 
     /**
@@ -49,9 +53,14 @@ public class HelloAndroidActivity extends Activity {
      */
     private void initialize(Context context) {
         this.handler = new TouchHandler();
-        NormalLevelInitializer initializer = new NormalLevelInitializer(context, handler);
-        this.game = new Game(initializer.getInitializedLevel());
-        this.view = new MainView(context, handler, initializer.getRenderer());
+        this.keyHandler = new KeyHandler();
+        this.clickHandler = new ClickHandler();
+
+        NormalLevelInitializer initializer = new NormalLevelInitializer(context);
+        this.view = new MainView(context, initializer.getRenderer());
+        this.game = new Game(initializer.getInitializedLevel(), this.view);
+
+        //TODO Idea of steering must be change. Currently levels contains InputHandlers objects
     }
 }
 

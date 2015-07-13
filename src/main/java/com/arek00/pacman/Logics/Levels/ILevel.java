@@ -25,8 +25,6 @@ public interface ILevel {
 
     public Point getMapSize();
 
-    public void setInputHandler(InputHandler input);
-
     /**
      * Do on every step of game
      */

@@ -1,6 +1,8 @@
 package com.arek00.pacman.Logics.Game;
 
+import android.graphics.Canvas;
 import android.util.Log;
+import android.view.View;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
@@ -11,13 +13,17 @@ public class Game implements IGame {
     private ILevel level;
     private final long intervalTime = (long) 1000 / 60;
     private Thread mainLoop;
+    private View view;
+    private Canvas canvas;
 
     private boolean isPaused = false;
     private boolean isFinished = false;
 
-    public Game(ILevel level) {
+    public Game(ILevel level, View view) {
         this.level = level;
         mainLoop = new Thread(new MainLoopThread());
+        this.view = view;
+        this.canvas = new Canvas();
     }
 
 
@@ -64,7 +70,9 @@ public class Game implements IGame {
 
         public void run() {
             while (!isFinished) {
+
                 level.update();
+                view.draw(canvas);
 
                 try {
                     synchronized (this) {

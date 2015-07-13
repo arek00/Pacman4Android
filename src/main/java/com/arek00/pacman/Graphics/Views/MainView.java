@@ -18,17 +18,14 @@ import java.util.List;
 public class MainView extends View implements OnDrawObservable {
 
     private Renderer renderer;
-    private TouchHandler handler;
     private Context context;
 
     private List<OnDrawListener> listeners = new ArrayList<OnDrawListener>();
 
-    public MainView(Context context, TouchHandler handler, Renderer renderer) {
+    public MainView(Context context, Renderer renderer) {
         super(context);
 
         this.context = context;
-        handler = new TouchHandler();
-        setOnTouchListener(handler);
         this.renderer = renderer;
 
         //levelInitializer = new LevelInitializer(context, handler);

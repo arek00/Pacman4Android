@@ -2,16 +2,13 @@ package com.arek00.pacman.Logics.Levels.LevelScenarios;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.util.Log;
-import com.arek00.pacman.Inputs.InputHandler;
+import com.arek00.pacman.Inputs.InputConverter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Logics.Maps.IMap;
 import com.arek00.pacman.Logics.Maps.Utils.FieldsRetriever;
-import com.arek00.pacman.Utils.DataHelpers.MovementEstimator;
-import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 /**
@@ -25,18 +22,16 @@ public class NormalGameLevel implements ILevel {
     private int fields[][];
     private int remainingBalls;
 
-    private InputHandler handler;
 
-    public NormalGameLevel(IMap levelMap, IPlayer player, InputHandler input) {
+    public NormalGameLevel(IMap levelMap, IPlayer player) {
 
         NullPointerValidator.validate(levelMap);
         NullPointerValidator.validate(player);
-        NullPointerValidator.validate(input);
 
         map = levelMap;
         this.player = player;
         this.enemies = enemies;
-        this.handler = input;
+
         //fields = map.getMatrix();
         //setPlayerPosition();
     }
@@ -110,37 +105,25 @@ public class NormalGameLevel implements ILevel {
         return map.getSize();
     }
 
-    public void setInputHandler(InputHandler input) {
-        NullPointerValidator.validate(input);
-        this.handler = input;
-    }
-
     public void update() {
 
-        PointF destinationPoint = handler.getActualInput();
-        Log.i("DESTINATION POSITION", "X: " + destinationPoint.x
-                + " Y: " + destinationPoint.y);
+        //PointF movement = player.getPosition();
 
-        if (destinationPoint.x < 0 || destinationPoint.y < 0) {
-            destinationPoint.x = player.getPosition().x;
-            destinationPoint.y = player.getPosition().y;
-        }
+//        PointF playerMove = MovementEstimator.calculatePlayerMove(player, destinationPoint, TimeHelper.getDeltaTime());
 
-        PointF playerMove = MovementEstimator.calculatePlayerMove(player, destinationPoint, TimeHelper.getDeltaTime());
-
-        player.move(playerMove);
-
-        if (isCharacterCollides(player)) {
-            undoCharacterMove(player, playerMove);
-        }
-
-        if (isPlayerCollectedBall(player)) {
-            collectBall(player.getPosition());
-        }
+//        player.move(movement);
+//
+//        if (isCharacterCollides(player)) {
+//            undoCharacterMove(player, movement);
+//        }
+//
+//        if (isPlayerCollectedBall(player)) {
+//            collectBall(player.getPosition());
+//        }
 
 
-        Log.i("PLAYER POSITION", "X: " + player.getPosition().x
-                + " Y: " + player.getPosition().y);
+        //TODO class should has method move thats use before player takes a move
+        //in this method a collisions, collected balls and enemies will be checked
 
         //TODO
         //Get player input
@@ -148,6 +131,8 @@ public class NormalGameLevel implements ILevel {
         //check collisions
         //update Map
         //go to step 1.
+
+        //Log.i("TICK", "TICK");
 
     }
 

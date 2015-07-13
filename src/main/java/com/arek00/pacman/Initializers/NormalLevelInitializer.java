@@ -10,6 +10,7 @@ import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Graphics.Renderers.ConcreteRenderers.SimpleLevelRenderer;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
+import com.arek00.pacman.Inputs.InputConverter;
 import com.arek00.pacman.Inputs.InputHandler;
 import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Player;
 import com.arek00.pacman.Logics.Characters.IPlayer;
@@ -32,19 +33,16 @@ public class NormalLevelInitializer {
     private Renderer levelRenderer;
     private Context applicationContext;
     private AssetsHelper helper;
-    private InputHandler handler;
     private Bitmap tileSheet;
 
     private final String DEFAULT_MAP_SCHEME = "images/map1.png";
     private final String TILESHEET = "images/pacman_sprites.png";
 
-    public NormalLevelInitializer(Context context, InputHandler handler) {
+    public NormalLevelInitializer(Context context) {
         NullPointerValidator.validate(context);
-        NullPointerValidator.validate(handler);
 
         helper = new AssetsHelper(context);
         applicationContext = context;
-        this.handler = handler;
         initialize();
     }
 
@@ -113,11 +111,7 @@ public class NormalLevelInitializer {
     }
 
     private ILevel initializeLevel() {
-        ILevel level = new NormalGameLevel(
-                initializeMap(),
-                initializePlayer(),
-                handler
-        );
+        ILevel level = new NormalGameLevel(initializeMap(), initializePlayer());
 
         NullPointerValidator.validate(level);
         return level;

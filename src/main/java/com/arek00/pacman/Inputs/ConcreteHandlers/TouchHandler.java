@@ -1,23 +1,28 @@
 package com.arek00.pacman.Inputs.ConcreteHandlers;
 
-import android.content.Context;
 import android.graphics.PointF;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import com.arek00.pacman.Config.GraphicsConfig;
+import com.arek00.pacman.Inputs.InputConverter;
 import com.arek00.pacman.Inputs.InputHandler;
+import com.arek00.pacman.Logics.Characters.ICharacter;
+import com.arek00.pacman.Utils.DataHelpers.MovementEstimator;
+import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 /**
  * Handler of touching screen
  */
-public class TouchHandler implements InputHandler, View.OnTouchListener {
+public class TouchHandler implements InputHandler, InputConverter, View.OnTouchListener {
 
-    private PointF touchedPoint;
+    private float lastTouchedX;
+    private float lastTouchedY;
 
     public TouchHandler() {
-        touchedPoint = new PointF(-1, -1);
+        lastTouchedX = -1;
+        lastTouchedY = -1;
     }
 
     /**
@@ -26,7 +31,7 @@ public class TouchHandler implements InputHandler, View.OnTouchListener {
      * @return
      */
     public PointF getInput() {
-        return touchedPoint;
+        return new PointF(lastTouchedX, lastTouchedY);
     }
 
     /**
@@ -41,12 +46,12 @@ public class TouchHandler implements InputHandler, View.OnTouchListener {
         NullPointerValidator.validate(view);
         NullPointerValidator.validate(motionEvent);
 
-        touchedPoint.x = motionEvent.getX();
-        touchedPoint.y = motionEvent.getY();
+        this.lastTouchedX = motionEvent.getX();
+        this.lastTouchedY = motionEvent.getY();
 
-        Log.i("TOUCH Handler", "Touched screen at: " + touchedPoint.x + " " + touchedPoint.y);
+        Log.i("TOUCH Handler", "Touched screen at: " + lastTouchedX + " " + lastTouchedY);
 
-        return false;
+        return true;
     }
 
     /**
@@ -57,9 +62,33 @@ public class TouchHandler implements InputHandler, View.OnTouchListener {
     public PointF getActualInput() {
         float destinationX, destinationY;
 
-        destinationX = touchedPoint.x / (GraphicsConfig.getTileSize() * GraphicsConfig.getMapScale());
-        destinationY = touchedPoint.y / (GraphicsConfig.getTileSize() * GraphicsConfig.getMapScale());
+        destinationX = lastTouchedX / (GraphicsConfig.getTileSize() * GraphicsConfig.getMapScale());
+        destinationY = lastTouchedY / (GraphicsConfig.getTileSize() * GraphicsConfig.getMapScale());
 
         return new PointF(destinationX, destinationY);
+    }
+
+    /**
+     * Returns move that given player should does.
+     *
+     * @param character
+     * @return
+     */
+    public PointF convertToPlayerMove(ICharacter character) {
+        NullPointerValidator.validate(character);
+
+        Log.i("Last Touch: ", "X: " + lastTouchedX
+                + " Y: " + lastTouchedY);
+
+        if (lastTouchedX < 0 || lastTouchedY < 0) {
+            return new PointF(0.001f, 0.001f);
+        }
+
+        PointF movement = MovementEstimator.calculatePlayerMove(character, getActualInput(), TimeHelper.getDeltaTime());
+
+        Log.i("Movement: ", "X: " + movement.x
+                + " Y: " + movement.y);
+
+        return movement;
     }
 }
