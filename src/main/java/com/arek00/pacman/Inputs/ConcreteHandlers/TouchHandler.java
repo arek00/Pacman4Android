@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import com.arek00.pacman.Config.GraphicsConfig;
-import com.arek00.pacman.Inputs.InputConverter;
 import com.arek00.pacman.Inputs.InputHandler;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Utils.DataHelpers.MovementEstimator;
@@ -15,43 +14,15 @@ import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 /**
  * Handler of touching screen
  */
-public class TouchHandler implements InputHandler, InputConverter, View.OnTouchListener {
-
-    private float lastTouchedX;
-    private float lastTouchedY;
-
-    public TouchHandler() {
-        lastTouchedX = -1;
-        lastTouchedY = -1;
-    }
-
+public class TouchHandler implements InputHandler {
     /**
      * Return point of last touch.
      *
      * @return
      */
-    public PointF getInput() {
-        return new PointF(lastTouchedX, lastTouchedY);
-    }
 
-    /**
-     * After listened view's been touched, touchedPoint is set a position on the screen where it's been touched.
-     * You may know where they touched it.
-     *
-     * @param view
-     * @param motionEvent
-     * @return
-     */
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        NullPointerValidator.validate(view);
-        NullPointerValidator.validate(motionEvent);
-
-        this.lastTouchedX = motionEvent.getX();
-        this.lastTouchedY = motionEvent.getY();
-
-        Log.i("TOUCH Handler", "Touched screen at: " + lastTouchedX + " " + lastTouchedY);
-
-        return true;
+    public PointF convertInputToMovement(PointF input, ICharacter player) {
+        return convertToPlayerMove(input, player);
     }
 
     /**
@@ -59,11 +30,13 @@ public class TouchHandler implements InputHandler, InputConverter, View.OnTouchL
      *
      * @return Destination point player should going.
      */
-    public PointF getActualInput() {
+    private PointF getActualInput(PointF input) {
         float destinationX, destinationY;
 
-        destinationX = lastTouchedX / (GraphicsConfig.getTileSize() * GraphicsConfig.getMapScale());
-        destinationY = lastTouchedY / (GraphicsConfig.getTileSize() * GraphicsConfig.getMapScale());
+        destinationX = input.x / (GraphicsConfig.getTileSize() * GraphicsConfig.getMapScale());
+        destinationY = input.y / (GraphicsConfig.getTileSize() * GraphicsConfig.getMapScale());
+
+        Log.i("ACTUAL TOUCH", destinationX + " " + destinationY);
 
         return new PointF(destinationX, destinationY);
     }
@@ -74,17 +47,16 @@ public class TouchHandler implements InputHandler, InputConverter, View.OnTouchL
      * @param character
      * @return
      */
-    public PointF convertToPlayerMove(ICharacter character) {
+    private PointF convertToPlayerMove(PointF input, ICharacter character) {
         NullPointerValidator.validate(character);
+        NullPointerValidator.validate(input);
 
-        Log.i("Last Touch: ", "X: " + lastTouchedX
-                + " Y: " + lastTouchedY);
+        PointF actualInput = getActualInput(input);
 
-        if (lastTouchedX < 0 || lastTouchedY < 0) {
-            return new PointF(0.001f, 0.001f);
+        if (actualInput.x < 0 || actualInput.y < 0) {
+            return new PointF(0f, 0f);
         }
-
-        PointF movement = MovementEstimator.calculatePlayerMove(character, getActualInput(), TimeHelper.getDeltaTime());
+        PointF movement = MovementEstimator.calculatePlayerMove(character, actualInput, TimeHelper.getDeltaTime());
 
         Log.i("Movement: ", "X: " + movement.x
                 + " Y: " + movement.y);

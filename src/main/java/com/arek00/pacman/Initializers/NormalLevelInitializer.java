@@ -10,8 +10,6 @@ import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Graphics.Renderers.ConcreteRenderers.SimpleLevelRenderer;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
-import com.arek00.pacman.Inputs.InputConverter;
-import com.arek00.pacman.Inputs.InputHandler;
 import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Player;
 import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Levels.ILevel;
@@ -31,9 +29,15 @@ public class NormalLevelInitializer {
 
     private ILevel level;
     private Renderer levelRenderer;
+    private IPlayer player;
+    private Drawable drawablePlayer;
+    private IMap map;
+    private Bitmap tileSheet;
+    private Drawable[] mapTiles;
+
+
     private Context applicationContext;
     private AssetsHelper helper;
-    private Bitmap tileSheet;
 
     private final String DEFAULT_MAP_SCHEME = "images/map1.png";
     private final String TILESHEET = "images/pacman_sprites.png";
@@ -46,28 +50,54 @@ public class NormalLevelInitializer {
         initialize();
     }
 
+
+    /*
+     * - LEVEL
+     * - LEVEL RENDERER
+     * - MAP
+     * - PLAYER
+     * - The rest
+     */
+
     public void initialize() {
         this.tileSheet = initializeTileSheet();
-        this.level = initializeLevel();
-        this.levelRenderer = initializeRenderer();
+        this.mapTiles = initializeMapTiles(getInitializedTileSheet());
+        this.map = initializeMap();
+        this.player = initializePlayer();
+        this.drawablePlayer = initializeDrawablePlayer(getInitializedPlayer());
+        this.level = initializeLevel(getInitializedMap(), getInitializedPlayer());
+        this.levelRenderer = initializeRenderer(getInitializedLevel(), getInitializedPlayerDrawable(), getInitializedMapTiles());
     }
 
-    private Bitmap initializeTileSheet() {
-        InputStream bitmapStream = null;
+    private ILevel initializeLevel(IMap map, IPlayer player) {
+        ILevel level = new NormalGameLevel(map, player);
 
-        try {
-            bitmapStream = helper.getFileByName(TILESHEET);
-        } catch (IOException e) {
-            Log.e("INITIALIZE ERROR", "Couldn't load tilesheet");
-            e.printStackTrace();
+        NullPointerValidator.validate(level);
+        return level;
+    }
+
+    private ILevel getInitializedLevel() {
+        if (this.level == null) {
+            this.level = initializeLevel(getInitializedMap(), getInitializedPlayer());
+        }
+        return this.level;
+    }
+
+    private Renderer initializeRenderer(ILevel level, Drawable player, Drawable[] mapTiles) {
+        SimpleLevelRenderer renderer = new SimpleLevelRenderer(level, player, mapTiles);
+
+        NullPointerValidator.validate(renderer);
+        return renderer;
+    }
+
+    public Renderer getInitializedRenderer() {
+        if (this.levelRenderer == null) {
+            this.levelRenderer =
+                    initializeRenderer(getInitializedLevel(), getInitializedPlayerDrawable(), getInitializedMapTiles());
         }
 
-        Bitmap tileSheet = BitmapFactory.decodeStream(bitmapStream);
-
-        NullPointerValidator.validate(tileSheet);
-        return tileSheet;
+        return this.levelRenderer;
     }
-
 
     private IMap initializeMap() {
         ImageMapGenerator generator = new ImageMapGenerator();
@@ -88,7 +118,57 @@ public class NormalLevelInitializer {
         return map;
     }
 
-    private Drawable[] initializeMapTiles() {
+    private IMap getInitializedMap() {
+        if (this.map == null) {
+            this.map = initializeMap();
+        }
+
+        return this.map;
+    }
+
+    private IPlayer initializePlayer() {
+        IPlayer player = new Player(new PointF(0, 0), 5, 5);
+
+        NullPointerValidator.validate(player);
+        return player;
+    }
+
+    private IPlayer getInitializedPlayer() {
+        if (this.player == null) {
+            this.player = initializePlayer();
+        }
+
+        return this.player;
+    }
+
+
+    /**
+     * @return
+     */
+    private Bitmap initializeTileSheet() {
+        InputStream bitmapStream = null;
+
+        try {
+            bitmapStream = helper.getFileByName(TILESHEET);
+        } catch (IOException e) {
+            Log.e("INITIALIZE ERROR", "Couldn't load tilesheet");
+            e.printStackTrace();
+        }
+
+        Bitmap tileSheet = BitmapFactory.decodeStream(bitmapStream);
+
+        NullPointerValidator.validate(tileSheet);
+        return tileSheet;
+    }
+
+    private Bitmap getInitializedTileSheet() {
+        if (this.tileSheet == null) {
+            this.tileSheet = initializeTileSheet();
+        }
+        return this.tileSheet;
+    }
+
+    private Drawable[] initializeMapTiles(Bitmap tileSheet) {
         Drawable[] drawables = new Tile[]{
                 new Tile(tileSheet, 64, 128, 64, 64), //WALL
                 new Tile(tileSheet, 0, 128, 64, 64), //COLLECTED
@@ -102,42 +182,15 @@ public class NormalLevelInitializer {
         return drawables;
     }
 
+    private Drawable[] getInitializedMapTiles() {
+        if (this.mapTiles == null) {
+            this.mapTiles = initializeMapTiles(getInitializedTileSheet());
+        }
 
-    private IPlayer initializePlayer() {
-        IPlayer player = new Player(new PointF(0, 0), 5, 5);
-
-        NullPointerValidator.validate(player);
-        return player;
+        return this.mapTiles;
     }
 
-    private ILevel initializeLevel() {
-        ILevel level = new NormalGameLevel(initializeMap(), initializePlayer());
-
-        NullPointerValidator.validate(level);
-        return level;
-    }
-
-    //IMap map, IPlayer player, InputHandler input
-    public ILevel getInitializedLevel() {
-        return this.level;
-    }
-
-    public Renderer getRenderer() {
-        return this.levelRenderer;
-    }
-
-    private Renderer initializeRenderer() {
-        //TODO define MapTiles
-        Renderer renderer = new SimpleLevelRenderer(
-                getInitializedLevel(),
-                initializePlayer(getInitializedLevel()),
-                initializeMapTiles());
-
-        NullPointerValidator.validate(renderer);
-        return renderer;
-    }
-
-    public Drawable initializePlayer(ILevel level) {
+    private Drawable initializeDrawablePlayer(IPlayer player) {
         NullPointerValidator.validate(level);
 
         Tile playerTile;
@@ -153,10 +206,18 @@ public class NormalLevelInitializer {
         Bitmap bitmap = BitmapFactory.decodeStream(bitmapStream);
 
         playerTile = new Tile(bitmap, 64, 0, 64, 64);
-        Drawable player = new DrawableCharacter(level.getPlayer(), playerTile);
+        Drawable playerDrawable = new DrawableCharacter(player, playerTile);
 
         NullPointerValidator.validate(player);
-        return player;
+        return playerDrawable;
+    }
+
+    private Drawable getInitializedPlayerDrawable() {
+        if (this.drawablePlayer == null) {
+            this.drawablePlayer = initializeDrawablePlayer(this.player);
+        }
+
+        return drawablePlayer;
     }
 
 }

@@ -125,6 +125,10 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         return level.getMapSize();
     }
 
+    public void movePlayer(PointF playerMove) {
+        level.movePlayer(playerMove);
+    }
+
     public void update() {
         level.update();
     }

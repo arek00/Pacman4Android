@@ -2,23 +2,22 @@ package com.arek00.pacman;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import com.arek00.pacman.Graphics.Views.MainView;
 import com.arek00.pacman.Initializers.NormalLevelInitializer;
-import com.arek00.pacman.Inputs.ConcreteHandlers.ClickHandler;
-import com.arek00.pacman.Inputs.ConcreteHandlers.KeyHandler;
 import com.arek00.pacman.Inputs.ConcreteHandlers.TouchHandler;
 import com.arek00.pacman.Logics.Game.Game;
 import com.arek00.pacman.Logics.Game.IGame;
 
-public class HelloAndroidActivity extends Activity {
+public class HelloAndroidActivity extends Activity implements View.OnTouchListener {
 
     private IGame game;
     private View view;
-    private TouchHandler handler;
-    private KeyHandler keyHandler;
-    private ClickHandler clickHandler;
+    private TouchHandler touchHandler;
 
 
     /**
@@ -34,7 +33,7 @@ public class HelloAndroidActivity extends Activity {
         initialize(this);
         game.startGame();
         setContentView(view);
-        view.setOnKeyListener(keyHandler);
+        view.setOnTouchListener(this);
         setTitle(R.string.app_name);
     }
 
@@ -52,15 +51,25 @@ public class HelloAndroidActivity extends Activity {
      * @param context
      */
     private void initialize(Context context) {
-        this.handler = new TouchHandler();
-        this.keyHandler = new KeyHandler();
-        this.clickHandler = new ClickHandler();
 
         NormalLevelInitializer initializer = new NormalLevelInitializer(context);
         this.view = new MainView(context, initializer.getRenderer());
-        this.game = new Game(initializer.getInitializedLevel(), this.view);
+        this.game = new Game(initializer.getInitializedLevel(), view);
+        this.touchHandler = new TouchHandler();
 
         //TODO Idea of steering must be change. Currently levels contains InputHandlers objects
+    }
+
+
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+
+        Log.i("ACTIVITY OnTouch", "Touch at: X: " + motionEvent.getX() + " Y: " + motionEvent.getY());
+        PointF input = new PointF(motionEvent.getX(), motionEvent.getY());
+
+
+        game.movePlayer(touchHandler.convertInputToMovement(input, game.getPlayer()));
+
+        return false;
     }
 }
 

@@ -25,6 +25,8 @@ public interface ILevel {
 
     public Point getMapSize();
 
+    public void movePlayer(PointF playerMove);
+
     /**
      * Do on every step of game
      */

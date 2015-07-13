@@ -1,6 +1,7 @@
 package com.arek00.pacman.Logics.Game;
 
 import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.util.Log;
 import android.view.View;
 import com.arek00.pacman.Logics.Characters.ICharacter;
@@ -62,6 +63,14 @@ public class Game implements IGame {
         this.level = level;
     }
 
+    public void movePlayer(PointF move) {
+        level.movePlayer(move);
+    }
+
+    public ICharacter getPlayer() {
+        return level.getPlayer();
+    }
+
     private void runMainLoop() {
         mainLoop.start();
     }
@@ -70,9 +79,8 @@ public class Game implements IGame {
 
         public void run() {
             while (!isFinished) {
-
-                level.update();
                 view.draw(canvas);
+                level.update();
 
                 try {
                     synchronized (this) {

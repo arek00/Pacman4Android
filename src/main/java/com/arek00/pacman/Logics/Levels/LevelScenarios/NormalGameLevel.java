@@ -2,7 +2,7 @@ package com.arek00.pacman.Logics.Levels.LevelScenarios;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import com.arek00.pacman.Inputs.InputConverter;
+import android.util.Log;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
@@ -105,7 +105,14 @@ public class NormalGameLevel implements ILevel {
         return map.getSize();
     }
 
+    public void movePlayer(PointF playerMove) {
+        player.move(playerMove);
+    }
+
     public void update() {
+
+       // Log.i("Player position: ", player.getPosition().x + " " + player.getPosition().y);
+
 
         //PointF movement = player.getPosition();
 

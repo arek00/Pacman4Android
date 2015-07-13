@@ -1,18 +1,16 @@
 package com.arek00.pacman.Inputs.ConcreteHandlers;
 
 import android.graphics.PointF;
-import android.inputmethodservice.Keyboard;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import com.arek00.pacman.Inputs.InputConverter;
 import com.arek00.pacman.Inputs.InputHandler;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 
 /**
  *
  */
-public class KeyHandler implements InputHandler, InputConverter, View.OnKeyListener {
+public class KeyHandler {
 
     //W
     //SAD
@@ -25,19 +23,14 @@ public class KeyHandler implements InputHandler, InputConverter, View.OnKeyListe
     private int verticalMovement = 0;
     private int horizontalMovement = 0;
 
-
-    public PointF convertToPlayerMove(ICharacter player) {
-        return getInput();
-    }
-
-
-    public PointF getInput() {
+    public PointF getRawInput() {
         return new PointF(horizontalMovement, verticalMovement);
     }
 
-    public PointF getActualInput() {
-        return getInput();
+    public PointF getPlayerMove(ICharacter player) {
+        return new PointF(verticalMovement, horizontalMovement);
     }
+
 
     public boolean onKey(View view, int i, KeyEvent keyEvent) {
         Log.i("PRESS DOWN", Integer.toString(keyEvent.getUnicodeChar()));

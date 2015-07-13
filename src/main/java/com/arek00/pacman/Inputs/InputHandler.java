@@ -1,21 +1,20 @@
 package com.arek00.pacman.Inputs;
 
 import android.graphics.PointF;
+import com.arek00.pacman.Logics.Characters.ICharacter;
 
 /**
  * Abstraction to handling user inputs like touches, accelerometer data etc.
  */
 public interface InputHandler {
     /**
-     * Get input from device
+     * Get movement that given character should does.
      *
-     * @param <T>
+     * @param player
      * @return
      */
-    public PointF getInput();
+    public PointF convertInputToMovement(PointF input, ICharacter player);
 
-    /**
-     * Method should convert informations from handler to be ready to use in movement.
-     */
-    public PointF getActualInput();
+
+
 }
