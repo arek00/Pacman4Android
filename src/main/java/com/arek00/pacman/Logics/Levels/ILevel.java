@@ -2,9 +2,10 @@ package com.arek00.pacman.Logics.Levels;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import com.arek00.pacman.Inputs.InputHandler;
+import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
-import com.arek00.pacman.Logics.Maps.IMap;
+import com.arek00.pacman.Logics.Characters.MovementDirection;
+import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
 
 /**
  * Abstraction of game level.
@@ -25,10 +26,22 @@ public interface ILevel {
 
     public Point getMapSize();
 
-    public void movePlayer(PointF playerMove);
+    /**
+     * Set strategy to interprete input from user.
+     *
+     * @param interpreter
+     */
+    public void setInputInterpreter(InputInterpreter interpreter);
 
     /**
-     * Do on every step of game
+     * Put input from user to level
+     *
+     * @param input
+     */
+    public void setInput(PointF input);
+
+    /**
+     * Update a state of level.
      */
     public void update();
 }

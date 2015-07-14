@@ -10,7 +10,7 @@ import java.sql.Time;
  */
 public class TimeHelper implements OnDrawListener {
 
-    private static long lastFrameTime = System.nanoTime();
+    private static long lastFrameTime = System.currentTimeMillis();
 
     /**
      * Get time between rendering frames.
@@ -25,7 +25,7 @@ public class TimeHelper implements OnDrawListener {
      * This method should be used with rendering to refresh the clock and delta counter.
      */
     public static void tick() {
-        lastFrameTime = System.nanoTime();
+        lastFrameTime = System.currentTimeMillis();
     }
 
     public void onDraw() {

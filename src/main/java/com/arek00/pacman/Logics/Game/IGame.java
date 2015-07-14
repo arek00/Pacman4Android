@@ -4,6 +4,7 @@ import android.graphics.PointF;
 import android.view.View;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IPlayer;
+import com.arek00.pacman.Logics.Characters.MovementDirection;
 import com.arek00.pacman.Logics.Levels.ILevel;
 
 /**
@@ -22,8 +23,6 @@ public interface IGame {
     public void setLevel(ILevel level);
 
     public ICharacter getPlayer();
-
-    public void movePlayer(PointF move);
 
     public View getView();
 

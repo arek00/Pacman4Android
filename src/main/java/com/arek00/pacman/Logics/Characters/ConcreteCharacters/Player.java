@@ -1,7 +1,10 @@
 package com.arek00.pacman.Logics.Characters.ConcreteCharacters;
 
 import android.graphics.PointF;
+import android.util.Log;
 import com.arek00.pacman.Logics.Characters.IPlayer;
+import com.arek00.pacman.Logics.Characters.MovementDirection;
+import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 import com.arek00.pacman.Utils.Validators.NumberValidator;
 
@@ -40,12 +43,37 @@ public class Player implements IPlayer {
         return playerPosition;
     }
 
-    public void move(PointF movement) {
+    public void move(MovementDirection movement) {
         NullPointerValidator.validate(movement);
 
+        doStep(movement);
+    }
 
-        this.playerPosition.x += movement.x;
-        this.playerPosition.y += movement.y;
+    private void doStep(MovementDirection direction) {
+        int stepVector = 0;
+
+        if (direction.value == MovementDirection.DOWN.value ||
+                direction.value == MovementDirection.RIGHT.value) {
+            stepVector = 1;
+        } else if (direction.value != MovementDirection.NONE.value) {
+            stepVector = -1;
+        }
+
+        float estimatedMove = stepVector * speed * TimeHelper.getDeltaTime();
+
+        if (direction.value == MovementDirection.RIGHT.value ||
+                direction.value == MovementDirection.LEFT.value) {
+            playerPosition.x += estimatedMove;
+
+
+        } else if (direction.value == MovementDirection.UP.value ||
+                direction.value == MovementDirection.DOWN.value) {
+            playerPosition.y += estimatedMove;
+        } else {
+            playerPosition.x = stepVector * speed * TimeHelper.getDeltaTime();
+        }
+
+        Log.i("PLAYER MOVEENT", "Estimated move: " + estimatedMove + " Delta time: " + TimeHelper.getDeltaTime());
     }
 
     public float getSpeed() {

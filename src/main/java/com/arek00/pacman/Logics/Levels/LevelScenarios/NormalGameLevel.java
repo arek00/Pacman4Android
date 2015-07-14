@@ -3,8 +3,10 @@ package com.arek00.pacman.Logics.Levels.LevelScenarios;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.Log;
+import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IPlayer;
+import com.arek00.pacman.Logics.Characters.MovementDirection;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Logics.Maps.IMap;
@@ -21,9 +23,11 @@ public class NormalGameLevel implements ILevel {
     private ICharacter[] enemies;
     private int fields[][];
     private int remainingBalls;
+    private InputInterpreter interpreter;
+    private PointF inputInformation;
 
 
-    public NormalGameLevel(IMap levelMap, IPlayer player) {
+    public NormalGameLevel(IMap levelMap, IPlayer player, InputInterpreter interpreter) {
 
         NullPointerValidator.validate(levelMap);
         NullPointerValidator.validate(player);
@@ -31,6 +35,8 @@ public class NormalGameLevel implements ILevel {
         map = levelMap;
         this.player = player;
         this.enemies = enemies;
+        this.interpreter = interpreter;
+        this.inputInformation = new PointF(0, 0);
 
         //fields = map.getMatrix();
         //setPlayerPosition();
@@ -105,15 +111,24 @@ public class NormalGameLevel implements ILevel {
         return map.getSize();
     }
 
-    public void movePlayer(PointF playerMove) {
-        isCharacterCollides();
+    public void setInputInterpreter(InputInterpreter interpreter) {
+        this.interpreter = interpreter;
+    }
 
-        player.move(playerMove);
+    public void setInput(PointF input) {
+        NullPointerValidator.validate(input);
+
+       // Log.i("SET INPUT", "GET INPUT FROM GAME: X: " + input.x + " Y: " + input.y);
+
+        this.inputInformation = input;
     }
 
     public void update() {
+        MovementDirection direction = interpreter.interpretInputData(inputInformation);
+        player.move(direction);
 
-       // Log.i("Player position: ", player.getPosition().x + " " + player.getPosition().y);
+
+        // Log.i("Player position: ", player.getPosition().x + " " + player.getPosition().y);
 
 
         //PointF movement = player.getPosition();
@@ -146,12 +161,7 @@ public class NormalGameLevel implements ILevel {
     }
 
     private void undoCharacterMove(ICharacter character, PointF playerMove) {
-        NullPointerValidator.validate(character);
-        NullPointerValidator.validate(playerMove);
 
-        playerMove.x = Math.round(playerMove.x);
-        playerMove.y = Math.round(playerMove.y);
-        character.move(playerMove);
     }
 
     private boolean isCharacterCollides(ICharacter character) {

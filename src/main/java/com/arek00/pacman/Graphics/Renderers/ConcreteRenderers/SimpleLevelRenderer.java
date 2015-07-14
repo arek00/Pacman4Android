@@ -10,8 +10,10 @@ import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.DrawableCharacter;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.MapTileField;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
-import com.arek00.pacman.Inputs.InputHandler;
+import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
+import com.arek00.pacman.Logics.Characters.MovementDirection;
+import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
@@ -97,8 +99,8 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         PointF position = player.getPosition();
         player.draw(canvas, position.x * GraphicsConfig.getTileSize(), position.y * GraphicsConfig.getTileSize());
 
-        Log.i("DRAW PlAYER", "X: " + position.x * GraphicsConfig.getTileSize() +
-                " Y: " + position.y * GraphicsConfig.getTileSize());
+       // Log.i("DRAW PlAYER", "X: " + position.x * GraphicsConfig.getTileSize() +
+              //  " Y: " + position.y * GraphicsConfig.getTileSize());
     }
 
     public void startLevel() {
@@ -129,8 +131,12 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         return level.getMapSize();
     }
 
-    public void movePlayer(PointF playerMove) {
-        level.movePlayer(playerMove);
+    public void setInputInterpreter(InputInterpreter interpreter) {
+        this.level.setInputInterpreter(interpreter);
+    }
+
+    public void setInput(PointF input) {
+        this.level.setInput(input);
     }
 
     public void update() {

@@ -1,9 +1,8 @@
-package com.arek00.pacman.Inputs.ConcreteHandlers;
+package com.arek00.pacman.Inputs.Handlers.ConcreteHandlers;
 
 import android.graphics.PointF;
 import android.util.Log;
 import android.view.View;
-import com.arek00.pacman.Inputs.InputHandler;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 
 /**

@@ -1,16 +1,14 @@
 package com.arek00.pacman.Logics.Game;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.util.Log;
 import android.view.View;
+import com.arek00.pacman.Inputs.Handlers.InputHandler;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
-
-import java.awt.event.ActionListener;
 
 
 public class Game implements IGame {
@@ -21,20 +19,22 @@ public class Game implements IGame {
     private View view;
     private Canvas canvas;
     private Activity activity;
+    private InputHandler inputHandler;
 
-    private boolean isPaused = false;
     private boolean isFinished = false;
 
-    public Game(ILevel level, View view, Activity activity) {
+    public Game(ILevel level, View view, InputHandler input, Activity activity) {
         NullPointerValidator.validate(level);
         NullPointerValidator.validate(view);
         NullPointerValidator.validate(activity);
+        NullPointerValidator.validate(input);
 
         this.level = level;
-        mainLoop = new Thread(new MainLoopThread(new ActivityDrawer()));
+        mainLoop = new Thread(new MainLoopThread(new UIThread()));
         this.view = view;
         this.canvas = new Canvas();
         this.activity = activity;
+        this.inputHandler = input;
     }
 
 
@@ -73,10 +73,6 @@ public class Game implements IGame {
         this.level = level;
     }
 
-    public void movePlayer(PointF move) {
-        level.movePlayer(move);
-    }
-
     public View getView() {
         return this.view;
     }
@@ -90,18 +86,19 @@ public class Game implements IGame {
     }
 
     private class MainLoopThread implements Runnable {
+        private UIThread uiDrawThread;
 
-        private ActivityDrawer drawer;
-
-        public MainLoopThread(ActivityDrawer drawer) {
-            this.drawer = drawer;
+        public MainLoopThread(UIThread uiDrawThread) {
+            this.uiDrawThread = uiDrawThread;
         }
 
         public void run() {
             while (!isFinished) {
-                level.update();
 
-                activity.runOnUiThread(drawer);
+                PointF input = inputHandler.getInput();
+                level.setInput(input);
+                level.update();
+                activity.runOnUiThread(uiDrawThread);
 
                 try {
                     synchronized (this) {
@@ -115,11 +112,9 @@ public class Game implements IGame {
         }
     }
 
-    private class ActivityDrawer implements Runnable {
+    private class UIThread implements Runnable {
         public void run() {
             view.draw(canvas);
         }
     }
-
-
 }

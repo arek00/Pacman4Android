@@ -28,7 +28,7 @@ public interface ICharacter {
     /**
      * Move this character
      */
-    public void move(PointF movement);
+    public void move(MovementDirection direction);
 
     public float getSpeed();
 

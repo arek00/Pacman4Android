@@ -1,11 +1,8 @@
-package com.arek00.pacman.Inputs.ConcreteHandlers;
+package com.arek00.pacman.Inputs.Handlers.ConcreteHandlers;
 
 import android.graphics.PointF;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import com.arek00.pacman.Config.GraphicsConfig;
-import com.arek00.pacman.Inputs.InputHandler;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Utils.DataHelpers.MovementEstimator;
 import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
@@ -14,7 +11,7 @@ import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 /**
  * Handler of touching screen
  */
-public class TouchHandler implements InputHandler {
+public class TouchHandler{
     /**
      * Return point of last touch.
      *

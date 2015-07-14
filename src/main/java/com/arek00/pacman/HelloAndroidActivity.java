@@ -2,23 +2,23 @@ package com.arek00.pacman;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.PointF;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
+import android.view.KeyEvent;
 import android.view.View;
 import com.arek00.pacman.Graphics.Views.MainView;
 import com.arek00.pacman.Initializers.NormalLevelInitializer;
-import com.arek00.pacman.Inputs.ConcreteHandlers.TouchHandler;
+import com.arek00.pacman.Inputs.Handlers.ConcreteHandlers.KeyHandler;
+import com.arek00.pacman.Inputs.Handlers.InputHandler;
+import com.arek00.pacman.Logics.Characters.MovementHandlers.ConcreteHandlers.TouchMovementHandler;
 import com.arek00.pacman.Logics.Game.Game;
 import com.arek00.pacman.Logics.Game.IGame;
+import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 
-public class HelloAndroidActivity extends Activity implements View.OnTouchListener {
+public class HelloAndroidActivity extends Activity {
 
     private IGame game;
-    private View view;
-    private TouchHandler touchHandler;
-
+    private MainView view;
+    private KeyHandler inputHandler;
 
     /**
      * Called when the activity is first created.
@@ -33,7 +33,7 @@ public class HelloAndroidActivity extends Activity implements View.OnTouchListen
         initialize(this);
         game.startGame();
         setContentView(view);
-        view.setOnTouchListener(this);
+        view.addListener(new TimeHelper());
         setTitle(R.string.app_name);
     }
 
@@ -53,21 +53,35 @@ public class HelloAndroidActivity extends Activity implements View.OnTouchListen
     private void initialize(Context context) {
 
         NormalLevelInitializer initializer = new NormalLevelInitializer(context);
+        this.inputHandler = new KeyHandler();
         this.view = new MainView(context, initializer.getInitializedRenderer());
-        this.game = new Game(initializer.getInitializedLevel(), view, this);
-        this.touchHandler = new TouchHandler();
+        this.game = new Game(initializer.getInitializedLevel(), view, inputHandler, this);
 
         //TODO Idea of steering must be change. Currently levels contains InputHandlers objects
     }
 
 
-    public boolean onTouch(View view, MotionEvent motionEvent) {
+//    public boolean onTouch(View view, MotionEvent motionEvent) {
+//
+//        Log.i("ACTIVITY OnTouch", "Touch at: X: " + motionEvent.getX() + " Y: " + motionEvent.getY());
+//        PointF input = new PointF(motionEvent.getX(), motionEvent.getY());
+//
+//        game.movePlayer();
+//
+//        return false;
+//    }
 
-        Log.i("ACTIVITY OnTouch", "Touch at: X: " + motionEvent.getX() + " Y: " + motionEvent.getY());
-        PointF input = new PointF(motionEvent.getX(), motionEvent.getY());
 
+    @Override
+    public boolean onKeyDown(int i, KeyEvent keyEvent) {
+        inputHandler.onKeyDown(i, keyEvent);
 
-        game.movePlayer(touchHandler.convertInputToMovement(input, game.getPlayer()));
+        return false;
+    }
+
+    @Override
+    public boolean onKeyUp(int i, KeyEvent keyEvent) {
+        inputHandler.onKeyUp(i, keyEvent);
 
         return false;
     }

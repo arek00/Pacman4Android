@@ -10,8 +10,12 @@ import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Graphics.Renderers.ConcreteRenderers.SimpleLevelRenderer;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
+import com.arek00.pacman.Inputs.Interpreters.ConcreteInterpreters.KeyInterpreter;
+import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Player;
 import com.arek00.pacman.Logics.Characters.IPlayer;
+import com.arek00.pacman.Logics.Characters.MovementHandlers.ConcreteHandlers.TouchMovementHandler;
+import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Logics.Levels.LevelScenarios.NormalGameLevel;
 import com.arek00.pacman.Logics.Maps.Generators.ImageMapGenerator;
@@ -23,7 +27,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Initialize ILevel object and Renderer of it.
+ * Initialize:
+ * - player, enemies,
+ * - map,
+ * - renderer,
+ * - graphic elements like tiles,
+ * - input interpreters
  */
 public class NormalLevelInitializer {
 
@@ -34,13 +43,14 @@ public class NormalLevelInitializer {
     private IMap map;
     private Bitmap tileSheet;
     private Drawable[] mapTiles;
-
+    private InputInterpreter interpreter;
 
     private Context applicationContext;
     private AssetsHelper helper;
 
     private final String DEFAULT_MAP_SCHEME = "images/map1.png";
     private final String TILESHEET = "images/pacman_sprites.png";
+    private InputInterpreter initializedInterpreter;
 
     public NormalLevelInitializer(Context context) {
         NullPointerValidator.validate(context);
@@ -66,12 +76,13 @@ public class NormalLevelInitializer {
         this.map = getInitializedMap();
         this.player = getInitializedPlayer();
         this.drawablePlayer = getInitializedPlayerDrawable();
+        this.interpreter = getInitializedInterpreter();
         this.level = getInitializedLevel();
         this.levelRenderer = getInitializedRenderer();
     }
 
-    private ILevel initializeLevel(IMap map, IPlayer player) {
-        ILevel level = new NormalGameLevel(map, player);
+    private ILevel initializeLevel(IMap map, IPlayer player, InputInterpreter interpreter) {
+        ILevel level = new NormalGameLevel(map, player, interpreter);
 
         NullPointerValidator.validate(level);
         return level;
@@ -79,7 +90,7 @@ public class NormalLevelInitializer {
 
     public ILevel getInitializedLevel() {
         if (this.level == null) {
-            this.level = initializeLevel(getInitializedMap(), getInitializedPlayer());
+            this.level = initializeLevel(getInitializedMap(), getInitializedPlayer(), getInitializedInterpreter());
         }
         return this.level;
     }
@@ -222,4 +233,16 @@ public class NormalLevelInitializer {
         return drawablePlayer;
     }
 
+
+    public InputInterpreter initializeInterpreter() {
+        return new KeyInterpreter();
+    }
+
+    public InputInterpreter getInitializedInterpreter() {
+        if (this.interpreter == null) {
+            this.interpreter = initializeInterpreter();
+        }
+
+        return this.interpreter;
+    }
 }

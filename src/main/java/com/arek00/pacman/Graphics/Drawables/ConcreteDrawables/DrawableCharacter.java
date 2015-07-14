@@ -5,6 +5,7 @@ import android.graphics.PointF;
 import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Logics.Characters.ICharacter;
+import com.arek00.pacman.Logics.Characters.MovementDirection;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 import com.arek00.pacman.Utils.Validators.NumberValidator;
 
@@ -34,8 +35,8 @@ public class DrawableCharacter implements Drawable, ICharacter {
         NullPointerValidator.validate(canvas);
         float tileSize = GraphicsConfig.getTileSize();
 
-        float drawX = x + tileSize/2;
-        float drawY = y + tileSize/2;
+        float drawX = x + tileSize / 2;
+        float drawY = y + tileSize / 2;
 
         drawable.draw(canvas, drawX, drawY);
     }
@@ -50,10 +51,10 @@ public class DrawableCharacter implements Drawable, ICharacter {
         return character.getPosition();
     }
 
-    public void move(PointF movement) {
-        NullPointerValidator.validate(movement);
+    public void move(MovementDirection direction) {
+        NullPointerValidator.validate(direction);
 
-        character.move(movement);
+        character.move(direction);
     }
 
     public float getSpeed() {

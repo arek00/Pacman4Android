@@ -3,14 +3,11 @@ package com.arek00.pacman.Graphics.Views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.util.Log;
-import android.view.SurfaceView;
 import android.view.View;
 import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Graphics.Listeners.OnDrawListener;
 import com.arek00.pacman.Graphics.Listeners.OnDrawObservable;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
-import com.arek00.pacman.Inputs.ConcreteHandlers.TouchHandler;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 import java.util.ArrayList;
