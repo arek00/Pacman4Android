@@ -70,10 +70,10 @@ public class Player implements IPlayer {
                 direction.value == MovementDirection.DOWN.value) {
             playerPosition.y += estimatedMove;
         } else {
-            playerPosition.x = stepVector * speed * TimeHelper.getDeltaTime();
+            playerPosition.x += estimatedMove;
         }
 
-        Log.i("PLAYER MOVEENT", "Estimated move: " + estimatedMove + " Delta time: " + TimeHelper.getDeltaTime());
+        Log.i("PLAYER MOVEMENT", "Estimated move: " + estimatedMove + " Delta time: " + TimeHelper.getDeltaTime());
     }
 
     public float getSpeed() {

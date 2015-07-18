@@ -28,6 +28,8 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
     private DrawableCharacter[] enemies;
     private MapTileField[] fields;
 
+    private float offsetX = 0, offsetY = 0;
+
 
     /**
      * Define renderer with given level, player drawable and array of map tiles drawables.
@@ -66,9 +68,12 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
 
     public void draw(Canvas canvas) {
         NullPointerValidator.validate(canvas);
+        calculateOffset();
+        canvas.translate(offsetX, offsetY);
 
         drawMap(canvas);
         drawCharacters(canvas);
+
     }
 
     public void draw(Canvas canvas, float x, float y) {
@@ -99,8 +104,8 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         PointF position = player.getPosition();
         player.draw(canvas, position.x * GraphicsConfig.getTileSize(), position.y * GraphicsConfig.getTileSize());
 
-       // Log.i("DRAW PlAYER", "X: " + position.x * GraphicsConfig.getTileSize() +
-              //  " Y: " + position.y * GraphicsConfig.getTileSize());
+        // Log.i("DRAW PlAYER", "X: " + position.x * GraphicsConfig.getTileSize() +
+        //  " Y: " + position.y * GraphicsConfig.getTileSize());
     }
 
     public void startLevel() {
@@ -142,4 +147,21 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
     public void update() {
         level.update();
     }
+
+    private void calculateOffset() {
+        float playerX = player.getPosition().x;
+        float playerY = player.getPosition().y;
+        Point screenSize = GraphicsConfig.getScreenSize();
+
+        float playerOnScreenX = playerX * GraphicsConfig.getTileSize();
+        float playerOnScreenY = playerY * GraphicsConfig.getTileSize();
+
+        float centerX = screenSize.x / 2;
+        float centerY = screenSize.y / 2;
+
+        this.offsetX = centerX - playerOnScreenX;
+        this.offsetY = centerY - playerOnScreenY;
+
+    }
+
 }

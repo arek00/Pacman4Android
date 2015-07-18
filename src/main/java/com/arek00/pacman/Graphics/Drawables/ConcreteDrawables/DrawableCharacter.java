@@ -33,12 +33,7 @@ public class DrawableCharacter implements Drawable, ICharacter {
 
     public void draw(Canvas canvas, float x, float y) {
         NullPointerValidator.validate(canvas);
-        float tileSize = GraphicsConfig.getTileSize();
-
-        float drawX = x + tileSize / 2;
-        float drawY = y + tileSize / 2;
-
-        drawable.draw(canvas, drawX, drawY);
+        drawable.draw(canvas, x, y);
     }
 
     public void setPosition(PointF position) {

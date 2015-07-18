@@ -2,9 +2,12 @@ package com.arek00.pacman;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
+import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Graphics.Views.MainView;
 import com.arek00.pacman.Initializers.NormalLevelInitializer;
 import com.arek00.pacman.Inputs.Handlers.ConcreteHandlers.KeyHandler;
@@ -30,7 +33,10 @@ public class HelloAndroidActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setScreenResolution();
+
         initialize(this);
+
         game.startGame();
         setContentView(view);
         view.addListener(new TimeHelper());
@@ -57,7 +63,6 @@ public class HelloAndroidActivity extends Activity {
         this.view = new MainView(context, initializer.getInitializedRenderer());
         this.game = new Game(initializer.getInitializedLevel(), view, inputHandler, this);
 
-        //TODO Idea of steering must be change. Currently levels contains InputHandlers objects
     }
 
 
@@ -84,6 +89,14 @@ public class HelloAndroidActivity extends Activity {
         inputHandler.onKeyUp(i, keyEvent);
 
         return false;
+    }
+
+    private void setScreenResolution() {
+        Display display = getWindowManager().getDefaultDisplay();
+
+        Point resolution = new Point();
+        display.getSize(resolution);
+        GraphicsConfig.setScreenSize(resolution);
     }
 }
 
