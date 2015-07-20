@@ -42,6 +42,13 @@ public class DrawableCharacter implements Drawable, ICharacter {
         character.setPosition(position);
     }
 
+    public void setPosition(float x, float y) {
+        NumberValidator.checkNegativeNumber(x);
+        NumberValidator.checkNegativeNumber(y);
+
+        character.setPosition(x, y);
+    }
+
     public PointF getPosition() {
         return character.getPosition();
     }

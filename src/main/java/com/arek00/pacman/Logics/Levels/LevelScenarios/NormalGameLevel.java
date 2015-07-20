@@ -118,7 +118,7 @@ public class NormalGameLevel implements ILevel {
     public void setInput(PointF input) {
         NullPointerValidator.validate(input);
 
-       // Log.i("SET INPUT", "GET INPUT FROM GAME: X: " + input.x + " Y: " + input.y);
+        // Log.i("SET INPUT", "GET INPUT FROM GAME: X: " + input.x + " Y: " + input.y);
 
         this.inputInformation = input;
     }
@@ -126,7 +126,7 @@ public class NormalGameLevel implements ILevel {
     public void update() {
         MovementDirection direction = interpreter.interpretInputData(inputInformation);
         player.move(direction);
-
+        onCharacterCollides(player, direction);
 
         // Log.i("Player position: ", player.getPosition().x + " " + player.getPosition().y);
 
@@ -160,18 +160,59 @@ public class NormalGameLevel implements ILevel {
 
     }
 
-    private void undoCharacterMove(ICharacter character, PointF playerMove) {
 
+    private void onCharacterCollides(ICharacter character, MovementDirection direction) {
+        if (isCharacterCollides(character, direction)) {
+            correctPlayerPosition(character, MovementDirection.getDirectionByValue(direction.reverse));
+        }
     }
 
-    private boolean isCharacterCollides(ICharacter character) {
+
+    private void correctPlayerPosition(ICharacter character, MovementDirection correctionDirection) {
+        float characterX = character.getPosition().x;
+        float characterY = character.getPosition().y;
+
+        if (correctionDirection == MovementDirection.DOWN) {
+            characterY = (float) Math.ceil(characterY);
+        } else if (correctionDirection == MovementDirection.UP) {
+            characterY = (float) Math.floor(characterY);
+        } else if (correctionDirection == MovementDirection.LEFT) {
+            characterX = (float) Math.floor(characterX);
+        } else if (correctionDirection == MovementDirection.RIGHT) {
+            characterX = (float) Math.ceil(characterX);
+        }
+
+        character.setPosition(characterX, characterY);
+    }
+
+    /**
+     * Return side where found collision
+     *
+     * @param character
+     * @return
+     */
+
+    private boolean isCharacterCollides(ICharacter character, MovementDirection movement) {
         NullPointerValidator.validate(character);
 
-        int positionX = (int) character.getPosition().x;
-        int positionY = (int) character.getPosition().y;
+        PointF characterPosition = character.getPosition();
 
-        return FieldsEnum.checkFieldCollision(fields[positionX][positionY]);
+        int minX = (int) Math.floor(characterPosition.x);
+        int maxX = (int) Math.ceil(characterPosition.x);
+        int minY = (int) Math.floor(characterPosition.y);
+        int maxY = (int) Math.ceil(characterPosition.y);
+
+
+        if (FieldsEnum.checkFieldCollision(fields[minX][minY]) ||
+                FieldsEnum.checkFieldCollision(fields[minX][maxY]) ||
+                FieldsEnum.checkFieldCollision(fields[maxX][minY]) ||
+                FieldsEnum.checkFieldCollision(fields[maxX][maxY])) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
 
     private boolean isPlayerCollectedBall(ICharacter player) {
         NullPointerValidator.validate(player);

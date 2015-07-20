@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * View that handle displaying of all views like ingame view or menu view.
+ * View that handle displaying of all views like in-game view or menu view.
  */
 public class MainView extends View implements OnDrawObservable {
 

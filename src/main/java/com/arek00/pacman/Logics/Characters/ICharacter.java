@@ -18,6 +18,8 @@ public interface ICharacter {
      */
     public void setPosition(PointF position);
 
+    public void setPosition(float x, float y);
+
     /**
      * Get position of this character
      *

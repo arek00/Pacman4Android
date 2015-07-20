@@ -39,6 +39,14 @@ public class Player implements IPlayer {
         this.playerPosition = position;
     }
 
+    public void setPosition(float x, float y) {
+        NumberValidator.checkNegativeNumber(x);
+        NumberValidator.checkNegativeNumber(y);
+
+        this.playerPosition.x = x;
+        this.playerPosition.y = y;
+    }
+
     public PointF getPosition() {
         return playerPosition;
     }
