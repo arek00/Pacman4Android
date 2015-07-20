@@ -2,16 +2,17 @@ package com.arek00.pacman.Logics.Levels.LevelScenarios;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.util.Log;
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Characters.MovementDirection;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
 import com.arek00.pacman.Logics.Levels.ILevel;
+import com.arek00.pacman.Logics.Levels.Utils.CharacterArea;
 import com.arek00.pacman.Logics.Maps.IMap;
 import com.arek00.pacman.Logics.Maps.Utils.FieldsRetriever;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
+import com.arek00.pacman.Utils.Validators.NumberValidator;
 
 /**
  * Manage logic of a level
@@ -124,9 +125,9 @@ public class NormalGameLevel implements ILevel {
     }
 
     public void update() {
-        MovementDirection direction = interpreter.interpretInputData(inputInformation);
-        player.move(direction);
-        onCharacterCollides(player, direction);
+        movePlayer();
+        //moveEnemies();
+
 
         // Log.i("Player position: ", player.getPosition().x + " " + player.getPosition().y);
 
@@ -141,7 +142,7 @@ public class NormalGameLevel implements ILevel {
 //            undoCharacterMove(player, movement);
 //        }
 //
-//        if (isPlayerCollectedBall(player)) {
+//        if (checkCollectedBalls(player)) {
 //            collectBall(player.getPosition());
 //        }
 
@@ -158,6 +159,13 @@ public class NormalGameLevel implements ILevel {
 
         //Log.i("TICK", "TICK");
 
+    }
+
+    private void movePlayer() {
+        MovementDirection direction = interpreter.interpretInputData(inputInformation);
+        this.player.move(direction);
+        onCharacterCollides(this.player, direction);
+        checkCollectedBalls(this.player);
     }
 
 
@@ -194,19 +202,16 @@ public class NormalGameLevel implements ILevel {
 
     private boolean isCharacterCollides(ICharacter character, MovementDirection movement) {
         NullPointerValidator.validate(character);
+        CharacterArea characterArea = new CharacterArea(character);
 
-        PointF characterPosition = character.getPosition();
-
-        int minX = (int) Math.floor(characterPosition.x);
-        int maxX = (int) Math.ceil(characterPosition.x);
-        int minY = (int) Math.floor(characterPosition.y);
-        int maxY = (int) Math.ceil(characterPosition.y);
-
-
-        if (FieldsEnum.checkFieldCollision(fields[minX][minY]) ||
-                FieldsEnum.checkFieldCollision(fields[minX][maxY]) ||
-                FieldsEnum.checkFieldCollision(fields[maxX][minY]) ||
-                FieldsEnum.checkFieldCollision(fields[maxX][maxY])) {
+        if (FieldsEnum.isFieldCollide(
+                fields[characterArea.getMinX()][characterArea.getMinY()]) ||
+                FieldsEnum.isFieldCollide(
+                        fields[characterArea.getMinX()][characterArea.getMaxY()]) ||
+                FieldsEnum.isFieldCollide(
+                        fields[characterArea.getMaxX()][characterArea.getMinY()]) ||
+                FieldsEnum.isFieldCollide(
+                        fields[characterArea.getMaxX()][characterArea.getMaxY()])) {
             return true;
         } else {
             return false;
@@ -214,34 +219,35 @@ public class NormalGameLevel implements ILevel {
     }
 
 
-    private boolean isPlayerCollectedBall(ICharacter player) {
+    private void checkCollectedBalls(ICharacter player) {
         NullPointerValidator.validate(player);
+        CharacterArea area = new CharacterArea(player);
 
-        int positionX = (int) player.getPosition().x;
-        int positionY = (int) player.getPosition().y;
-
-        if (fields[positionX][positionY] == FieldsEnum.BIGBALL.field.getValue() ||
-                fields[positionX][positionY] == FieldsEnum.SMALLBALL.field.getValue()) {
-            return true;
+        if (FieldsEnum.isFieldCollectible(fields[area.getMinX()][area.getMinY()])) {
+            collectBall(area.getMinX(), area.getMinY());
         }
-
-        return false;
+        if (FieldsEnum.isFieldCollectible(fields[area.getMinX()][area.getMaxY()])) {
+            collectBall(area.getMinX(), area.getMaxY());
+        }
+        if (FieldsEnum.isFieldCollectible(fields[area.getMaxX()][area.getMinY()])) {
+            collectBall(area.getMaxX(), area.getMinY());
+        }
+        if (FieldsEnum.isFieldCollectible(fields[area.getMaxX()][area.getMaxY()])) {
+            collectBall(area.getMaxX(), area.getMaxY());
+        }
     }
 
-    private void collectBall(PointF playerPosition) {
-        NullPointerValidator.validate(playerPosition);
+    private void collectBall(int ballX, int ballY) {
+        NumberValidator.checkNegativeNumber(ballX);
+        NumberValidator.checkNegativeNumber(ballY);
 
-        int ballX = Math.round(playerPosition.x);
-        int ballY = Math.round(playerPosition.y);
-
-        addPlayersPoint(1);
         fields[ballX][ballY] = FieldsEnum.COLLECTED.field.getValue();
+        addPlayersPoint(10);
         --remainingBalls;
     }
 
     private void addPlayersPoint(int pointsAmount) {
         player.addPoints(pointsAmount);
     }
-
 
 }

@@ -31,6 +31,6 @@ public class TimeHelper implements OnDrawListener {
     public void onDraw() {
         TimeHelper.tick();
 
-        Log.i("TIME HELPER INFO", "Last interval between frames: " + TimeHelper.getDeltaTime());
+        //  Log.i("TIME HELPER INFO", "Last interval between frames: " + TimeHelper.getDeltaTime());
     }
 }

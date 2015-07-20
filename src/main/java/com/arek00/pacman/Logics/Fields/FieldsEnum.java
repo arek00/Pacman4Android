@@ -27,7 +27,7 @@ public enum FieldsEnum {
      * @param fieldValue
      * @return true if field should collide false otherwise
      */
-    public static boolean checkFieldCollision(int fieldValue) {
+    public static boolean isFieldCollide(int fieldValue) {
         return getFieldByIndex(fieldValue).isCollide();
     }
 
@@ -42,6 +42,15 @@ public enum FieldsEnum {
         }
 
         return UNKNOWN_FIELD.field;
+    }
+
+    public static boolean isFieldCollectible(int fieldValue) {
+        if (fieldValue == SMALLBALL.field.getValue() ||
+                fieldValue == BIGBALL.field.getValue()) {
+            return true;
+        }
+
+        return false;
     }
 
 }
