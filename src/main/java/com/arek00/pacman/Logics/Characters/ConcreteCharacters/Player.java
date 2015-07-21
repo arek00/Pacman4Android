@@ -4,6 +4,7 @@ import android.graphics.PointF;
 import android.util.Log;
 import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Characters.MovementDirection;
+import com.arek00.pacman.Utils.DataHelpers.MovementEstimator;
 import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 import com.arek00.pacman.Utils.Validators.NumberValidator;
@@ -58,15 +59,8 @@ public class Player implements IPlayer {
     }
 
     private void doStep(MovementDirection direction) {
-        int stepVector = 0;
 
-        if (direction.value == MovementDirection.DOWN.value ||
-                direction.value == MovementDirection.RIGHT.value) {
-            stepVector = 1;
-        } else if (direction.value != MovementDirection.NONE.value) {
-            stepVector = -1;
-        }
-
+        int stepVector = MovementEstimator.calculateVector(direction);
         float estimatedMove = stepVector * speed * TimeHelper.getDeltaTime();
 
         if (direction.value == MovementDirection.RIGHT.value ||
@@ -81,7 +75,7 @@ public class Player implements IPlayer {
             playerPosition.x += estimatedMove;
         }
 
-        Log.i("PLAYER MOVEMENT", "Estimated move: " + estimatedMove + " Delta time: " + TimeHelper.getDeltaTime());
+       // Log.i("PLAYER MOVEMENT", "Estimated move: " + estimatedMove + " Delta time: " + TimeHelper.getDeltaTime());
     }
 
     public float getSpeed() {

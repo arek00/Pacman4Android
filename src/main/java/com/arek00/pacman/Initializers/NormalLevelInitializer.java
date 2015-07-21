@@ -12,10 +12,14 @@ import com.arek00.pacman.Graphics.Renderers.ConcreteRenderers.SimpleLevelRendere
 import com.arek00.pacman.Graphics.Renderers.Renderer;
 import com.arek00.pacman.Inputs.Interpreters.ConcreteInterpreters.KeyInterpreter;
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
+import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Enemy;
 import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Player;
+import com.arek00.pacman.Logics.Characters.ICharacter;
+import com.arek00.pacman.Logics.Characters.IEnemy;
 import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Characters.MovementHandlers.ConcreteHandlers.TouchMovementHandler;
 import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
+import com.arek00.pacman.Logics.Characters.Strategies.ConcreteStrategies.RandomMovementStrategy;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Logics.Levels.LevelScenarios.NormalGameLevel;
 import com.arek00.pacman.Logics.Maps.Generators.ImageMapGenerator;
@@ -44,6 +48,8 @@ public class NormalLevelInitializer {
     private Bitmap tileSheet;
     private Drawable[] mapTiles;
     private InputInterpreter interpreter;
+    private IEnemy[] enemies;
+    private Drawable[] enemiesDrawables;
 
     private Context applicationContext;
     private AssetsHelper helper;
@@ -67,6 +73,7 @@ public class NormalLevelInitializer {
      * - LEVEL RENDERER
      * - MAP
      * - PLAYER
+     * - ENEMIES
      * - The rest
      */
 
@@ -76,13 +83,15 @@ public class NormalLevelInitializer {
         this.map = getInitializedMap();
         this.player = getInitializedPlayer();
         this.drawablePlayer = getInitializedPlayerDrawable();
+        this.enemies = initializeEnemies();
+        this.enemiesDrawables = initializeDrawableEnemies(getInitializedEnemies());
         this.interpreter = getInitializedInterpreter();
         this.level = getInitializedLevel();
         this.levelRenderer = getInitializedRenderer();
     }
 
-    private ILevel initializeLevel(IMap map, IPlayer player, InputInterpreter interpreter) {
-        ILevel level = new NormalGameLevel(map, player, interpreter);
+    private ILevel initializeLevel(IMap map, IPlayer player, IEnemy[] enemies, InputInterpreter interpreter) {
+        ILevel level = new NormalGameLevel(map, player, enemies, interpreter);
 
         NullPointerValidator.validate(level);
         return level;
@@ -90,13 +99,13 @@ public class NormalLevelInitializer {
 
     public ILevel getInitializedLevel() {
         if (this.level == null) {
-            this.level = initializeLevel(getInitializedMap(), getInitializedPlayer(), getInitializedInterpreter());
+            this.level = initializeLevel(getInitializedMap(), getInitializedPlayer(), getInitializedEnemies(), getInitializedInterpreter());
         }
         return this.level;
     }
 
-    private Renderer initializeRenderer(ILevel level, Drawable player, Drawable[] mapTiles) {
-        SimpleLevelRenderer renderer = new SimpleLevelRenderer(level, player, mapTiles);
+    private Renderer initializeRenderer(ILevel level, Drawable player, Drawable[] enemies, Drawable[] mapTiles) {
+        SimpleLevelRenderer renderer = new SimpleLevelRenderer(level, player, enemies, mapTiles);
 
         NullPointerValidator.validate(renderer);
         return renderer;
@@ -105,7 +114,7 @@ public class NormalLevelInitializer {
     public Renderer getInitializedRenderer() {
         if (this.levelRenderer == null) {
             this.levelRenderer =
-                    initializeRenderer(getInitializedLevel(), getInitializedPlayerDrawable(), getInitializedMapTiles());
+                    initializeRenderer(getInitializedLevel(), getInitializedPlayerDrawable(), getInitializedDrawableEnemies(), getInitializedMapTiles());
         }
 
         return this.levelRenderer;
@@ -152,6 +161,26 @@ public class NormalLevelInitializer {
 
         NullPointerValidator.validate(this.player);
         return this.player;
+    }
+
+
+    private IEnemy[] initializeEnemies() {
+        IPlayer player = getInitializedPlayer();
+        IEnemy[] enemies = new IEnemy[]{
+                new Enemy(new PointF(0, 0), 10, new RandomMovementStrategy(20, 100), player),
+                new Enemy(new PointF(0, 0), 10, new RandomMovementStrategy(100, 200), player),
+                new Enemy(new PointF(0, 0), 10, new RandomMovementStrategy(5, 50), player),
+                new Enemy(new PointF(0, 0), 10, new RandomMovementStrategy(1000, 2000), player)};
+
+        return enemies;
+    }
+
+    private IEnemy[] getInitializedEnemies() {
+        if (this.enemies == null) {
+            this.enemies = initializeEnemies();
+        }
+
+        return this.enemies;
     }
 
 
@@ -233,6 +262,50 @@ public class NormalLevelInitializer {
         return drawablePlayer;
     }
 
+
+    public Drawable[] initializeDrawableEnemies(IEnemy[] enemies) {
+        NullPointerValidator.validate(enemies);
+
+        Tile[] enemiesTiles;
+        InputStream bitmapStream = null;
+
+        try {
+            bitmapStream = helper.getFileByName("images/ghosts_sprites.png");
+        } catch (IOException e) {
+            Log.e("LEVEL INITIALIZER ERROR", "Couldnt load ghosts sprites image.");
+            e.printStackTrace();
+        }
+
+        NullPointerValidator.validate(bitmapStream);
+        Bitmap bitmap = BitmapFactory.decodeStream(bitmapStream);
+
+        enemiesTiles = new Tile[]{
+                new Tile(bitmap, 1000, 100, 64, 64),
+                new Tile(bitmap, 1000, 164, 64, 64),
+                new Tile(bitmap, 1000, 228, 64, 64),
+                new Tile(bitmap, 1000, 296, 64, 64)};
+
+        int enemiesNumber = enemies.length;
+        int tilesNumber = enemiesTiles.length;
+
+
+        Drawable[] enemiesDrawable = new DrawableCharacter[enemiesNumber];
+
+        for (int iterator = 0; iterator < enemiesNumber; iterator++) {
+            enemiesDrawable[iterator] = new DrawableCharacter(enemies[iterator],
+                    enemiesTiles[iterator % tilesNumber]);
+        }
+
+        return enemiesDrawable;
+    }
+
+    public Drawable[] getInitializedDrawableEnemies() {
+        if (this.enemiesDrawables == null) {
+            this.enemiesDrawables = initializeDrawableEnemies(getInitializedEnemies());
+        }
+
+        return this.enemiesDrawables;
+    }
 
     public InputInterpreter initializeInterpreter() {
         return new KeyInterpreter();

@@ -34,4 +34,22 @@ public enum MovementDirection {
 
         return MovementDirection.NONE;
     }
+
+    @Override
+    public String toString() {
+        switch (value) {
+            case 0:
+                return "NONE";
+            case 1:
+                return "UP";
+            case 2:
+                return "DOWN";
+            case 3:
+                return "LEFT";
+            case 4:
+                return "RIGHT";
+            default:
+                return "NONE";
+        }
+    }
 }

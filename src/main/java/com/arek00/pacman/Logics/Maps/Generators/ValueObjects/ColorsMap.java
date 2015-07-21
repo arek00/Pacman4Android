@@ -26,8 +26,8 @@ public class ColorsMap {
                 Color.rgb(0, 0, 255), //SmallBall
                 Color.rgb(0, 255, 255), //big ball
                 Color.rgb(0, 255, 0), //Player spawn
-                Color.rgb(255, 0, 0)
-        }; //enemy Spawn
+                Color.rgb(255, 0, 0) //enemy Spawn
+        };
     }
 
     /**

@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
+import com.arek00.pacman.Logics.Characters.IEnemy;
 import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Characters.MovementDirection;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
@@ -21,14 +22,14 @@ public class NormalGameLevel implements ILevel {
 
     private IMap map;
     private IPlayer player;
-    private ICharacter[] enemies;
+    private IEnemy[] enemies;
     private int fields[][];
     private int remainingBalls;
     private InputInterpreter interpreter;
     private PointF inputInformation;
 
 
-    public NormalGameLevel(IMap levelMap, IPlayer player, InputInterpreter interpreter) {
+    public NormalGameLevel(IMap levelMap, IPlayer player, IEnemy[] enemies, InputInterpreter interpreter) {
 
         NullPointerValidator.validate(levelMap);
         NullPointerValidator.validate(player);
@@ -38,15 +39,12 @@ public class NormalGameLevel implements ILevel {
         this.enemies = enemies;
         this.interpreter = interpreter;
         this.inputInformation = new PointF(0, 0);
-
-        //fields = map.getMatrix();
-        //setPlayerPosition();
     }
 
     public void startLevel() {
         fields = map.getMatrix();
         setPlayerPosition();
-        //setEnemiesPosition();
+        setEnemiesPosition();
 
         remainingBalls =
                 FieldsRetriever.getCountOfConcreteField(
@@ -126,7 +124,7 @@ public class NormalGameLevel implements ILevel {
 
     public void update() {
         movePlayer();
-        //moveEnemies();
+        moveEnemies();
 
 
         // Log.i("Player position: ", player.getPosition().x + " " + player.getPosition().y);
@@ -166,6 +164,14 @@ public class NormalGameLevel implements ILevel {
         this.player.move(direction);
         onCharacterCollides(this.player, direction);
         checkCollectedBalls(this.player);
+    }
+
+    private void moveEnemies() {
+        for (IEnemy enemy : enemies) {
+            MovementDirection direction = enemy.executeMove();
+            enemy.move(direction);
+            onCharacterCollides(enemy, direction);
+        }
     }
 
 

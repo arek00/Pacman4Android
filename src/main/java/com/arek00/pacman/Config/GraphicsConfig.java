@@ -7,7 +7,7 @@ import android.graphics.Point;
  */
 public class GraphicsConfig {
     private static int tileSize = 64;
-    private static float mapScale = 0.5f;
+    private static float mapScale = 0.2f;
     private static int screenWidth = 0;
     private static int screenHeight = 0;
 

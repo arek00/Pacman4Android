@@ -3,6 +3,7 @@ package com.arek00.pacman.Utils.DataHelpers;
 import android.graphics.PointF;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IPlayer;
+import com.arek00.pacman.Logics.Characters.MovementDirection;
 
 /**
  *
@@ -18,6 +19,19 @@ public class MovementEstimator {
         }
 
         return 0;
+    }
+
+    public static int calculateVector(MovementDirection direction) {
+        int vector = 0;
+
+        if (direction == MovementDirection.DOWN ||
+                direction == MovementDirection.RIGHT) {
+            vector = 1;
+        } else if (direction.value != MovementDirection.NONE.value) {
+            vector = -1;
+        }
+
+        return vector;
     }
 
     public static PointF calculatePlayerMove(ICharacter player, PointF destination, float delta) {

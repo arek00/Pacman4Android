@@ -12,6 +12,7 @@ import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
+import com.arek00.pacman.Logics.Characters.IEnemy;
 import com.arek00.pacman.Logics.Characters.MovementDirection;
 import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
@@ -41,9 +42,10 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
      * @param playerDrawable
      * @param mapTiles
      */
-    public SimpleLevelRenderer(ILevel level, Drawable playerDrawable, Drawable[] mapTiles) {
+    public SimpleLevelRenderer(ILevel level, Drawable playerDrawable, Drawable[] enemyDrawables, Drawable[] mapTiles) {
         NullPointerValidator.validate(level);
         NullPointerValidator.validate(playerDrawable);
+        NullPointerValidator.validate(enemyDrawables);
         NullPointerValidator.validate(mapTiles);
 
         if (mapTiles.length < FieldsEnum.values().length - 1) {
@@ -52,6 +54,8 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
 
         this.level = level;
         this.player = new DrawableCharacter(level.getPlayer(), playerDrawable);
+
+        initializeEnemies(enemyDrawables);
         initializeFields(mapTiles);
     }
 
@@ -62,6 +66,16 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
 
         for (int i = 0; i < mapTiles.length; i++) {
             this.fields[i] = new MapTileField(mapTiles[i], FieldsEnum.getFieldByIndex(i));
+        }
+    }
+
+    private void initializeEnemies(Drawable[] enemyDrawables) {
+        this.enemies = new DrawableCharacter[enemyDrawables.length];
+        ICharacter[] enemiesArray = level.getEnemies();
+
+        for (int iterator = 0; iterator < enemyDrawables.length; iterator++) {
+            this.enemies[iterator] = new DrawableCharacter(enemiesArray[iterator],
+                    enemyDrawables[iterator]);
         }
     }
 
@@ -101,8 +115,14 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
     private void drawCharacters(Canvas canvas) {
         NullPointerValidator.validate(canvas);
 
+        int tileSize = GraphicsConfig.getTileSize();
+
         PointF position = player.getPosition();
-        player.draw(canvas, position.x * GraphicsConfig.getTileSize(), position.y * GraphicsConfig.getTileSize());
+        player.draw(canvas, position.x * tileSize, position.y * tileSize);
+
+        for (DrawableCharacter enemy : enemies) {
+            enemy.draw(canvas, enemy.getPosition().x * tileSize, enemy.getPosition().y * tileSize);
+        }
 
         // Log.i("DRAW PlAYER", "X: " + position.x * GraphicsConfig.getTileSize() +
         //  " Y: " + position.y * GraphicsConfig.getTileSize());
