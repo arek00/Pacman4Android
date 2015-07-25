@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="#ff000000"
+        >
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/titleView"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/title"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/splashView"
+                android:layout_marginBottom="15dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/pacman_splash"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:layout_weight="2.5">
+
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/new_game_button"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/newGameButton"
+                android:textColor="#ffffffff"
+                android:background="@drawable/button_bg"
+                android:minHeight="40dp"/>
+
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/settings_button"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/optionsButton"
+                android:textColor="#ffffffff"
+                android:background="@drawable/button_bg"
+                />
+
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/calibration_button"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/calibrationButton"
+                android:textColor="#ffffffff"
+                android:background="@drawable/button_bg"/>
+
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/about_button"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/aboutButton"
+                android:textColor="#ffffffff"
+                android:background="@drawable/button_bg"/>
+    </LinearLayout>
+</LinearLayout>
