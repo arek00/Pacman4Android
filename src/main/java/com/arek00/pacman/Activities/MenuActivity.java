@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.arek00.pacman.R;
 
 /**
- * Created by Admin on 2015-07-28.
+ * Main menu activity
  */
 public class MenuActivity extends Activity {
 

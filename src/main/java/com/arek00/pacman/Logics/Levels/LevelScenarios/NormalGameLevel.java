@@ -179,7 +179,7 @@ public class NormalGameLevel implements ILevel {
 
     private void onCharacterCollides(ICharacter character, MovementDirection direction) {
         if (isCharacterCollides(character, direction)) {
-            correctPlayerPosition(character, MovementDirection.getDirectionByValue(direction.reverse));
+            correctPosition(character, MovementDirection.getDirectionByValue(direction.reverse));
         }
     }
 
@@ -187,23 +187,31 @@ public class NormalGameLevel implements ILevel {
      * @param character           Character that should correct its position due to collide with wall
      * @param correctionDirection Direction which character should move to correct its position. Very mostly its reversed position of its step.
      */
-    private void correctPlayerPosition(ICharacter character, MovementDirection correctionDirection) {
+    private void correctPosition(ICharacter character, MovementDirection correctionDirection) {
         float characterX = character.getPosition().x;
         float characterY = character.getPosition().y;
 
+        String info = String.format("X: %.2f, Y: %.2f", character.getPosition().x, character.getPosition().y);
+        Log.i("Collision Before", info);
+
         character.move(correctionDirection);
 
+        info = String.format("X: %.2f, Y: %.2f", character.getPosition().x, character.getPosition().y);
+        Log.i("Collision After", info);
+
         if (correctionDirection == MovementDirection.DOWN) {
-            characterY = (float) Math.ceil(characterY);
+            characterY = (float) Math.floor(character.getPosition().y);
         } else if (correctionDirection == MovementDirection.UP) {
-            characterY = (float) Math.floor(characterY);
+            characterY = (float) Math.ceil(character.getPosition().y);
         } else if (correctionDirection == MovementDirection.LEFT) {
-            characterX = (float) Math.floor(characterX);
+            characterX = (float) Math.ceil(character.getPosition().x);
         } else if (correctionDirection == MovementDirection.RIGHT) {
-            characterX = (float) Math.ceil(characterX);
+            characterX = (float) Math.floor(character.getPosition().x);
         }
 
         character.setPosition(characterX, characterY);
+        info = String.format("X: %.2f, Y: %.2f", character.getPosition().x, character.getPosition().y);
+        Log.i("New Position", info);
     }
 
     /**
