@@ -1,4 +1,4 @@
-package com.arek00.pacman.Logics.Characters.Strategies;
+package com.arek00.pacman.Logics.Characters.MovementStrategies;
 
 import com.arek00.pacman.Logics.Characters.MovementDirection;
 

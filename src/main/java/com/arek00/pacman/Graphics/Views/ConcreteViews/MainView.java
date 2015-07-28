@@ -1,4 +1,4 @@
-package com.arek00.pacman.Graphics.Views;
+package com.arek00.pacman.Graphics.Views.ConcreteViews;
 
 import android.content.Context;
 import android.graphics.Canvas;

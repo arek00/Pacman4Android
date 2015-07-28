@@ -21,8 +21,8 @@ public class ColorsMap {
     private final static int COLOR_UNKNOWN = -1;
 
     static {
-        colors = new int[]{Color.BLACK, //Wall
-                Color.WHITE, //Collected
+        colors = new int[]{Color.rgb(0, 0, 0), //Wall
+                Color.rgb(255, 255, 255), //Collected
                 Color.rgb(0, 0, 255), //SmallBall
                 Color.rgb(0, 255, 255), //big ball
                 Color.rgb(0, 255, 0), //Player spawn

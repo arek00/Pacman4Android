@@ -60,22 +60,28 @@ public class Player implements IPlayer {
 
     private void doStep(MovementDirection direction) {
 
-        int stepVector = MovementEstimator.calculateVector(direction);
-        float estimatedMove = stepVector * speed * TimeHelper.getDeltaTime();
+//        int stepVector = MovementEstimator.calculateVector(direction);
+//        float estimatedMove = stepVector * speed * TimeHelper.getDeltaTime();
 
-        if (direction.value == MovementDirection.RIGHT.value ||
-                direction.value == MovementDirection.LEFT.value) {
-            playerPosition.x += estimatedMove;
+        PointF move = MovementEstimator.calculateMove(this, direction, TimeHelper.getDeltaTime());
+        playerPosition.x += move.x;
+        playerPosition.y += move.y;
 
 
-        } else if (direction.value == MovementDirection.UP.value ||
-                direction.value == MovementDirection.DOWN.value) {
-            playerPosition.y += estimatedMove;
-        } else {
-            playerPosition.x += estimatedMove;
-        }
+//
+//        if (direction.value == MovementDirection.RIGHT.value ||
+//                direction.value == MovementDirection.LEFT.value) {
+//            playerPosition.x += estimatedMove;
+//
+//
+//        } else if (direction.value == MovementDirection.UP.value ||
+//                direction.value == MovementDirection.DOWN.value) {
+//            playerPosition.y += estimatedMove;
+//        } else {
+//            playerPosition.x += estimatedMove;
+//        }
 
-       // Log.i("PLAYER MOVEMENT", "Estimated move: " + estimatedMove + " Delta time: " + TimeHelper.getDeltaTime());
+        // Log.i("PLAYER MOVEMENT", "Estimated move: " + estimatedMove + " Delta time: " + TimeHelper.getDeltaTime());
     }
 
     public float getSpeed() {
@@ -131,5 +137,10 @@ public class Player implements IPlayer {
         NumberValidator.checkNumberIsZero(life);
 
         this.life = life;
+    }
+
+    @Override
+    public String toString() {
+        return "The Player";
     }
 }

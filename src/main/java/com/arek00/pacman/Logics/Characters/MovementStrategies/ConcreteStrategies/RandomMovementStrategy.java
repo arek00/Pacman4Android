@@ -1,8 +1,8 @@
-package com.arek00.pacman.Logics.Characters.Strategies.ConcreteStrategies;
+package com.arek00.pacman.Logics.Characters.MovementStrategies.ConcreteStrategies;
 
 import android.util.Log;
 import com.arek00.pacman.Logics.Characters.MovementDirection;
-import com.arek00.pacman.Logics.Characters.Strategies.IMovementStrategy;
+import com.arek00.pacman.Logics.Characters.MovementStrategies.IMovementStrategy;
 import com.arek00.pacman.Utils.Validators.NumberValidator;
 
 import java.util.Random;
@@ -45,7 +45,7 @@ public class RandomMovementStrategy implements IMovementStrategy {
         }
         --stepsCount;
 
-        Log.i("ENEMY MOVE", this.currentDirection.toString() + "Steps remaining: " + stepsCount);
+        //Log.i("ENEMY MOVE", this.currentDirection.toString() + "Steps remaining: " + stepsCount);
 
         return this.currentDirection;
     }

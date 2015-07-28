@@ -53,11 +53,11 @@ public class TouchHandler{
         if (actualInput.x < 0 || actualInput.y < 0) {
             return new PointF(0f, 0f);
         }
-        PointF movement = MovementEstimator.calculatePlayerMove(character, actualInput, TimeHelper.getDeltaTime());
+//        PointF movement = MovementEstimator.calculateMove(character, actualInput, TimeHelper.getDeltaTime());
+//
+//        Log.i("Movement: ", "X: " + movement.x
+//                + " Y: " + movement.y);
 
-        Log.i("Movement: ", "X: " + movement.x
-                + " Y: " + movement.y);
-
-        return movement;
+        return null;
     }
 }

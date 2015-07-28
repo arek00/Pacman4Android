@@ -44,7 +44,8 @@
                 android:id="@+id/newGameButton"
                 android:textColor="#ffffffff"
                 android:background="@drawable/button_bg"
-                android:minHeight="40dp"/>
+                android:minHeight="40dp"
+                android:onClick="onStartGameTouch"/>
 
         <Button
                 android:layout_width="match_parent"

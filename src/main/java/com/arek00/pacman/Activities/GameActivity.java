@@ -1,4 +1,4 @@
-package com.arek00.pacman;
+package com.arek00.pacman.Activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,18 +6,16 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.KeyEvent;
-import android.view.View;
 import com.arek00.pacman.Config.GraphicsConfig;
-import com.arek00.pacman.Graphics.Views.MainView;
+import com.arek00.pacman.Graphics.Views.ConcreteViews.MainView;
 import com.arek00.pacman.Initializers.NormalLevelInitializer;
 import com.arek00.pacman.Inputs.Handlers.ConcreteHandlers.KeyHandler;
-import com.arek00.pacman.Inputs.Handlers.InputHandler;
-import com.arek00.pacman.Logics.Characters.MovementHandlers.ConcreteHandlers.TouchMovementHandler;
 import com.arek00.pacman.Logics.Game.Game;
 import com.arek00.pacman.Logics.Game.IGame;
+import com.arek00.pacman.R;
 import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 
-public class HelloAndroidActivity extends Activity {
+public class GameActivity extends Activity {
 
     private IGame game;
     private MainView view;

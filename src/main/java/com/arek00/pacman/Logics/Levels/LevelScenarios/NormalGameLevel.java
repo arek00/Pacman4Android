@@ -2,6 +2,7 @@ package com.arek00.pacman.Logics.Levels.LevelScenarios;
 
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.util.Log;
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IEnemy;
@@ -132,7 +133,7 @@ public class NormalGameLevel implements ILevel {
 
         //PointF movement = player.getPosition();
 
-//        PointF playerMove = MovementEstimator.calculatePlayerMove(player, destinationPoint, TimeHelper.getDeltaTime());
+//        PointF playerMove = MovementEstimator.calculateMove(player, destinationPoint, TimeHelper.getDeltaTime());
 
 //        player.move(movement);
 //
@@ -167,6 +168,7 @@ public class NormalGameLevel implements ILevel {
     }
 
     private void moveEnemies() {
+
         for (IEnemy enemy : enemies) {
             MovementDirection direction = enemy.executeMove();
             enemy.move(direction);
@@ -181,10 +183,15 @@ public class NormalGameLevel implements ILevel {
         }
     }
 
-
+    /**
+     * @param character           Character that should correct its position due to collide with wall
+     * @param correctionDirection Direction which character should move to correct its position. Very mostly its reversed position of its step.
+     */
     private void correctPlayerPosition(ICharacter character, MovementDirection correctionDirection) {
         float characterX = character.getPosition().x;
         float characterY = character.getPosition().y;
+
+        character.move(correctionDirection);
 
         if (correctionDirection == MovementDirection.DOWN) {
             characterY = (float) Math.ceil(characterY);
@@ -209,6 +216,9 @@ public class NormalGameLevel implements ILevel {
     private boolean isCharacterCollides(ICharacter character, MovementDirection movement) {
         NullPointerValidator.validate(character);
         CharacterArea characterArea = new CharacterArea(character);
+
+        Log.i("Character" + character.toString(), characterArea.toString() + " " + movement.toString());
+
 
         if (FieldsEnum.isFieldCollide(
                 fields[characterArea.getMinX()][characterArea.getMinY()]) ||

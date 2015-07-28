@@ -1,6 +1,6 @@
 package com.arek00.pacman.Logics.Characters;
 
-import com.arek00.pacman.Logics.Characters.Strategies.IMovementStrategy;
+import com.arek00.pacman.Logics.Characters.MovementStrategies.IMovementStrategy;
 
 /**
  *  Abstraction to enemy object in-game.

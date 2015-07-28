@@ -14,12 +14,9 @@ import com.arek00.pacman.Inputs.Interpreters.ConcreteInterpreters.KeyInterpreter
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Enemy;
 import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Player;
-import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IEnemy;
 import com.arek00.pacman.Logics.Characters.IPlayer;
-import com.arek00.pacman.Logics.Characters.MovementHandlers.ConcreteHandlers.TouchMovementHandler;
-import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
-import com.arek00.pacman.Logics.Characters.Strategies.ConcreteStrategies.RandomMovementStrategy;
+import com.arek00.pacman.Logics.Characters.MovementStrategies.ConcreteStrategies.RandomMovementStrategy;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Logics.Levels.LevelScenarios.NormalGameLevel;
 import com.arek00.pacman.Logics.Maps.Generators.ImageMapGenerator;

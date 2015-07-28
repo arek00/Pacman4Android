@@ -4,8 +4,7 @@ import android.graphics.PointF;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IEnemy;
 import com.arek00.pacman.Logics.Characters.MovementDirection;
-import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
-import com.arek00.pacman.Logics.Characters.Strategies.IMovementStrategy;
+import com.arek00.pacman.Logics.Characters.MovementStrategies.IMovementStrategy;
 import com.arek00.pacman.Utils.DataHelpers.MovementEstimator;
 import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
@@ -54,7 +53,7 @@ public class Enemy implements IEnemy {
     public void setPosition(PointF position) {
         NullPointerValidator.validate(position);
 
-        this.position = position;
+        setPosition(position.x, position.y);
     }
 
     public void setPosition(float x, float y) {
@@ -70,30 +69,36 @@ public class Enemy implements IEnemy {
     }
 
     public void move(MovementDirection direction) {
-        int stepVector = MovementEstimator.calculateVector(direction);
-        float estimatedMove = stepVector * speed * TimeHelper.getDeltaTime();
+//        int stepVector = MovementEstimator.calculateVector(direction);
+//        float estimatedMove = stepVector * speed * TimeHelper.getDeltaTime();
+//
+//        if (direction == MovementDirection.RIGHT ||
+//                direction == MovementDirection.LEFT) {
+//            position.x += estimatedMove;
+//
+//        } else if (direction != MovementDirection.NONE) {
+//            position.y += estimatedMove;
+//        }
 
-        if (direction.value == MovementDirection.RIGHT.value ||
-                direction.value == MovementDirection.LEFT.value) {
-            position.x += estimatedMove;
 
-
-        } else if (direction.value == MovementDirection.UP.value ||
-                direction.value == MovementDirection.DOWN.value) {
-            position.y += estimatedMove;
-        } else {
-            position.x += estimatedMove;
-        }
+        PointF move = MovementEstimator.calculateMove(this, direction, TimeHelper.getDeltaTime());
+        this.position.x += move.x;
+        this.position.y += move.y;
 
     }
 
     public float getSpeed() {
-        return 0;
+        return this.speed;
     }
 
     public void setSpeed(float speed) {
         NumberValidator.checkNegativeNumber(speed);
 
         this.speed = speed;
+    }
+
+    @Override
+    public String toString() {
+        return "The Enemy";
     }
 }

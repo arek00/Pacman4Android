@@ -8,9 +8,10 @@ import com.arek00.pacman.Logics.Characters.ICharacter;
  */
 public class CharacterArea {
     private int minX, maxX, minY, maxY;
+    private PointF characterPosition;
 
     public CharacterArea(ICharacter character) {
-        PointF characterPosition = character.getPosition();
+        this.characterPosition = character.getPosition();
 
         this.minX = (int) Math.floor(characterPosition.x);
         this.maxX = (int) Math.ceil(characterPosition.x);
@@ -32,5 +33,12 @@ public class CharacterArea {
 
     public int getMaxY() {
         return maxY;
+    }
+
+    @Override
+    public String toString() {
+        String text = String.format("Character position: x: %.2f y: %.2f", characterPosition.x, characterPosition.y);
+        text += String.format(" Area: min: %d %d, max %d %d", minX, minY, maxX, maxY);
+        return text;
     }
 }
