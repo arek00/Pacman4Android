@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+<LinearLayout
+android:orientation="horizontal"
+android:layout_width="fill_parent"
+android:layout_height="match_parent"
+android:layout_weight="8">
+
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/lifes_number_label"
+        android:id="@+id/lifesLabel"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="10dp"/>
+
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/lifesNumber"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="10dp"/>
+
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/points_number_label"
+        android:id="@+id/pointsLabel"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="10dp"/>
+
+
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/pointsNumber"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="10dp"/>
+
+</LinearLayout>
+
+<FrameLayout
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:id="@+id/mainGameView"
+android:layout_weight="1">
+</FrameLayout>
+
+        <!--<com.arek00.pacman.Graphics.Views.ConcreteViews.GameView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"/>-->
+
+
+        </LinearLayout>

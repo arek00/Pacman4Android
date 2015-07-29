@@ -191,13 +191,13 @@ public class NormalGameLevel implements ILevel {
         float characterX = character.getPosition().x;
         float characterY = character.getPosition().y;
 
-        String info = String.format("X: %.2f, Y: %.2f", character.getPosition().x, character.getPosition().y);
-        Log.i("Collision Before", info);
+//        String info = String.format("X: %.2f, Y: %.2f", character.getPosition().x, character.getPosition().y);
+//        Log.i("Collision Before", info);
 
         character.move(correctionDirection);
-
-        info = String.format("X: %.2f, Y: %.2f", character.getPosition().x, character.getPosition().y);
-        Log.i("Collision After", info);
+//
+//        info = String.format("X: %.2f, Y: %.2f", character.getPosition().x, character.getPosition().y);
+//        Log.i("Collision After", info);
 
         if (correctionDirection == MovementDirection.DOWN) {
             characterY = (float) Math.floor(character.getPosition().y);
@@ -210,8 +210,8 @@ public class NormalGameLevel implements ILevel {
         }
 
         character.setPosition(characterX, characterY);
-        info = String.format("X: %.2f, Y: %.2f", character.getPosition().x, character.getPosition().y);
-        Log.i("New Position", info);
+//        info = String.format("X: %.2f, Y: %.2f", character.getPosition().x, character.getPosition().y);
+//        Log.i("New Position", info);
     }
 
     /**

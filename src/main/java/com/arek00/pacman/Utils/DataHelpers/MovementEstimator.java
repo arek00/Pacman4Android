@@ -68,8 +68,8 @@ public class MovementEstimator {
         float estimatedMoveX = character.getSpeed() * delta;
         float estimatedMoveY = estimatedMoveX;
 
-        Log.i("Movement", direction.toString());
-        Log.i("ESTIMATED", estimatedMoveX + " " + estimatedMoveY);
+//        Log.i("Movement", direction.toString());
+//        Log.i("ESTIMATED", estimatedMoveX + " " + estimatedMoveY);
 
         estimatedMoveX = (estimatedMoveX > 1) ? 1f : estimatedMoveX;
         estimatedMoveY = (estimatedMoveY > 1) ? 1f : estimatedMoveY;

@@ -21,8 +21,9 @@ public class MenuActivity extends Activity {
     public void onStartGameTouch(View view) {
         Toast toast = Toast.makeText(this, "Start the Game", Toast.LENGTH_SHORT);
         toast.show();
-        Intent intent = new Intent(this, GameActivity.class);
+        Intent intent = new Intent(this, SelectCustomGameActivity.class);
         startActivity(intent);
+        finish();
     }
 
 

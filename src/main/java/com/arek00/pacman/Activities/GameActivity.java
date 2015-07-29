@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.SurfaceView;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import com.arek00.pacman.Config.GraphicsConfig;
-import com.arek00.pacman.Graphics.Views.ConcreteViews.MainView;
+import com.arek00.pacman.Graphics.Views.ConcreteViews.GameView;
 import com.arek00.pacman.Initializers.NormalLevelInitializer;
 import com.arek00.pacman.Inputs.Handlers.ConcreteHandlers.KeyHandler;
 import com.arek00.pacman.Logics.Game.Game;
@@ -18,7 +23,7 @@ import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 public class GameActivity extends Activity {
 
     private IGame game;
-    private MainView view;
+    private GameView view;
     private KeyHandler inputHandler;
 
     /**
@@ -32,12 +37,10 @@ public class GameActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setScreenResolution();
+        setContentView(R.layout.game);
 
         initialize(this);
-
         game.startGame();
-        setContentView(view);
-        view.addListener(new TimeHelper());
         setTitle(R.string.app_name);
     }
 
@@ -58,9 +61,14 @@ public class GameActivity extends Activity {
 
         NormalLevelInitializer initializer = new NormalLevelInitializer(context);
         this.inputHandler = new KeyHandler();
-        this.view = new MainView(context, initializer.getInitializedRenderer());
-        this.game = new Game(initializer.getInitializedLevel(), view, inputHandler, this);
+        this.view = new GameView(this, initializer.getInitializedRenderer());
+        this.view.setRenderer(initializer.getInitializedRenderer());
+        this.view.addListener(new TimeHelper());
 
+        FrameLayout layout = (FrameLayout) findViewById(R.id.mainGameView);
+        layout.addView(view);
+
+        this.game = new Game(initializer.getInitializedLevel(), view, inputHandler, this);
     }
 
 
