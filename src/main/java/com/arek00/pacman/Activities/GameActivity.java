@@ -11,7 +11,12 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.arek00.pacman.Config.GraphicsConfig;
+import com.arek00.pacman.Graphics.Listeners.Lifes.LifeListener;
+import com.arek00.pacman.Graphics.Listeners.Lifes.LifeObservable;
+import com.arek00.pacman.Graphics.Listeners.Points.PointsListener;
+import com.arek00.pacman.Graphics.Listeners.Points.PointsObservable;
 import com.arek00.pacman.Graphics.Views.ConcreteViews.GameView;
 import com.arek00.pacman.Initializers.NormalLevelInitializer;
 import com.arek00.pacman.Inputs.Handlers.ConcreteHandlers.KeyHandler;
@@ -20,11 +25,12 @@ import com.arek00.pacman.Logics.Game.IGame;
 import com.arek00.pacman.R;
 import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 
-public class GameActivity extends Activity {
+public class GameActivity extends Activity implements PointsListener, LifeListener {
 
     private IGame game;
     private GameView view;
     private KeyHandler inputHandler;
+    private LabelRedrawer redrawer;
 
     /**
      * Called when the activity is first created.
@@ -68,6 +74,14 @@ public class GameActivity extends Activity {
         FrameLayout layout = (FrameLayout) findViewById(R.id.mainGameView);
         layout.addView(view);
 
+        LifeObservable lifeObservable = (LifeObservable) initializer.getInitializedLevel();
+        PointsObservable pointsObservable = (PointsObservable) initializer.getInitializedLevel();
+        lifeObservable.addLifeListener(this);
+        pointsObservable.addPointsListener(this);
+        TextView livesView = (TextView) findViewById(R.id.lifesNumber);
+        TextView pointsView = (TextView) findViewById(R.id.pointsNumber);
+        redrawer = new LabelRedrawer(livesView, pointsView);
+
         this.game = new Game(initializer.getInitializedLevel(), view, inputHandler, this);
     }
 
@@ -103,6 +117,42 @@ public class GameActivity extends Activity {
         Point resolution = new Point();
         display.getSize(resolution);
         GraphicsConfig.setScreenSize(resolution);
+    }
+
+    public void onChangePoints(int currentPointsNumber) {
+        redrawer.setPoints(currentPointsNumber);
+        runOnUiThread(redrawer);
+    }
+
+    public void onChangeLife(int currentLifeNumber) {
+        redrawer.setLives(currentLifeNumber);
+        runOnUiThread(redrawer);
+    }
+
+
+    class LabelRedrawer implements Runnable {
+        private TextView livesLabel;
+        private TextView pointsLabel;
+        private int points;
+        private int lives;
+
+        public LabelRedrawer(TextView livesLabel, TextView pointsLabel) {
+            this.livesLabel = livesLabel;
+            this.pointsLabel = pointsLabel;
+        }
+
+        public void setPoints(int points) {
+            this.points = points;
+        }
+
+        public void setLives(int lives) {
+            this.lives = lives;
+        }
+
+        public void run() {
+            livesLabel.setText(Integer.toString(this.lives));
+            pointsLabel.setText(Integer.toString(this.points));
+        }
     }
 }
 

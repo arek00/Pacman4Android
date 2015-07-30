@@ -3,6 +3,10 @@ package com.arek00.pacman.Logics.Levels.LevelScenarios;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.Log;
+import com.arek00.pacman.Graphics.Listeners.Lifes.LifeListener;
+import com.arek00.pacman.Graphics.Listeners.Lifes.LifeObservable;
+import com.arek00.pacman.Graphics.Listeners.Points.PointsListener;
+import com.arek00.pacman.Graphics.Listeners.Points.PointsObservable;
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IEnemy;
@@ -16,10 +20,13 @@ import com.arek00.pacman.Logics.Maps.Utils.FieldsRetriever;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 import com.arek00.pacman.Utils.Validators.NumberValidator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Manage logic of a level
  */
-public class NormalGameLevel implements ILevel {
+public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable {
 
     private IMap map;
     private IPlayer player;
@@ -28,6 +35,8 @@ public class NormalGameLevel implements ILevel {
     private int remainingBalls;
     private InputInterpreter interpreter;
     private PointF inputInformation;
+    private LifeObservable lifeObservable;
+    private PointsObservable pointsObservable;
 
 
     public NormalGameLevel(IMap levelMap, IPlayer player, IEnemy[] enemies, InputInterpreter interpreter) {
@@ -40,6 +49,8 @@ public class NormalGameLevel implements ILevel {
         this.enemies = enemies;
         this.interpreter = interpreter;
         this.inputInformation = new PointF(0, 0);
+        this.lifeObservable = new LifeObservableHandler();
+        this.pointsObservable = new PointsObservableHandler();
     }
 
     public void startLevel() {
@@ -58,6 +69,9 @@ public class NormalGameLevel implements ILevel {
                         fields,
                         FieldsEnum.BIGBALL.field.getValue(),
                         map.getSize());
+
+        lifeObservable.informLifeListeners();
+        pointsObservable.informPointsListeners();
     }
 
     private void setPlayerPosition() {
@@ -272,6 +286,76 @@ public class NormalGameLevel implements ILevel {
 
     private void addPlayersPoint(int pointsAmount) {
         player.addPoints(pointsAmount);
+        informPointsListeners();
     }
 
+
+    /*
+        Methods to handle listeners of player's points and lives below.
+    */
+
+    public void addLifeListener(LifeListener listener) {
+        lifeObservable.addLifeListener(listener);
+    }
+
+    public void removeLifeListener(LifeListener listener) {
+        lifeObservable.removeLifeListener(listener);
+    }
+
+    public void informLifeListeners() {
+        lifeObservable.informLifeListeners();
+    }
+
+    public void addPointsListener(PointsListener listener) {
+        pointsObservable.addPointsListener(listener);
+    }
+
+    public void removePointsListener(PointsListener listener) {
+        pointsObservable.removePointsListener(listener);
+    }
+
+    public void informPointsListeners() {
+        pointsObservable.informPointsListeners();
+    }
+
+    class PointsObservableHandler implements PointsObservable {
+        private List<PointsListener> listeners = new ArrayList<PointsListener>();
+
+        public void addPointsListener(PointsListener listener) {
+            NullPointerValidator.validate(listener);
+            listeners.add(listener);
+        }
+
+        public void removePointsListener(PointsListener listener) {
+            NullPointerValidator.validate(listener);
+            listeners.remove(listener);
+        }
+
+        public void informPointsListeners() {
+            for (PointsListener listener : listeners) {
+                listener.onChangePoints(player.getPoints());
+            }
+        }
+    }
+
+
+    class LifeObservableHandler implements LifeObservable {
+        private List<LifeListener> listeners = new ArrayList<LifeListener>();
+
+        public void addLifeListener(LifeListener listener) {
+            NullPointerValidator.validate(listener);
+            listeners.add(listener);
+        }
+
+        public void removeLifeListener(LifeListener listener) {
+            NullPointerValidator.validate(listener);
+            listeners.remove(listener);
+        }
+
+        public void informLifeListeners() {
+            for (LifeListener listener : listeners) {
+                listener.onChangeLife(player.getLife());
+            }
+        }
+    }
 }
