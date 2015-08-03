@@ -17,6 +17,7 @@ import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Logics.Levels.Utils.CharacterArea;
 import com.arek00.pacman.Logics.Maps.IMap;
 import com.arek00.pacman.Logics.Maps.Utils.FieldsRetriever;
+import com.arek00.pacman.Utils.DataHelpers.CollisionResolver;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 import com.arek00.pacman.Utils.Validators.NumberValidator;
 
@@ -190,42 +191,21 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
         }
     }
 
-
     private void onCharacterCollides(ICharacter character, MovementDirection direction) {
-        if (isCharacterCollides(character, direction)) {
+        if (isCharacterCollides(character)) {
             correctPosition(character, MovementDirection.getDirectionByValue(direction.reverse));
         }
     }
 
     /**
-     * @param character           Character that should correct its position due to collide with wall
-     * @param correctionDirection Direction which character should move to correct its position. Very mostly its reversed position of its step.
+     * @param character Character that should correct its position due to collide with wall
+     * @param direction Direction which character moved.
      */
-    private void correctPosition(ICharacter character, MovementDirection correctionDirection) {
-        float characterX = character.getPosition().x;
-        float characterY = character.getPosition().y;
+    private void correctPosition(ICharacter character, MovementDirection direction) {
+        NullPointerValidator.validate(character);
+        NullPointerValidator.validate(direction);
 
-//        String info = String.format("X: %.2f, Y: %.2f", character.getPosition().x, character.getPosition().y);
-//        Log.i("Collision Before", info);
-
-        character.move(correctionDirection);
-//
-//        info = String.format("X: %.2f, Y: %.2f", character.getPosition().x, character.getPosition().y);
-//        Log.i("Collision After", info);
-
-        if (correctionDirection == MovementDirection.DOWN) {
-            characterY = (float) Math.floor(character.getPosition().y);
-        } else if (correctionDirection == MovementDirection.UP) {
-            characterY = (float) Math.ceil(character.getPosition().y);
-        } else if (correctionDirection == MovementDirection.LEFT) {
-            characterX = (float) Math.ceil(character.getPosition().x);
-        } else if (correctionDirection == MovementDirection.RIGHT) {
-            characterX = (float) Math.floor(character.getPosition().x);
-        }
-
-        character.setPosition(characterX, characterY);
-//        info = String.format("X: %.2f, Y: %.2f", character.getPosition().x, character.getPosition().y);
-//        Log.i("New Position", info);
+        CollisionResolver.resolveCollision(character, direction);
     }
 
     /**
@@ -235,25 +215,9 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
      * @return
      */
 
-    private boolean isCharacterCollides(ICharacter character, MovementDirection movement) {
+    private boolean isCharacterCollides(ICharacter character) {
         NullPointerValidator.validate(character);
-        CharacterArea characterArea = new CharacterArea(character);
-
-        Log.i("Character" + character.toString(), characterArea.toString() + " " + movement.toString());
-
-
-        if (FieldsEnum.isFieldCollide(
-                fields[characterArea.getMinX()][characterArea.getMinY()]) ||
-                FieldsEnum.isFieldCollide(
-                        fields[characterArea.getMinX()][characterArea.getMaxY()]) ||
-                FieldsEnum.isFieldCollide(
-                        fields[characterArea.getMaxX()][characterArea.getMinY()]) ||
-                FieldsEnum.isFieldCollide(
-                        fields[characterArea.getMaxX()][characterArea.getMaxY()])) {
-            return true;
-        } else {
-            return false;
-        }
+        return CollisionResolver.isCollide(character, this.fields);
     }
 
 
