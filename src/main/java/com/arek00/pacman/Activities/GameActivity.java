@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
@@ -113,9 +114,10 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
 
     private void setScreenResolution() {
         Display display = getWindowManager().getDefaultDisplay();
-
+        DisplayMetrics metrics = new DisplayMetrics();
         Point resolution = new Point();
-        display.getSize(resolution);
+        display.getMetrics(metrics);
+        resolution.set(metrics.widthPixels, metrics.heightPixels);
         GraphicsConfig.setScreenSize(resolution);
     }
 

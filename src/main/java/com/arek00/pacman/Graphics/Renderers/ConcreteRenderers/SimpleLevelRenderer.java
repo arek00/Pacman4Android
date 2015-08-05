@@ -1,9 +1,6 @@
 package com.arek00.pacman.Graphics.Renderers.ConcreteRenderers;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.PointF;
+import android.graphics.*;
 import android.util.Log;
 import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.DrawableCharacter;
@@ -28,6 +25,8 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
     private DrawableCharacter player;
     private DrawableCharacter[] enemies;
     private MapTileField[] fields;
+    private Point horizontalOcclusions;
+    private Point verticalOcclusions;
 
     private float offsetX = 0, offsetY = 0;
 
@@ -87,7 +86,17 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
 
         drawMap(canvas);
         drawCharacters(canvas);
+        drawOffsets(offsetX, offsetY, canvas);
 
+    }
+
+    private void drawOffsets(float offsetX, float offsetY, Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(80);
+
+        String text = String.format("OffsetX: %.2f, OffsetY: %.2f", offsetX, offsetY);
+        canvas.drawText(text, -offsetX + 80, -offsetY + 80, paint);
     }
 
     public void draw(Canvas canvas, float x, float y) {
@@ -103,8 +112,21 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
 
         Point mapSize = new Point(level.getMapSize());
 
-        for (int line = 0; line < mapSize.y; line++) {
-            for (int column = 0; column < mapSize.x; column++) {
+        int startingLine = (int) (-offsetY / GraphicsConfig.getTileSize()) + 1;
+        startingLine = (startingLine > 0) ? startingLine : 0;
+
+        int startingColumn = (int) (-offsetX / GraphicsConfig.getTileSize()) + 1;
+        startingColumn = (startingColumn > 0) ? startingColumn : 0;
+
+        int finishLine = (int) (GraphicsConfig.getScreenSize().y / GraphicsConfig.getTileSize() / GraphicsConfig.getMapScale() + startingLine);
+        finishLine = (finishLine > mapSize.y) ? mapSize.y : finishLine;
+
+        int finishColumn = (int) (GraphicsConfig.getScreenSize().x / GraphicsConfig.getTileSize() / GraphicsConfig.getMapScale() + startingColumn);
+        finishColumn = (finishColumn > mapSize.x) ? mapSize.x : finishLine;
+
+
+        for (int line = startingLine; line < finishLine; line++) {
+            for (int column = startingColumn; column < finishColumn; column++) {
                 int field = level.getFieldValue(column, line);
 
                 fields[field].draw(canvas, column * GraphicsConfig.getTileSize(), line * GraphicsConfig.getTileSize());
@@ -176,12 +198,27 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         float playerOnScreenX = playerX * GraphicsConfig.getTileSize();
         float playerOnScreenY = playerY * GraphicsConfig.getTileSize();
 
-        float centerX = screenSize.x / 2;
-        float centerY = screenSize.y / 2;
+        float centerX = (screenSize.x / 2) / GraphicsConfig.getMapScale();
+        float centerY = (screenSize.y / 2) / GraphicsConfig.getMapScale();
 
         this.offsetX = centerX - playerOnScreenX;
         this.offsetY = centerY - playerOnScreenY;
 
     }
 
+//    private void calculateOcclusions
+
+
+//    private float validateOffsetX(float offset) {
+//        int mapSize = getMapSize().x;
+//        int tileSize = GraphicsConfig.getTileSize();
+//        int screenSize = GraphicsConfig.getScreenSize().x;
+//
+//        if (offset > 0) {
+//            offset = 0;
+//        }
+//
+//        if (-offset > (mapSize * tileSize) -  screenSize)
+//        return (mapSize * tileSize) -  screenSize;
+//    }
 }
