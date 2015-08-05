@@ -7,6 +7,8 @@ import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.DrawableCharacter;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.MapTileField;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
+import com.arek00.pacman.Graphics.Renderers.Utils.Occlusion;
+import com.arek00.pacman.Graphics.Renderers.Utils.OcclusionEstimator;
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IEnemy;
@@ -111,22 +113,11 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         canvas.drawColor(Color.BLACK);
 
         Point mapSize = new Point(level.getMapSize());
+        Occlusion lineOcclusion = OcclusionEstimator.getOcclusion(offsetY, GraphicsConfig.getScreenSize().y, mapSize.y);
+        Occlusion columnOcclusion = OcclusionEstimator.getOcclusion(offsetX, GraphicsConfig.getScreenSize().x, mapSize.x);
 
-        int startingLine = (int) (-offsetY / GraphicsConfig.getTileSize()) + 1;
-        startingLine = (startingLine > 0) ? startingLine : 0;
-
-        int startingColumn = (int) (-offsetX / GraphicsConfig.getTileSize()) + 1;
-        startingColumn = (startingColumn > 0) ? startingColumn : 0;
-
-        int finishLine = (int) (GraphicsConfig.getScreenSize().y / GraphicsConfig.getTileSize() / GraphicsConfig.getMapScale() + startingLine);
-        finishLine = (finishLine > mapSize.y) ? mapSize.y : finishLine;
-
-        int finishColumn = (int) (GraphicsConfig.getScreenSize().x / GraphicsConfig.getTileSize() / GraphicsConfig.getMapScale() + startingColumn);
-        finishColumn = (finishColumn > mapSize.x) ? mapSize.x : finishLine;
-
-
-        for (int line = startingLine; line < finishLine; line++) {
-            for (int column = startingColumn; column < finishColumn; column++) {
+        for (int line = lineOcclusion.getStartPosition(); line < lineOcclusion.getEndPosition(); line++) {
+            for (int column = columnOcclusion.getStartPosition(); column < columnOcclusion.getEndPosition(); column++) {
                 int field = level.getFieldValue(column, line);
 
                 fields[field].draw(canvas, column * GraphicsConfig.getTileSize(), line * GraphicsConfig.getTileSize());
