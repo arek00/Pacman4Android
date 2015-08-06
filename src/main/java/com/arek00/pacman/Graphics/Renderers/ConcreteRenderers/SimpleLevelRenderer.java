@@ -27,8 +27,6 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
     private DrawableCharacter player;
     private DrawableCharacter[] enemies;
     private MapTileField[] fields;
-    private Point horizontalOcclusions;
-    private Point verticalOcclusions;
 
     private float offsetX = 0, offsetY = 0;
 

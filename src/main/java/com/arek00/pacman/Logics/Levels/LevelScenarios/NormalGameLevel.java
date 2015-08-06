@@ -141,6 +141,7 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
     public void update() {
         movePlayer();
         moveEnemies();
+        isEnemyCaughtPlayer();
 
 
         // Log.i("Player position: ", player.getPosition().x + " " + player.getPosition().y);
@@ -189,6 +190,19 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
             enemy.move(direction);
             onCharacterCollides(enemy, direction);
         }
+    }
+
+    private void isEnemyCaughtPlayer() {
+        if (CollisionResolver.isCollide(this.player, this.enemies)) {
+            onEnemyCaughtPlayer();
+        }
+    }
+
+    private void onEnemyCaughtPlayer() {
+        player.loseLife();
+        setEnemiesPosition();
+        setPlayerPosition();
+        lifeObservable.informLifeListeners();
     }
 
     private void onCharacterCollides(ICharacter character, MovementDirection direction) {

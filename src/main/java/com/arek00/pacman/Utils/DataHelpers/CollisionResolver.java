@@ -40,6 +40,28 @@ public class CollisionResolver {
     }
 
     /**
+     * Check if player collides with any of enemies.
+     *
+     * @param player
+     * @param enemies
+     * @return
+     */
+    public static boolean isCollide(ICharacter player, ICharacter[] enemies) {
+        for (ICharacter enemy : enemies) {
+
+            if (distanceBetween(enemy.getPosition().x, player.getPosition().x) < 1f &&
+                    distanceBetween(enemy.getPosition().y, player.getPosition().y) < 1f) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static float distanceBetween(float a, float b) {
+        return Math.abs((a - b));
+    }
+
+    /**
      * Resolve collision of character.
      * Character is being move back by
      *
