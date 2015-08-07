@@ -1,5 +1,6 @@
 package com.arek00.pacman.Graphics.Renderers.ConcreteRenderers;
 
+import android.content.res.Resources;
 import android.graphics.*;
 import android.util.Log;
 import com.arek00.pacman.Config.GraphicsConfig;
@@ -15,7 +16,9 @@ import com.arek00.pacman.Logics.Characters.IEnemy;
 import com.arek00.pacman.Logics.Characters.MovementDirection;
 import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
+import com.arek00.pacman.Logics.Game.GameState;
 import com.arek00.pacman.Logics.Levels.ILevel;
+import com.arek00.pacman.R;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 /**
@@ -87,7 +90,6 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         drawMap(canvas);
         drawCharacters(canvas);
         drawOffsets(offsetX, offsetY, canvas);
-
     }
 
     private void drawOffsets(float offsetX, float offsetY, Canvas canvas) {
@@ -122,6 +124,24 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
             }
         }
     }
+
+    /**
+     * Draw information about pause of game.
+     *
+     * @param canvas
+     */
+    private void drawOnPausedInfo(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(85);
+        String text = Resources.getSystem().getString(R.string.game_paused);
+        Point textPosition = GraphicsConfig.getScreenSize();
+        textPosition.x /= 2;
+        textPosition.y /= 2;
+
+        canvas.drawText(text, textPosition.x - offsetX, textPosition.y - offsetY, paint);
+    }
+
 
     private void drawCharacters(Canvas canvas) {
         NullPointerValidator.validate(canvas);

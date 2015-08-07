@@ -13,6 +13,7 @@ import com.arek00.pacman.Logics.Characters.IEnemy;
 import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Characters.MovementDirection;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
+import com.arek00.pacman.Logics.Game.GameState;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Logics.Levels.Utils.CharacterArea;
 import com.arek00.pacman.Logics.Maps.IMap;
@@ -38,7 +39,6 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
     private PointF inputInformation;
     private LifeObservable lifeObservable;
     private PointsObservable pointsObservable;
-
 
     public NormalGameLevel(IMap levelMap, IPlayer player, IEnemy[] enemies, InputInterpreter interpreter) {
 
@@ -73,6 +73,7 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
 
         lifeObservable.informLifeListeners();
         pointsObservable.informPointsListeners();
+
     }
 
     private void setPlayerPosition() {

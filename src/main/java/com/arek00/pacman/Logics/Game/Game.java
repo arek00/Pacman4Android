@@ -21,7 +21,7 @@ public class Game implements IGame {
     private Activity activity;
     private InputHandler inputHandler;
 
-    private boolean isFinished = false;
+    private GameState state = GameState.PAUSED;
 
     public Game(ILevel level, View view, InputHandler input, Activity activity) {
         NullPointerValidator.validate(level);
@@ -39,7 +39,6 @@ public class Game implements IGame {
 
 
     public void startGame() {
-        isFinished = false;
         level.startLevel();
         runMainLoop();
     }
@@ -52,6 +51,8 @@ public class Game implements IGame {
     }
 
     public void pauseGame() {
+
+        state = GameState.PAUSED;
 //        synchronized (mainLoop) {
 //            try {
 //                mainLoop.wait();
@@ -63,9 +64,7 @@ public class Game implements IGame {
     }
 
     public void continueGame() {
-        synchronized (mainLoop) {
-            //mainLoop.notify();
-        }
+        state = GameState.RUNNING;
     }
 
     public void setLevel(ILevel level) {
@@ -75,6 +74,10 @@ public class Game implements IGame {
 
     public View getView() {
         return this.view;
+    }
+
+    public GameState getGameState() {
+        return this.state;
     }
 
     public ICharacter getPlayer() {
@@ -93,11 +96,14 @@ public class Game implements IGame {
         }
 
         public void run() {
-            while (!isFinished) {
+            while (state != GameState.FINISHED) {
 
                 PointF input = inputHandler.getInput();
                 level.setInput(input);
-                level.update();
+
+                if (state == GameState.RUNNING) {
+                    level.update();
+                }
                 activity.runOnUiThread(uiDrawThread);
 
                 try {

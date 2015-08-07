@@ -4,15 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.KeyEvent;
-import android.view.SurfaceView;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
 import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Graphics.Listeners.Lifes.LifeListener;
 import com.arek00.pacman.Graphics.Listeners.Lifes.LifeObservable;
@@ -25,13 +19,15 @@ import com.arek00.pacman.Logics.Game.Game;
 import com.arek00.pacman.Logics.Game.IGame;
 import com.arek00.pacman.R;
 import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
+import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 public class GameActivity extends Activity implements PointsListener, LifeListener {
 
     private IGame game;
     private GameView view;
     private KeyHandler inputHandler;
-    private LabelRedrawer redrawer;
+    private GameViewRefresher redrawer;
+    private ViewVisibilityHandler pausedGameButtonVisibilityHandler;
 
     /**
      * Called when the activity is first created.
@@ -75,13 +71,17 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
         FrameLayout layout = (FrameLayout) findViewById(R.id.mainGameView);
         layout.addView(view);
 
+        View child = findViewById(R.id.pauseGameInfoButton);
+        layout.bringChildToFront(child);
+        pausedGameButtonVisibilityHandler = new ViewVisibilityHandler(child, layout);
+
         LifeObservable lifeObservable = (LifeObservable) initializer.getInitializedLevel();
         PointsObservable pointsObservable = (PointsObservable) initializer.getInitializedLevel();
         lifeObservable.addLifeListener(this);
         pointsObservable.addPointsListener(this);
         TextView livesView = (TextView) findViewById(R.id.lifesNumber);
         TextView pointsView = (TextView) findViewById(R.id.pointsNumber);
-        redrawer = new LabelRedrawer(livesView, pointsView);
+        redrawer = new GameViewRefresher(livesView, pointsView);
 
         this.game = new Game(initializer.getInitializedLevel(), view, inputHandler, this);
     }
@@ -129,16 +129,30 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
     public void onChangeLife(int currentLifeNumber) {
         redrawer.setLives(currentLifeNumber);
         runOnUiThread(redrawer);
+        game.pauseGame();
+
+        pausedGameButtonVisibilityHandler.setVisible();
+        runOnUiThread(pausedGameButtonVisibilityHandler);
+    }
+
+    public void onResumeButtonClicked(View view) {
+        game.continueGame();
+        pausedGameButtonVisibilityHandler.setInvisible();
+
+        runOnUiThread(pausedGameButtonVisibilityHandler);
     }
 
 
-    class LabelRedrawer implements Runnable {
+    /**
+     * Just runs activity refreshing on RunOnUIThread
+     */
+    class GameViewRefresher implements Runnable {
         private TextView livesLabel;
         private TextView pointsLabel;
         private int points;
         private int lives;
 
-        public LabelRedrawer(TextView livesLabel, TextView pointsLabel) {
+        public GameViewRefresher(TextView livesLabel, TextView pointsLabel) {
             this.livesLabel = livesLabel;
             this.pointsLabel = pointsLabel;
         }
@@ -156,5 +170,34 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
             pointsLabel.setText(Integer.toString(this.points));
         }
     }
+
+    class ViewVisibilityHandler implements Runnable {
+        private View view;
+        private FrameLayout layout;
+        private int viewVisibility;
+
+        public ViewVisibilityHandler(View view, FrameLayout layout) {
+            NullPointerValidator.validate(view);
+            NullPointerValidator.validate(layout);
+
+            this.view = view;
+            this.layout = layout;
+            viewVisibility = View.VISIBLE;
+        }
+
+        public void setVisible() {
+            viewVisibility = View.VISIBLE;
+        }
+
+        public void setInvisible() {
+            viewVisibility = View.INVISIBLE;
+        }
+
+        public void run() {
+            layout.bringChildToFront(this.view);
+            view.setVisibility(this.viewVisibility);
+        }
+    }
+
 }
 

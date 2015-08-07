@@ -6,6 +6,7 @@ import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.MovementDirection;
 import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
+import com.arek00.pacman.Logics.Game.GameState;
 
 /**
  * Abstraction of game level.

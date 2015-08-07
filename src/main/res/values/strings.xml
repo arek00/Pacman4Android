@@ -14,6 +14,7 @@
     <string name="start_game_button">Start Game</string>
     <string name="lifes_number_label">Lifes</string>
     <string name="points_number_label">Points</string>
+    <string name="game_paused">Game is paused. \nTouch here to continue.</string>
 
 
 

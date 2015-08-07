@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Graphics.Listeners.OnDrawListener;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * View that handle displaying of all views like in-game view or menu view.
  */
-public class GameView extends View implements OnDrawObservable {
+public class GameView extends View implements OnDrawObservable, View.OnTouchListener {
 
     private Renderer renderer;
     private Context context;
@@ -73,5 +74,9 @@ public class GameView extends View implements OnDrawObservable {
         for (OnDrawListener listener : listeners) {
             listener.onDraw();
         }
+    }
+
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        return false;
     }
 }

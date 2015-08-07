@@ -74,19 +74,12 @@ public class MovementEstimator {
         estimatedMoveX = (estimatedMoveX > 1) ? 1f : estimatedMoveX;
         estimatedMoveY = (estimatedMoveY > 1) ? 1f : estimatedMoveY;
 
+        estimatedMoveX = (estimatedMoveX < 0) ? 0f : estimatedMoveX;
+        estimatedMoveY = (estimatedMoveY < 0) ? 0f : estimatedMoveY;
+
         estimatedMoveX *= horizontalDirection;
         estimatedMoveY *= verticalDirection;
 
         return new PointF(estimatedMoveX, estimatedMoveY);
     }
-
-    public static float calculateActualPlayerMove(float playerPosition, float destinationPosition, float estimatedMove) {
-
-        if (Math.abs(destinationPosition - playerPosition) < Math.abs(estimatedMove)) {
-            return destinationPosition - playerPosition;
-        }
-
-        return estimatedMove;
-    }
-
 }

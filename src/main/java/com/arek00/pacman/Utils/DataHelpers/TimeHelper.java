@@ -12,6 +12,10 @@ public class TimeHelper implements OnDrawListener {
 
     private static long lastFrameTime = System.currentTimeMillis();
 
+    static {
+        tick();
+    }
+
     /**
      * Get time between rendering frames.
      *

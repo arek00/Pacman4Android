@@ -26,4 +26,6 @@ public interface IGame {
 
     public View getView();
 
+    public GameState getGameState();
+
 }
