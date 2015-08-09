@@ -2,12 +2,15 @@ package com.arek00.pacman.Activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.*;
 import android.widget.*;
 import com.arek00.pacman.Config.GraphicsConfig;
+import com.arek00.pacman.Graphics.Listeners.Game.FinishGameListener;
+import com.arek00.pacman.Graphics.Listeners.Game.FinishGameObservable;
 import com.arek00.pacman.Graphics.Listeners.Lifes.LifeListener;
 import com.arek00.pacman.Graphics.Listeners.Lifes.LifeObservable;
 import com.arek00.pacman.Graphics.Listeners.Points.PointsListener;
@@ -15,13 +18,17 @@ import com.arek00.pacman.Graphics.Listeners.Points.PointsObservable;
 import com.arek00.pacman.Graphics.Views.ConcreteViews.GameView;
 import com.arek00.pacman.Initializers.NormalLevelInitializer;
 import com.arek00.pacman.Inputs.Handlers.ConcreteHandlers.KeyHandler;
+import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Game.Game;
 import com.arek00.pacman.Logics.Game.IGame;
 import com.arek00.pacman.R;
 import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
-public class GameActivity extends Activity implements PointsListener, LifeListener {
+public class GameActivity extends Activity implements PointsListener, LifeListener, FinishGameListener {
+
+    public final static String POINTS_MESSAGE = "com.arek00.pacman.Activities.POINTS";
+    public final static String LIVES_MESSAGE = "com.arek00.pacman.Activities.LIVES";
 
     private IGame game;
     private GameView view;
@@ -61,31 +68,43 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
      * @param context
      */
     private void initialize(Context context) {
-
         NormalLevelInitializer initializer = new NormalLevelInitializer(context);
-        this.inputHandler = new KeyHandler();
-        this.view = new GameView(this, initializer.getInitializedRenderer());
-        this.view.setRenderer(initializer.getInitializedRenderer());
-        this.view.addListener(new TimeHelper());
 
-        FrameLayout layout = (FrameLayout) findViewById(R.id.mainGameView);
-        layout.addView(view);
+        initializeGame(context, initializer);
+        initializeLayout();
+        initializeListeners(initializer);
 
-        View child = findViewById(R.id.pauseGameInfoButton);
-        layout.bringChildToFront(child);
-        pausedGameButtonVisibilityHandler = new ViewVisibilityHandler(child, layout);
-
-        LifeObservable lifeObservable = (LifeObservable) initializer.getInitializedLevel();
-        PointsObservable pointsObservable = (PointsObservable) initializer.getInitializedLevel();
-        lifeObservable.addLifeListener(this);
-        pointsObservable.addPointsListener(this);
         TextView livesView = (TextView) findViewById(R.id.lifesNumber);
         TextView pointsView = (TextView) findViewById(R.id.pointsNumber);
         redrawer = new GameViewRefresher(livesView, pointsView);
 
         this.game = new Game(initializer.getInitializedLevel(), view, inputHandler, this);
+        ((FinishGameObservable) this.game).addOnFinishGameListener(this);
     }
 
+
+    private void initializeGame(Context context, NormalLevelInitializer initializer) {
+        this.inputHandler = new KeyHandler();
+        this.view = new GameView(this, initializer.getInitializedRenderer());
+        this.view.setRenderer(initializer.getInitializedRenderer());
+        this.view.addListener(new TimeHelper());
+    }
+
+    private void initializeLayout() {
+        FrameLayout layout = (FrameLayout) findViewById(R.id.mainGameView);
+        layout.addView(view);
+        View child = findViewById(R.id.pauseGameInfoButton);
+        layout.bringChildToFront(child);
+        pausedGameButtonVisibilityHandler = new ViewVisibilityHandler(child, layout);
+    }
+
+    private void initializeListeners(NormalLevelInitializer initializer) {
+
+        LifeObservable lifeObservable = (LifeObservable) initializer.getInitializedLevel();
+        PointsObservable pointsObservable = (PointsObservable) initializer.getInitializedLevel();
+        lifeObservable.addLifeListener(this);
+        pointsObservable.addPointsListener(this);
+    }
 
 //    public boolean onTouch(View view, MotionEvent motionEvent) {
 //
@@ -140,6 +159,18 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
         pausedGameButtonVisibilityHandler.setInvisible();
 
         runOnUiThread(pausedGameButtonVisibilityHandler);
+    }
+
+    public void onFinishGame() {
+        int points = ((IPlayer) game.getPlayer()).getPoints();
+        int lives = ((IPlayer) game.getPlayer()).getLife();
+
+        Intent intent = new Intent(this, FinishGameActivity.class);
+        intent.putExtra(POINTS_MESSAGE, points);
+        intent.putExtra(LIVES_MESSAGE, lives);
+        startActivity(intent);
+        finish();
+
     }
 
 

@@ -15,6 +15,8 @@
     <string name="lifes_number_label">Lifes</string>
     <string name="points_number_label">Points</string>
     <string name="game_paused">Game is paused. \nTouch here to continue.</string>
+    <string name="results">Results</string>
+    <string name="back_to_menu">Click here to back to menu</string>
 
 
 

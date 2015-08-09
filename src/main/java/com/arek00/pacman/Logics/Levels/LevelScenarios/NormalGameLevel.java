@@ -105,7 +105,7 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
      * Check if game should be finished and return current game state
      */
     public boolean isFinished() {
-        if (player.getLife() < 0 || remainingBalls < 1) {
+        if (player.getLife() < 0) {
             return true;
         }
         return false;

@@ -5,33 +5,39 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.util.Log;
 import android.view.View;
+import com.arek00.pacman.Graphics.Listeners.Game.FinishGameListener;
+import com.arek00.pacman.Graphics.Listeners.Game.FinishGameObservable;
 import com.arek00.pacman.Inputs.Handlers.InputHandler;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class Game implements IGame {
+
+public class Game implements IGame, FinishGameObservable {
 
     private ILevel level;
     private final long intervalTime = (long) 1000 / 60;
     private Thread mainLoop;
-    private View view;
+    private View renderer;
     private Canvas canvas;
     private Activity activity;
     private InputHandler inputHandler;
+    private List<FinishGameListener> onFinishGameListeners = new ArrayList<FinishGameListener>();
 
     private GameState state = GameState.PAUSED;
 
-    public Game(ILevel level, View view, InputHandler input, Activity activity) {
+    public Game(ILevel level, View renderer, InputHandler input, Activity activity) {
         NullPointerValidator.validate(level);
-        NullPointerValidator.validate(view);
+        NullPointerValidator.validate(renderer);
         NullPointerValidator.validate(activity);
         NullPointerValidator.validate(input);
 
         this.level = level;
         mainLoop = new Thread(new MainLoopThread(new UIThread()));
-        this.view = view;
+        this.renderer = renderer;
         this.canvas = new Canvas();
         this.activity = activity;
         this.inputHandler = input;
@@ -44,23 +50,16 @@ public class Game implements IGame {
     }
 
     public void finishGame() {
-//        if (level.isFinished()) {
-//            level.finishLevel();
-//        }
-//        isFinished = true;
+        state = GameState.FINISHED;
+        informOnFinishGameListeners();
+    }
+
+    private boolean isFinishedGame() {
+        return level.isFinished();
     }
 
     public void pauseGame() {
-
         state = GameState.PAUSED;
-//        synchronized (mainLoop) {
-//            try {
-//                mainLoop.wait();
-//            } catch (InterruptedException e) {
-//                Log.e("PAUSE GAME", "Problem with wait main game loop");
-//                e.printStackTrace();
-//            }
-//        }
     }
 
     public void continueGame() {
@@ -72,8 +71,8 @@ public class Game implements IGame {
         this.level = level;
     }
 
-    public View getView() {
-        return this.view;
+    public View getRenderer() {
+        return this.renderer;
     }
 
     public GameState getGameState() {
@@ -86,6 +85,23 @@ public class Game implements IGame {
 
     private void runMainLoop() {
         mainLoop.start();
+    }
+
+
+    public void addOnFinishGameListener(FinishGameListener listener) {
+        NullPointerValidator.validate(listener);
+        onFinishGameListeners.add(listener);
+    }
+
+    public void removeOnFinishGameListener(FinishGameListener listener) {
+        NullPointerValidator.validate(listener);
+        onFinishGameListeners.remove(listener);
+    }
+
+    public void informOnFinishGameListeners() {
+        for (FinishGameListener listener : onFinishGameListeners) {
+            listener.onFinishGame();
+        }
     }
 
     private class MainLoopThread implements Runnable {
@@ -106,6 +122,10 @@ public class Game implements IGame {
                 }
                 activity.runOnUiThread(uiDrawThread);
 
+                if (isFinishedGame()) {
+                    finishGame();
+                }
+
                 try {
                     synchronized (this) {
                         wait(intervalTime);
@@ -116,11 +136,13 @@ public class Game implements IGame {
                 }
             }
         }
+
+
     }
 
     private class UIThread implements Runnable {
         public void run() {
-            view.draw(canvas);
+            renderer.draw(canvas);
         }
     }
 }

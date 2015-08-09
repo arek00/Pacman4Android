@@ -145,7 +145,7 @@ public class NormalLevelInitializer {
     }
 
     private IPlayer initializePlayer() {
-        IPlayer player = new Player(new PointF(0, 0), 5, 10);
+        IPlayer player = new Player(new PointF(0, 0), 1, 20);
 
         NullPointerValidator.validate(player);
         return player;

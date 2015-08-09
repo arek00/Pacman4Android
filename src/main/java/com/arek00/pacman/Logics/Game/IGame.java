@@ -24,7 +24,7 @@ public interface IGame {
 
     public ICharacter getPlayer();
 
-    public View getView();
+    public View getRenderer();
 
     public GameState getGameState();
 
