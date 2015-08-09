@@ -47,6 +47,24 @@ android:layout_weight="8">
         android:layout_gravity="center_vertical"
         android:layout_marginRight="10dp"/>
 
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/balls_remaining"
+                android:id="@+id/ballsRemainingLabel"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/ballsRemainingNumber"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical"/>
+
 </LinearLayout>
 
 <FrameLayout

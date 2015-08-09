@@ -9,6 +9,8 @@ import android.util.DisplayMetrics;
 import android.view.*;
 import android.widget.*;
 import com.arek00.pacman.Config.GraphicsConfig;
+import com.arek00.pacman.Graphics.Listeners.BallsRemainingListener;
+import com.arek00.pacman.Graphics.Listeners.BallsRemainingObservable;
 import com.arek00.pacman.Graphics.Listeners.Game.FinishGameListener;
 import com.arek00.pacman.Graphics.Listeners.Game.FinishGameObservable;
 import com.arek00.pacman.Graphics.Listeners.Lifes.LifeListener;
@@ -25,7 +27,7 @@ import com.arek00.pacman.R;
 import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
-public class GameActivity extends Activity implements PointsListener, LifeListener, FinishGameListener {
+public class GameActivity extends Activity implements PointsListener, LifeListener, FinishGameListener, BallsRemainingListener {
 
     public final static String POINTS_MESSAGE = "com.arek00.pacman.Activities.POINTS";
     public final static String LIVES_MESSAGE = "com.arek00.pacman.Activities.LIVES";
@@ -76,7 +78,8 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
 
         TextView livesView = (TextView) findViewById(R.id.lifesNumber);
         TextView pointsView = (TextView) findViewById(R.id.pointsNumber);
-        redrawer = new GameViewRefresher(livesView, pointsView);
+        TextView remainingBallsView = (TextView) findViewById(R.id.ballsRemainingNumber);
+        redrawer = new GameViewRefresher(livesView, pointsView, remainingBallsView);
 
         this.game = new Game(initializer.getInitializedLevel(), view, inputHandler, this);
         ((FinishGameObservable) this.game).addOnFinishGameListener(this);
@@ -102,8 +105,10 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
 
         LifeObservable lifeObservable = (LifeObservable) initializer.getInitializedLevel();
         PointsObservable pointsObservable = (PointsObservable) initializer.getInitializedLevel();
+        BallsRemainingObservable ballsObservable = (BallsRemainingObservable) initializer.getInitializedLevel();
         lifeObservable.addLifeListener(this);
         pointsObservable.addPointsListener(this);
+        ballsObservable.addBallsRemainingListener(this);
     }
 
 //    public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -173,19 +178,27 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
 
     }
 
+    public void onBallsRemainingChanged(int ballsRemainingNumber) {
+        redrawer.setBallsRemaining(ballsRemainingNumber);
+        runOnUiThread(redrawer);
+    }
+
 
     /**
      * Just runs activity refreshing on RunOnUIThread
      */
     class GameViewRefresher implements Runnable {
+        private TextView ballsRemainingLabel;
         private TextView livesLabel;
         private TextView pointsLabel;
         private int points;
         private int lives;
+        private int ballsRemaining;
 
-        public GameViewRefresher(TextView livesLabel, TextView pointsLabel) {
+        public GameViewRefresher(TextView livesLabel, TextView pointsLabel, TextView ballsRemainingLabel) {
             this.livesLabel = livesLabel;
             this.pointsLabel = pointsLabel;
+            this.ballsRemainingLabel = ballsRemainingLabel;
         }
 
         public void setPoints(int points) {
@@ -196,9 +209,14 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
             this.lives = lives;
         }
 
+        public void setBallsRemaining(int ballsRemaining) {
+            this.ballsRemaining = ballsRemaining;
+        }
+
         public void run() {
             livesLabel.setText(Integer.toString(this.lives));
             pointsLabel.setText(Integer.toString(this.points));
+            ballsRemainingLabel.setText(Integer.toString(ballsRemaining));
         }
     }
 
@@ -229,6 +247,5 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
             view.setVisibility(this.viewVisibility);
         }
     }
-
 }
 

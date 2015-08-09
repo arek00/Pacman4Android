@@ -3,6 +3,8 @@ package com.arek00.pacman.Logics.Levels.LevelScenarios;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.Log;
+import com.arek00.pacman.Graphics.Listeners.BallsRemainingListener;
+import com.arek00.pacman.Graphics.Listeners.BallsRemainingObservable;
 import com.arek00.pacman.Graphics.Listeners.Lifes.LifeListener;
 import com.arek00.pacman.Graphics.Listeners.Lifes.LifeObservable;
 import com.arek00.pacman.Graphics.Listeners.Points.PointsListener;
@@ -28,7 +30,7 @@ import java.util.List;
 /**
  * Manage logic of a level
  */
-public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable {
+public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable, BallsRemainingObservable {
 
     private IMap map;
     private IPlayer player;
@@ -39,6 +41,7 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
     private PointF inputInformation;
     private LifeObservable lifeObservable;
     private PointsObservable pointsObservable;
+    private BallsRemainingObservable ballsObservable;
 
     public NormalGameLevel(IMap levelMap, IPlayer player, IEnemy[] enemies, InputInterpreter interpreter) {
 
@@ -52,6 +55,7 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
         this.inputInformation = new PointF(0, 0);
         this.lifeObservable = new LifeObservableHandler();
         this.pointsObservable = new PointsObservableHandler();
+        this.ballsObservable = new BallsRemainingObserverHandler();
     }
 
     public void startLevel() {
@@ -71,6 +75,7 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
                         FieldsEnum.BIGBALL.field.getValue(),
                         map.getSize());
 
+        ballsObservable.informBallsRemainingListener();
         lifeObservable.informLifeListeners();
         pointsObservable.informPointsListeners();
 
@@ -105,7 +110,7 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
      * Check if game should be finished and return current game state
      */
     public boolean isFinished() {
-        if (player.getLife() < 0) {
+        if (player.getLife() < 0 || remainingBalls < 1) {
             return true;
         }
         return false;
@@ -261,6 +266,7 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
         fields[ballX][ballY] = FieldsEnum.COLLECTED.field.getValue();
         addPlayersPoint(10);
         --remainingBalls;
+        informBallsRemainingListener();
     }
 
     private void addPlayersPoint(int pointsAmount) {
@@ -295,6 +301,18 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
 
     public void informPointsListeners() {
         pointsObservable.informPointsListeners();
+    }
+
+    public void addBallsRemainingListener(BallsRemainingListener listener) {
+        ballsObservable.addBallsRemainingListener(listener);
+    }
+
+    public void removeBallsRemainingListener(BallsRemainingListener listener) {
+        ballsObservable.removeBallsRemainingListener(listener);
+    }
+
+    public void informBallsRemainingListener() {
+        ballsObservable.informBallsRemainingListener();
     }
 
     class PointsObservableHandler implements PointsObservable {
@@ -334,6 +352,26 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
         public void informLifeListeners() {
             for (LifeListener listener : listeners) {
                 listener.onChangeLife(player.getLife());
+            }
+        }
+    }
+
+    class BallsRemainingObserverHandler implements BallsRemainingObservable {
+        private List<BallsRemainingListener> listeners = new ArrayList<BallsRemainingListener>();
+
+        public void addBallsRemainingListener(BallsRemainingListener listener) {
+            NullPointerValidator.validate(listener);
+            listeners.add(listener);
+        }
+
+        public void removeBallsRemainingListener(BallsRemainingListener listener) {
+            NullPointerValidator.validate(listener);
+            listeners.remove(listener);
+        }
+
+        public void informBallsRemainingListener() {
+            for (BallsRemainingListener listener : listeners) {
+                listener.onBallsRemainingChanged(remainingBalls);
             }
         }
     }
