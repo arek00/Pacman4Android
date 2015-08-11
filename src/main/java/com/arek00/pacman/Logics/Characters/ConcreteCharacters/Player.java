@@ -65,9 +65,12 @@ public class Player implements IPlayer {
 //        float estimatedMove = stepVector * speed * TimeHelper.getDeltaTime();
 
         PointF move = MovementEstimator.calculateMove(this, direction, TimeHelper.getDeltaTime());
+
+        move.x = (Math.abs(move.x) > 1) ? move.x / Math.abs(move.x) : move.x;
+        move.y = (Math.abs(move.y) > 1) ? move.y / Math.abs(move.y) : move.y;
+
         playerPosition.x += move.x;
         playerPosition.y += move.y;
-
 
 //
 //        if (direction.value == MovementDirection.RIGHT.value ||

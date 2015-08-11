@@ -19,6 +19,7 @@ import com.arek00.pacman.Graphics.Listeners.Points.PointsListener;
 import com.arek00.pacman.Graphics.Listeners.Points.PointsObservable;
 import com.arek00.pacman.Graphics.Views.ConcreteViews.GameView;
 import com.arek00.pacman.Initializers.NormalLevelInitializer;
+import com.arek00.pacman.Inputs.Handlers.ConcreteHandlers.AccelerometerHandler;
 import com.arek00.pacman.Inputs.Handlers.ConcreteHandlers.KeyHandler;
 import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Game.Game;
@@ -81,7 +82,7 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
         TextView remainingBallsView = (TextView) findViewById(R.id.ballsRemainingNumber);
         redrawer = new GameViewRefresher(livesView, pointsView, remainingBallsView);
 
-        this.game = new Game(initializer.getInitializedLevel(), view, inputHandler, this);
+        this.game = new Game(initializer.getInitializedLevel(), view, new AccelerometerHandler(this, 100), this);
         ((FinishGameObservable) this.game).addOnFinishGameListener(this);
     }
 

@@ -25,4 +25,10 @@ public class MenuActivity extends Activity {
         startActivity(intent);
         finish();
     }
+
+    public void onCalibrationButtonTouch(View view) {
+        Intent intent = new Intent(this, CalibrationActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

@@ -10,6 +10,7 @@ import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Graphics.Renderers.ConcreteRenderers.SimpleLevelRenderer;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
+import com.arek00.pacman.Inputs.Interpreters.ConcreteInterpreters.AccelerometerInputInterpreter;
 import com.arek00.pacman.Inputs.Interpreters.ConcreteInterpreters.KeyInterpreter;
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Enemy;
@@ -145,7 +146,7 @@ public class NormalLevelInitializer {
     }
 
     private IPlayer initializePlayer() {
-        IPlayer player = new Player(new PointF(0, 0), 1, 20);
+        IPlayer player = new Player(new PointF(0, 0), 1, 5);
 
         NullPointerValidator.validate(player);
         return player;
@@ -305,7 +306,7 @@ public class NormalLevelInitializer {
     }
 
     public InputInterpreter initializeInterpreter() {
-        return new KeyInterpreter();
+        return new AccelerometerInputInterpreter();
     }
 
     public InputInterpreter getInitializedInterpreter() {
