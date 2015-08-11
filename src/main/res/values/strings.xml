@@ -18,7 +18,24 @@
     <string name="results">Results</string>
     <string name="back_to_menu">Click here to back to menu</string>
     <string name="balls_remaining">Balls Remaining</string>
+    <string name="calibration">Calibration</string>
+    <string name="calibrate">Calibrate</string>
+    <string name="calibration_hint">To calibrate accelerometer put your device on flat place and touch button calibrate.</string>
+    <string name="calibration_offsetx">Offset X:</string>
+    <string name="calibration_offsety">Offset Y:</string>
+    <string name="calibration_flipx">Flip X</string>
+    <string name="calibration_flipy">Flip Y</string>
+    <string name="set_axle_x">Set Axle X</string>
+    <string name="set_axle_y">Set Axle Y</string>
+    <string name="axle_x">x</string>
+    <string name="axle_y">y</string>
+    <string name="axle_z">z</string>
+    <string name="set_axis_hint">Choose physical accelerometer axis to be interpret as axis ingame</string>
+    <string name="flip_hint">Set if axle should be reversed</string>
 
 
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>

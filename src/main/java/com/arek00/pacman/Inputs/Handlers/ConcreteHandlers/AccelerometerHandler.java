@@ -1,12 +1,14 @@
 package com.arek00.pacman.Inputs.Handlers.ConcreteHandlers;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.graphics.PointF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
+import com.arek00.pacman.Config.AccelerometerConfig;
 import com.arek00.pacman.Inputs.Handlers.InputHandler;
 import com.arek00.pacman.Logics.Characters.MovementDirection;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
@@ -59,10 +61,13 @@ public class AccelerometerHandler implements InputHandler, SensorEventListener {
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
 
-            float y = sensorEvent.values[0];
-            float x = sensorEvent.values[1];
+        Point axis = AccelerometerConfig.getChosenAxis();
+        Point flip = AccelerometerConfig.getAxisFlip();
 
-            accelerometerData.set(x, y);
+        float x = sensorEvent.values[axis.x] * flip.x;
+        float y = sensorEvent.values[axis.y] * flip.y;
+
+        accelerometerData.set(x, y);
 
         Log.i("Accelerometer data: ", accelerometerData.x + " " + accelerometerData.y);
     }
