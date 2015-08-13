@@ -28,9 +28,8 @@ public class CalibrationActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.calibration);
-        loadSettings();
+
         setCalibrationView();
         setValues();
     }
