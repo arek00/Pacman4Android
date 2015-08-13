@@ -48,6 +48,7 @@ public class CalibrationActivity extends Activity {
     }
 
     private void setValues() {
+        loadSettings();
         setOffsets();
         setPlayerAxis();
         setFlipToggles();
@@ -140,11 +141,11 @@ public class CalibrationActivity extends Activity {
 
     public void onReturnButtonClick(View view) {
         Intent intent = new Intent(this, MenuActivity.class);
-        startActivity(intent);
         finish();
+        startActivity(intent);
     }
 
-    public void onRestoreDefaultSettingsClic(View view) {
+    public void onRestoreDefaultSettingsClick(View view) {
         AccelerometerConfig.setDefaultSettings();
         setValues();
     }

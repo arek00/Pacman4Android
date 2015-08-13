@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.*;
 import android.widget.*;
+import com.arek00.pacman.Config.AccelerometerConfig;
 import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Graphics.Listeners.BallsRemainingListener;
 import com.arek00.pacman.Graphics.Listeners.BallsRemainingObservable;
@@ -53,6 +54,7 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
         setContentView(R.layout.game);
 
         initialize(this);
+        AccelerometerConfig.loadSettings(getSharedPreferences(AccelerometerConfig.CALIBRATION_SETTINGS_FILE_NAME, Context.MODE_PRIVATE));
         game.startGame();
         setTitle(R.string.app_name);
     }

@@ -249,7 +249,7 @@
                     android:layout_height="56dp"
                     android:text="@string/default_settings"
                     android:id="@+id/restoreDefaultButton"
-                    android:onClick="onRestoreDefaultSettingsClic"
+                    android:onClick="onRestoreDefaultSettingsClick"
                     android:textColor="#ffffffff"
                     android:background="@drawable/button_bg"/>
 
