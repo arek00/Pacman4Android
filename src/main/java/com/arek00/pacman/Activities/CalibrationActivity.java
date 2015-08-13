@@ -1,7 +1,9 @@
 package com.arek00.pacman.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -9,7 +11,6 @@ import android.view.View;
 import android.widget.*;
 import com.arek00.pacman.Config.AccelerometerConfig;
 import com.arek00.pacman.Graphics.Views.ConcreteViews.CalibrationView;
-import com.arek00.pacman.Inputs.Handlers.ConcreteHandlers.AccelerometerHandler;
 import com.arek00.pacman.R;
 
 import java.util.ArrayList;
@@ -29,9 +30,17 @@ public class CalibrationActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.calibration);
+        loadSettings();
         setCalibrationView();
         setValues();
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        saveSettings();
+    }
+
 
     private void setCalibrationView() {
         this.calibrationView = new CalibrationView(this);
@@ -139,6 +148,18 @@ public class CalibrationActivity extends Activity {
     public void onRestoreDefaultSettingsClic(View view) {
         AccelerometerConfig.setDefaultSettings();
         setValues();
+    }
+
+
+    private void saveSettings() {
+        SharedPreferences settings = getSharedPreferences(AccelerometerConfig.CALIBRATION_SETTINGS_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor settingsEditor = settings.edit();
+        AccelerometerConfig.saveSettings(settingsEditor);
+    }
+
+    private void loadSettings() {
+        SharedPreferences settings = getSharedPreferences(AccelerometerConfig.CALIBRATION_SETTINGS_FILE_NAME, Context.MODE_PRIVATE);
+        AccelerometerConfig.loadSettings(settings);
     }
 
 }
