@@ -84,7 +84,8 @@
                     android:text="@string/calibrate"
                     android:id="@+id/calibrateButton"
                     android:background="@drawable/button_bg"
-                    android:textColor="#ffffffff"/>
+                    android:textColor="#ffffffff"
+                    android:onClick="onCalibrateButtonClick"/>
 
             <TextView
                     android:layout_width="wrap_content"
@@ -116,21 +117,24 @@
                             android:layout_height="wrap_content"
                             android:text="@string/axle_x"
                             android:id="@+id/xToXRadio"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"/>
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                            android:onClick="onRadioButtonClick"/>
 
                     <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/axle_y"
                             android:id="@+id/xToYRadio"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"/>
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                            android:onClick="onRadioButtonClick"/>
 
                     <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/axle_z"
                             android:id="@+id/xToZRadio"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"/>
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                            android:onClick="onRadioButtonClick"/>
                 </RadioGroup>
 
                 <RadioGroup
@@ -151,21 +155,24 @@
                             android:layout_height="wrap_content"
                             android:text="@string/axle_x"
                             android:id="@+id/yToXRadio"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"/>
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                            android:onClick="onRadioButtonClick"/>
 
                     <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/axle_y"
                             android:id="@+id/yToYRadio"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"/>
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                            android:onClick="onRadioButtonClick"/>
 
                     <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/axle_z"
-                            android:id="@+id/yToXZRadio"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"/>
+                            android:id="@+id/yToZRadio"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                            android:onClick="onRadioButtonClick"/>
                 </RadioGroup>
             </LinearLayout>
 
@@ -196,7 +203,9 @@
                         android:id="@+id/flipXToggle"
                         android:layout_marginLeft="40dp"
                         android:textOff="@string/no"
-                        android:textOn="@string/yes"/>
+                        android:textOn="@string/yes"
+                        android:checked="false"
+                        android:onClick="onFlipToggleClick"/>
             </LinearLayout>
 
             <LinearLayout
@@ -220,10 +229,29 @@
                         android:layout_marginLeft="40dp"
                         android:textOff="@string/no"
                         android:textOn="@string/yes"
-                        android:checked="false"/>
+                        android:checked="false"
+                        android:onClick="onFlipToggleClick"/>
 
 
             </LinearLayout>
+
+            <Button
+                    android:layout_width="150dp"
+                    android:layout_height="56dp"
+                    android:text="@string/back_to_menu_short"
+                    android:id="@+id/backToMenuButton"
+                    android:onClick="onReturnButtonClick"
+                    android:background="@drawable/button_bg"
+                    android:textColor="#ffffffff"/>
+
+            <Button
+                    android:layout_width="150dp"
+                    android:layout_height="56dp"
+                    android:text="@string/default_settings"
+                    android:id="@+id/restoreDefaultButton"
+                    android:onClick="onRestoreDefaultSettingsClic"
+                    android:textColor="#ffffffff"
+                    android:background="@drawable/button_bg"/>
 
         </LinearLayout>
     </ScrollView>

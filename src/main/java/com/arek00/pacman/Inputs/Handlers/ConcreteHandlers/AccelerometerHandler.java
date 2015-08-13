@@ -10,7 +10,6 @@ import android.hardware.SensorManager;
 import android.util.Log;
 import com.arek00.pacman.Config.AccelerometerConfig;
 import com.arek00.pacman.Inputs.Handlers.InputHandler;
-import com.arek00.pacman.Logics.Characters.MovementDirection;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 import com.arek00.pacman.Utils.Validators.NumberValidator;
 
@@ -61,11 +60,12 @@ public class AccelerometerHandler implements InputHandler, SensorEventListener {
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
 
-        Point axis = AccelerometerConfig.getChosenAxis();
+        Point axis = AccelerometerConfig.getPlayerAxis();
         Point flip = AccelerometerConfig.getAxisFlip();
+        PointF offset = AccelerometerConfig.getCalibratedOffset();
 
-        float x = sensorEvent.values[axis.x] * flip.x;
-        float y = sensorEvent.values[axis.y] * flip.y;
+        float x = (sensorEvent.values[axis.x] + offset.x) * flip.x;
+        float y = (sensorEvent.values[axis.y] + offset.y) * flip.y;
 
         accelerometerData.set(x, y);
 

@@ -120,7 +120,7 @@ public class Game implements IGame, FinishGameObservable {
                 if (state == GameState.RUNNING) {
                     level.update();
                 }
-                activity.runOnUiThread(uiDrawThread);
+              //  activity.runOnUiThread(uiDrawThread);
 
                 if (isFinishedGame()) {
                     finishGame();

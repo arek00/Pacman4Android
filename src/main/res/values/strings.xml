@@ -17,6 +17,8 @@
     <string name="game_paused">Game is paused. \nTouch here to continue.</string>
     <string name="results">Results</string>
     <string name="back_to_menu">Click here to back to menu</string>
+    <string name="back_to_menu_short">Back to menu</string>
+    <string name="default_settings">Restore default</string>
     <string name="balls_remaining">Balls Remaining</string>
     <string name="calibration">Calibration</string>
     <string name="calibrate">Calibrate</string>

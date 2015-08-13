@@ -13,10 +13,10 @@ public class AccelerometerConfig {
     public static final int Z_AXIS = 2;
 
     private static PointF offset;
-    private static int chosenXAxis;
-    private static int chosenYAxis;
-    private static boolean flipChosenXAxis;
-    private static boolean flipChosenYAxis;
+    private static int playerXAxis;
+    private static int playerYAxis;
+    private static boolean flipPlayerXAxis;
+    private static boolean flipPlayerYAxis;
 
 
     /**
@@ -26,37 +26,38 @@ public class AccelerometerConfig {
     }
 
 
-    private static void setDefaultSettings() {
-        chosenXAxis = X_AXIS;
-        chosenYAxis = Y_AXIS;
-        flipChosenXAxis = false;
-        flipChosenYAxis = false;
+    public static void setDefaultSettings() {
+        playerXAxis = X_AXIS;
+        playerYAxis = Y_AXIS;
+        flipPlayerXAxis = false;
+        flipPlayerYAxis = false;
+        offset = new PointF(0, 0);
     }
 
     public static void calibrate(PointF calibrationOffset) {
-        offset.x = calibrationOffset.x;
-        offset.y = calibrationOffset.y;
+        offset.x += calibrationOffset.x * getAxisFlip().x;
+        offset.y += calibrationOffset.y * getAxisFlip().y;
     }
 
-    public static void setAxis(int xAxle, int yAxle) {
-        validateAxis(xAxle);
-        validateAxis(yAxle);
+    public static void setAxis(int xAxis, int yAxis) {
+        validateAxis(xAxis);
+        validateAxis(yAxis);
 
-        chosenXAxis = xAxle;
-        chosenYAxis = yAxle;
+        playerXAxis = xAxis;
+        playerYAxis = yAxis;
     }
 
     public static void setFlipX(boolean isFlip) {
-        flipChosenXAxis = isFlip;
+        flipPlayerXAxis = isFlip;
     }
 
     public static void setFlipY(boolean isFlip) {
-        flipChosenYAxis = isFlip;
+        flipPlayerYAxis = isFlip;
     }
 
-    private static void validateAxis(int axle) {
-        if (axle < 0 || axle > 2) {
-            throw new IllegalArgumentException("Chosen axle is incorrect");
+    private static void validateAxis(int axis) {
+        if (axis < 0 || axis > 2) {
+            throw new IllegalArgumentException("Chosen axis is incorrect");
         }
     }
 
@@ -64,14 +65,32 @@ public class AccelerometerConfig {
         return offset;
     }
 
-    public static Point getChosenAxis() {
-        return new Point(chosenXAxis, chosenYAxis);
+    public static Point getPlayerAxis() {
+        return new Point(playerXAxis, playerYAxis);
     }
 
     public static Point getAxisFlip() {
-        int flipX = (flipChosenXAxis) ? -1 : 1;
-        int flipY = (flipChosenYAxis) ? -1 : 1;
+        int flipX = (flipPlayerXAxis) ? -1 : 1;
+        int flipY = (flipPlayerYAxis) ? -1 : 1;
 
         return new Point(flipX, flipY);
+    }
+
+    /**
+     * @param axisName
+     * @return 0 - x, 1 - y, 2 - z, -1 - otherwise
+     */
+    public static int getAxisIdFromString(String axisName) {
+        String text = axisName.toLowerCase();
+
+        if (text.contains("x")) {
+            return AccelerometerConfig.X_AXIS;
+        } else if (text.contains("y")) {
+            return AccelerometerConfig.Y_AXIS;
+        } else if (text.contains("z")) {
+            return AccelerometerConfig.Z_AXIS;
+        } else {
+            return -1;
+        }
     }
 }
