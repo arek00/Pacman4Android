@@ -5,39 +5,68 @@
               android:layout_height="match_parent"
               android:weightSum="1">
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/choose_level"
-            android:id="@+id/chooseLevelLabel"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal"/>
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/choose_enemies_number"
-            android:id="@+id/chooseEnemiesLabel"
-            android:editable="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
-
-    <NumberPicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/enemiesNumberPicker"
-            android:gravity="center_vertical|center_horizontal"
+    <GridLayout
             android:orientation="horizontal"
-            android:layout_gravity="center"
-            style="@android:style/MediaButton"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:clickable="true"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/choose_level"
+                android:id="@+id/chooseLevelLabel"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="left|center_vertical"/>
+
+            <view
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    class="com.arek00.pacman.Graphics.Views.ConcreteViews.MapPicker"
+                    android:id="@+id/view"
+                    android:orientation="vertical"/>
+
+    </GridLayout>
+
+    <GridLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/choose_enemies_number"
+                android:id="@+id/chooseEnemiesLabel"
+                android:editable="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="left"
+                android:layout_gravity="center_vertical"/>
+
+        <NumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/enemiesNumberPicker"
+                android:orientation="horizontal"
+                style="@android:style/MediaButton"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:layout_gravity="center_horizontal|right"/>
+    </GridLayout>
+
+    <GridLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center">
 
         <TextView
                 android:layout_width="wrap_content"
@@ -47,7 +76,7 @@
                 android:id="@+id/playerLivesLabel"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/button"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"/>
 
@@ -58,14 +87,15 @@
                 android:id="@+id/playerLivesPicker"
                 android:gravity="center_vertical|center_horizontal"
                 android:orientation="horizontal"
-                android:layout_gravity="center"
+                android:layout_gravity="center|right"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:clickable="true">
 
         </NumberPicker>
+    </GridLayout>
 
-        <RelativeLayout
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="right"
@@ -97,6 +127,6 @@
                 android:background="@drawable/button_bg"
                 android:onClick="onStartGame"/>
 
-        </RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>

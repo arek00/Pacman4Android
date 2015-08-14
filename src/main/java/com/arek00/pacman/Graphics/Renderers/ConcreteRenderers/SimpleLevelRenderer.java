@@ -12,11 +12,7 @@ import com.arek00.pacman.Graphics.Renderers.Utils.Occlusion;
 import com.arek00.pacman.Graphics.Renderers.Utils.OcclusionEstimator;
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
-import com.arek00.pacman.Logics.Characters.IEnemy;
-import com.arek00.pacman.Logics.Characters.MovementDirection;
-import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
-import com.arek00.pacman.Logics.Game.GameState;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.R;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
@@ -130,7 +126,7 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
      *
      * @param canvas
      */
-    private void drawOnPausedInfo(Canvas canvas) {
+    private void drawOnPauseInfo(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setTextSize(85);
