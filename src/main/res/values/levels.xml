@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Resource file that stores links to images, that contain map schemes.
+
+-->
+
+<resources>
+    <string name="testing_level">images/map1.png</string>
+</resources>

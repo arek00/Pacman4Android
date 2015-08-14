@@ -15,6 +15,8 @@ import com.arek00.pacman.Utils.Validators.NumberValidator;
  */
 public class Player implements IPlayer {
 
+    public final static int PLAYER_MEDIUM_SPEED = 5;
+
     private PointF playerPosition;
     private int life;
     private int points = 0;

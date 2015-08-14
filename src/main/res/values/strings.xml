@@ -10,6 +10,7 @@
     <string name="about_button">Credits</string>
     <string name="choose_level">Choose Level</string>
     <string name="choose_enemies_number">Choose Enemies Number</string>
+    <string name="choose_lives_number">Choose Lives</string>
     <string name="go_back_button">Go Back</string>
     <string name="start_game_button">Start Game</string>
     <string name="lifes_number_label">Lifes</string>

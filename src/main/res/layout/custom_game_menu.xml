@@ -30,18 +30,46 @@
     <NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/numberPicker"
+            android:id="@+id/enemiesNumberPicker"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="horizontal"
             android:layout_gravity="center"
             style="@android:style/MediaButton"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:clickable="true"/>
 
-    <RelativeLayout
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/choose_lives_number"
+                android:id="@+id/playerLivesLabel"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/button"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+        <NumberPicker
+                style="@android:style/MediaButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/playerLivesPicker"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true">
+
+        </NumberPicker>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="right">
+            android:layout_gravity="right"
+            android:id="@+id/buttonsLayout">
 
         <Button
                 android:layout_width="180dp"
@@ -68,6 +96,7 @@
                 android:textColor="#ffffffff"
                 android:background="@drawable/button_bg"
                 android:onClick="onStartGame"/>
-    </RelativeLayout>
+
+        </RelativeLayout>
 
 </LinearLayout>

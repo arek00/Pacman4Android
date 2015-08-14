@@ -141,8 +141,8 @@ public class CalibrationActivity extends Activity {
 
     public void onReturnButtonClick(View view) {
         Intent intent = new Intent(this, MenuActivity.class);
-        finish();
         startActivity(intent);
+        finish();
     }
 
     public void onRestoreDefaultSettingsClick(View view) {

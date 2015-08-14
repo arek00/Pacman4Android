@@ -21,10 +21,7 @@ public class MenuActivity extends Activity {
         setContentView(R.layout.main_menu);
     }
 
-
     public void onStartGameTouch(View view) {
-        Toast toast = Toast.makeText(this, "Start the Game", Toast.LENGTH_SHORT);
-        toast.show();
         Intent intent = new Intent(this, SelectCustomGameActivity.class);
         startActivity(intent);
         finish();
@@ -34,10 +31,5 @@ public class MenuActivity extends Activity {
         Intent intent = new Intent(this, CalibrationActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    private void loadAccelerometerSettings() {
-        SharedPreferences settings = getSharedPreferences(AccelerometerConfig.CALIBRATION_SETTINGS_FILE_NAME, Context.MODE_PRIVATE);
-        AccelerometerConfig.loadSettings(settings);
     }
 }
