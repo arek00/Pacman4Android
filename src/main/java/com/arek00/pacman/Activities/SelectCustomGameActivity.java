@@ -16,6 +16,10 @@ public class SelectCustomGameActivity extends Activity {
     private final int MAX_ENEMIES_NUMBER = 16;
     private final int MAX_LIVES = 99;
 
+    public static final String LEVEL_ID_MESSAGE = "com.arek00.Activities.levelId";
+    public static final String STARTING_LIVES_MESSAGE = "com.arek00.Activities.startingLives";
+    public static final String STARTING_ENEMIES_MESSAGE = "com.arek00.Activities.startingEnemies";
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_game_menu);
@@ -26,8 +30,20 @@ public class SelectCustomGameActivity extends Activity {
         Toast toast = Toast.makeText(this, "Start the Game", Toast.LENGTH_SHORT);
         toast.show();
         Intent intent = new Intent(this, GameActivity.class);
+        putExtrasToGame(intent);
         startActivity(intent);
         finish();
+    }
+
+
+    private void putExtrasToGame(Intent intent) {
+        NumberPicker levelPicker = (NumberPicker) findViewById(R.id.levelIDPicker);
+        NumberPicker livesPicker = (NumberPicker) findViewById(R.id.playerLivesPicker);
+        NumberPicker enemiesPicker = (NumberPicker) findViewById(R.id.enemiesNumberPicker);
+
+        intent.putExtra(SelectCustomGameActivity.LEVEL_ID_MESSAGE, levelPicker.getValue());
+        intent.putExtra(SelectCustomGameActivity.STARTING_ENEMIES_MESSAGE, enemiesPicker.getValue());
+        intent.putExtra(SelectCustomGameActivity.STARTING_LIVES_MESSAGE, livesPicker.getValue());
     }
 
     public void onReturn(View view) {

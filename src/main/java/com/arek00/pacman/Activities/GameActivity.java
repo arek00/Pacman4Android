@@ -10,6 +10,7 @@ import android.view.*;
 import android.widget.*;
 import com.arek00.pacman.Config.AccelerometerConfig;
 import com.arek00.pacman.Config.GraphicsConfig;
+import com.arek00.pacman.Factories.LevelFactory;
 import com.arek00.pacman.Graphics.Listeners.BallsRemainingListener;
 import com.arek00.pacman.Graphics.Listeners.BallsRemainingObservable;
 import com.arek00.pacman.Graphics.Listeners.Game.FinishGameListener;
@@ -18,13 +19,18 @@ import com.arek00.pacman.Graphics.Listeners.Lifes.LifeListener;
 import com.arek00.pacman.Graphics.Listeners.Lifes.LifeObservable;
 import com.arek00.pacman.Graphics.Listeners.Points.PointsListener;
 import com.arek00.pacman.Graphics.Listeners.Points.PointsObservable;
+import com.arek00.pacman.Graphics.Renderers.ConcreteRenderers.SimpleLevelRenderer;
+import com.arek00.pacman.Graphics.Renderers.Renderer;
 import com.arek00.pacman.Graphics.Views.ConcreteViews.GameView;
 import com.arek00.pacman.Initializers.NormalLevelInitializer;
 import com.arek00.pacman.Inputs.Handlers.ConcreteHandlers.AccelerometerHandler;
 import com.arek00.pacman.Inputs.Handlers.ConcreteHandlers.KeyHandler;
+import com.arek00.pacman.Inputs.Handlers.InputHandler;
 import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Game.Game;
 import com.arek00.pacman.Logics.Game.IGame;
+import com.arek00.pacman.Logics.Levels.ILevel;
+import com.arek00.pacman.Logics.Levels.LevelScenarios.NormalGameLevel;
 import com.arek00.pacman.R;
 import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
@@ -37,7 +43,7 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
     private IGame game;
     private GameView view;
     private KeyHandler inputHandler;
-    private GameViewRefresher redrawer;
+    private GameViewRefresher refresher;
     private ViewVisibilityHandler pausedGameButtonVisibilityHandler;
 
     /**
@@ -54,6 +60,7 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
         setContentView(R.layout.game);
 
         initialize(this);
+
         AccelerometerConfig.loadSettings(getSharedPreferences(AccelerometerConfig.CALIBRATION_SETTINGS_FILE_NAME, Context.MODE_PRIVATE));
         game.startGame();
         setTitle(R.string.app_name);
@@ -73,27 +80,31 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
      * @param context
      */
     private void initialize(Context context) {
-        NormalLevelInitializer initializer = new NormalLevelInitializer(context);
-
-        initializeGame(context, initializer);
+        initializeGame(context);
         initializeLayout();
-        initializeListeners(initializer);
-
-        TextView livesView = (TextView) findViewById(R.id.lifesNumber);
-        TextView pointsView = (TextView) findViewById(R.id.pointsNumber);
-        TextView remainingBallsView = (TextView) findViewById(R.id.ballsRemainingNumber);
-        redrawer = new GameViewRefresher(livesView, pointsView, remainingBallsView);
-
-        this.game = new Game(initializer.getInitializedLevel(), view, new AccelerometerHandler(this, 100), this);
-        ((FinishGameObservable) this.game).addOnFinishGameListener(this);
+        initializeLabels();
     }
 
 
-    private void initializeGame(Context context, NormalLevelInitializer initializer) {
-        this.inputHandler = new KeyHandler();
-        this.view = new GameView(this, initializer.getInitializedRenderer());
-        this.view.setRenderer(initializer.getInitializedRenderer());
+    private void initializeGame(Context context) {
+
+        Intent intent = getIntent();
+        int levelID = intent.getIntExtra(SelectCustomGameActivity.LEVEL_ID_MESSAGE, 0);
+        int livesAmount = intent.getIntExtra(SelectCustomGameActivity.STARTING_LIVES_MESSAGE, 3);
+        int enemiesAmount = intent.getIntExtra(SelectCustomGameActivity.STARTING_ENEMIES_MESSAGE, 5);
+
+        ILevel level = LevelFactory.createLevel(levelID, enemiesAmount, livesAmount, context);
+        initializeListeners((NormalGameLevel) level);
+
+        Renderer gameRenderer = LevelFactory.createLevelRenderer(level, context);
+        this.view = new GameView(context, gameRenderer);
         this.view.addListener(new TimeHelper());
+
+        InputHandler inputHandler = new AccelerometerHandler(context, 100);
+
+        this.game = new Game(level, this.view, inputHandler, this);
+        ((FinishGameObservable) this.game).addOnFinishGameListener(this);
+
     }
 
     private void initializeLayout() {
@@ -104,26 +115,21 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
         pausedGameButtonVisibilityHandler = new ViewVisibilityHandler(child, layout);
     }
 
-    private void initializeListeners(NormalLevelInitializer initializer) {
-
-        LifeObservable lifeObservable = (LifeObservable) initializer.getInitializedLevel();
-        PointsObservable pointsObservable = (PointsObservable) initializer.getInitializedLevel();
-        BallsRemainingObservable ballsObservable = (BallsRemainingObservable) initializer.getInitializedLevel();
+    private void initializeListeners(NormalGameLevel level) {
+        LifeObservable lifeObservable = level;
+        PointsObservable pointsObservable = level;
+        BallsRemainingObservable ballsObservable = level;
         lifeObservable.addLifeListener(this);
         pointsObservable.addPointsListener(this);
         ballsObservable.addBallsRemainingListener(this);
     }
 
-//    public boolean onTouch(View view, MotionEvent motionEvent) {
-//
-//        Log.i("ACTIVITY OnTouch", "Touch at: X: " + motionEvent.getX() + " Y: " + motionEvent.getY());
-//        PointF input = new PointF(motionEvent.getX(), motionEvent.getY());
-//
-//        game.movePlayer();
-//
-//        return false;
-//    }
-
+    private void initializeLabels() {
+        TextView livesView = (TextView) findViewById(R.id.lifesNumber);
+        TextView pointsView = (TextView) findViewById(R.id.pointsNumber);
+        TextView remainingBallsView = (TextView) findViewById(R.id.ballsRemainingNumber);
+        refresher = new GameViewRefresher(livesView, pointsView, remainingBallsView);
+    }
 
     @Override
     public boolean onKeyDown(int i, KeyEvent keyEvent) {
@@ -149,13 +155,13 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
     }
 
     public void onChangePoints(int currentPointsNumber) {
-        redrawer.setPoints(currentPointsNumber);
-        runOnUiThread(redrawer);
+        refresher.setPoints(currentPointsNumber);
+        runOnUiThread(refresher);
     }
 
     public void onChangeLife(int currentLifeNumber) {
-        redrawer.setLives(currentLifeNumber);
-        runOnUiThread(redrawer);
+        refresher.setLives(currentLifeNumber);
+        runOnUiThread(refresher);
         game.pauseGame();
 
         pausedGameButtonVisibilityHandler.setVisible();
@@ -182,8 +188,8 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
     }
 
     public void onBallsRemainingChanged(int ballsRemainingNumber) {
-        redrawer.setBallsRemaining(ballsRemainingNumber);
-        runOnUiThread(redrawer);
+        refresher.setBallsRemaining(ballsRemainingNumber);
+        runOnUiThread(refresher);
     }
 
 

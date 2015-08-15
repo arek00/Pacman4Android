@@ -11,7 +11,6 @@ import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Enemy;
 import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Player;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IEnemy;
-import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
 import com.arek00.pacman.Logics.Characters.MovementStrategies.ConcreteStrategies.RandomMovementStrategy;
 import com.arek00.pacman.Logics.Characters.MovementStrategies.IMovementStrategy;
 import com.arek00.pacman.Utils.DataHelpers.AssetsHelper;

@@ -31,6 +31,7 @@ public class CalibrationActivity extends Activity {
         setContentView(R.layout.calibration);
 
         setCalibrationView();
+        loadSettings();
         setValues();
     }
 
@@ -48,7 +49,6 @@ public class CalibrationActivity extends Activity {
     }
 
     private void setValues() {
-        loadSettings();
         setOffsets();
         setPlayerAxis();
         setFlipToggles();
