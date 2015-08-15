@@ -2,11 +2,9 @@
 
 <resources>
     <string-array name="mapSchemes">
-        <item>images/map1.png</item>
-        <item>images/map1.png</item>
-        <item>images/map1.png</item>
-        <item>images/map1.png</item>
-        <item>images/map1.png</item>
-        <item>images/map1.png</item>
+        <item>images/maps/map1.png</item>
+        <item>images/maps/map2.png</item>
+        <item>images/maps/map3.png</item>
+        <item>images/maps/map4.png</item>
     </string-array>
 </resources>
