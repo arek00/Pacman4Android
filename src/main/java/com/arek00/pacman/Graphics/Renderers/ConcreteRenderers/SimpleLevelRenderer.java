@@ -42,6 +42,16 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
      * @param mapTiles
      */
     public SimpleLevelRenderer(ILevel level, Drawable playerDrawable, Drawable[] enemyDrawables, Drawable[] mapTiles) {
+        validateArguments(level, playerDrawable, enemyDrawables, mapTiles);
+
+        this.level = level;
+        this.player = new DrawableCharacter(level.getPlayer(), playerDrawable);
+
+        initializeEnemies(enemyDrawables);
+        initializeFields(mapTiles);
+    }
+
+    private void validateArguments(ILevel level, Drawable playerDrawable, Drawable[] enemyDrawables, Drawable[] mapTiles) {
         NullPointerValidator.validate(level);
         NullPointerValidator.validate(playerDrawable);
         NullPointerValidator.validate(enemyDrawables);
@@ -50,12 +60,6 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         if (mapTiles.length < FieldsEnum.values().length - 1) {
             throw new IllegalArgumentException("mapTiles does not contains all required elements inside.");
         }
-
-        this.level = level;
-        this.player = new DrawableCharacter(level.getPlayer(), playerDrawable);
-
-        initializeEnemies(enemyDrawables);
-        initializeFields(mapTiles);
     }
 
     private void initializeFields(Drawable[] mapTiles) {

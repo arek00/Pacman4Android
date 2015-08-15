@@ -54,7 +54,6 @@ public class EnemiesFactory {
         return enemiesDrawable;
     }
 
-
     public static IEnemy[] createEnemies(int enemiesNumber, ICharacter player) {
         NumberValidator.checkNegativeNumber(enemiesNumber);
         NumberValidator.checkNumberIsZero(enemiesNumber);
