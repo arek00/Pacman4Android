@@ -24,12 +24,11 @@ import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 public class SimpleLevelRenderer implements Renderer, ILevel {
 
     private ILevel level;
-    private DrawableCharacter player;
-    private DrawableCharacter[] enemies;
+    private Drawable player;
+    private Drawable[] enemies;
     private MapTileField[] fields;
 
     private float offsetX = 0, offsetY = 0;
-
 
     /**
      * Define renderer with given level, player drawable and array of map tiles drawables.
@@ -45,9 +44,9 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         validateArguments(level, playerDrawable, enemyDrawables, mapTiles);
 
         this.level = level;
-        this.player = new DrawableCharacter(level.getPlayer(), playerDrawable);
+        this.player = playerDrawable;
+        this.enemies = enemyDrawables;
 
-        initializeEnemies(enemyDrawables);
         initializeFields(mapTiles);
     }
 
@@ -71,17 +70,6 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
             this.fields[i] = new MapTileField(mapTiles[i], FieldsEnum.getFieldByIndex(i));
         }
     }
-
-    private void initializeEnemies(Drawable[] enemyDrawables) {
-        this.enemies = new DrawableCharacter[enemyDrawables.length];
-        ICharacter[] enemiesArray = level.getEnemies();
-
-        for (int iterator = 0; iterator < enemyDrawables.length; iterator++) {
-            this.enemies[iterator] = new DrawableCharacter(enemiesArray[iterator],
-                    enemyDrawables[iterator]);
-        }
-    }
-
 
     public void draw(Canvas canvas) {
         NullPointerValidator.validate(canvas);
@@ -146,18 +134,29 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
 
     private void drawCharacters(Canvas canvas) {
         NullPointerValidator.validate(canvas);
+        drawPlayer(canvas);
+        drawEnemies(canvas);
+    }
+
+    private void drawPlayer(Canvas canvas) {
+        NullPointerValidator.validate(canvas);
 
         int tileSize = GraphicsConfig.getTileSize();
 
-        PointF position = player.getPosition();
+        PointF position = level.getPlayer().getPosition();
         player.draw(canvas, position.x * tileSize, position.y * tileSize);
+    }
 
-        for (DrawableCharacter enemy : enemies) {
-            enemy.draw(canvas, enemy.getPosition().x * tileSize, enemy.getPosition().y * tileSize);
+    private void drawEnemies(Canvas canvas) {
+        int tileSize = GraphicsConfig.getTileSize();
+        PointF position = new PointF(0f, 0f);
+
+        IEnemy[] enemiesArray = level.getEnemies();
+        int enemiesCount = enemiesArray.length;
+        for (int index = 0; index < enemiesCount; index++) {
+            position.set(enemiesArray[index].getPosition());
+            enemies[index].draw(canvas, position.x * tileSize, position.y * tileSize);
         }
-
-        // Log.i("DRAW PlAYER", "X: " + position.x * GraphicsConfig.getTileSize() +
-        //  " Y: " + position.y * GraphicsConfig.getTileSize());
     }
 
     public void startLevel() {
@@ -201,8 +200,9 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
     }
 
     private void calculateOffset() {
-        float playerX = player.getPosition().x;
-        float playerY = player.getPosition().y;
+        float playerX = level.getPlayer().getPosition().x;
+        float playerY = level.getPlayer().getPosition().y;
+
         Point screenSize = GraphicsConfig.getScreenSize();
 
         float playerOnScreenX = playerX * GraphicsConfig.getTileSize();
@@ -215,20 +215,4 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         this.offsetY = centerY - playerOnScreenY;
 
     }
-
-//    private void calculateOcclusions
-
-
-//    private float validateOffsetX(float offset) {
-//        int mapSize = getMapSize().x;
-//        int tileSize = GraphicsConfig.getTileSize();
-//        int screenSize = GraphicsConfig.getScreenSize().x;
-//
-//        if (offset > 0) {
-//            offset = 0;
-//        }
-//
-//        if (-offset > (mapSize * tileSize) -  screenSize)
-//        return (mapSize * tileSize) -  screenSize;
-//    }
 }

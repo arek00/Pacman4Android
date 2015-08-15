@@ -20,6 +20,8 @@ import com.arek00.pacman.Utils.Validators.NullPointerValidator;
  */
 public class LevelFactory {
 
+    private LevelFactory() {
+    }
 
     /**
      * Create level from parameters given from player.

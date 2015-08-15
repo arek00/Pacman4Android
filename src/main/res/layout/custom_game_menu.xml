@@ -26,7 +26,7 @@
                     android:layout_height="wrap_content"
                     class="com.arek00.pacman.Graphics.Views.ConcreteViews.MapPicker"
                     android:id="@+id/view"
-                    android:orientation="vertical"/>
+                    android:orientation="horizontal"/>
 
     </GridLayout>
 

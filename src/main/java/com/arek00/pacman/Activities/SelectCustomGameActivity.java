@@ -22,7 +22,6 @@ public class SelectCustomGameActivity extends Activity {
         initializePickers();
     }
 
-
     public void onStartGame(View view) {
         Toast toast = Toast.makeText(this, "Start the Game", Toast.LENGTH_SHORT);
         toast.show();
