@@ -9,6 +9,7 @@ import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
 import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Player;
 import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Utils.DataHelpers.AssetsHelper;
+import com.arek00.pacman.Utils.DataHelpers.BitmapRetriever;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,34 +25,22 @@ public class PlayerFactory {
         return player;
     }
 
-
     /**
      * Get instance of drawable player.
      *
-     * @param lives
      * @param context
      * @return
      */
-    public static DrawableCharacter createDrawableCharacter(int lives, Context context) {
-        IPlayer player = createPlayer(lives);
+    public static DrawableCharacter createDrawablePlayer(IPlayer player, Context context) {
         Tile playerTile = createPlayerTile(context);
-
         DrawableCharacter playerDrawable = new DrawableCharacter(player, playerTile);
-
         return playerDrawable;
     }
 
     private static Tile createPlayerTile(Context context) {
-        AssetsHelper helper = new AssetsHelper(context);
-        InputStream stream = null;
+        BitmapRetriever retriever = new BitmapRetriever(context);
+        Bitmap bitmap = retriever.retrieveBitmapFromAssets("images/pacman_sprites.png");
 
-        try {
-            stream = helper.getFileByName("images/pacman_sprites.png");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Bitmap bitmap = BitmapFactory.decodeStream(stream);
         Tile playerTile = new Tile(bitmap, 64, 0, 64, 64);
         return playerTile;
     }

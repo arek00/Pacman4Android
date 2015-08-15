@@ -15,6 +15,8 @@ import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
 import com.arek00.pacman.Logics.Characters.MovementStrategies.ConcreteStrategies.RandomMovementStrategy;
 import com.arek00.pacman.Logics.Characters.MovementStrategies.IMovementStrategy;
 import com.arek00.pacman.Utils.DataHelpers.AssetsHelper;
+import com.arek00.pacman.Utils.DataHelpers.BitmapRetriever;
+import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 import com.arek00.pacman.Utils.Validators.NumberValidator;
 
 import java.io.IOException;
@@ -37,22 +39,35 @@ public class EnemiesFactory {
         return new DrawableCharacter(enemy, enemyTile);
     }
 
-    public static DrawableCharacter[] createEnemies(int enemiesNumber, ICharacter player, Context context) {
+    public static DrawableCharacter[] createEnemies(IEnemy[] enemies, Context context) {
+        NullPointerValidator.validate(enemies);
+
+        int enemiesAmount = enemies.length;
+        DrawableCharacter[] enemiesDrawable = new DrawableCharacter[enemiesAmount];
+
+        for (int index = 0; index < enemiesAmount; index++) {
+            Tile enemyTile = getRandomEnemyTile(context);
+            IEnemy enemy = enemies[index];
+            enemiesDrawable[index] = createDrawableEnemy(enemy, enemyTile);
+        }
+
+        return enemiesDrawable;
+    }
+
+
+    public static IEnemy[] createEnemies(int enemiesNumber, ICharacter player) {
         NumberValidator.checkNegativeNumber(enemiesNumber);
         NumberValidator.checkNumberIsZero(enemiesNumber);
 
-        DrawableCharacter[] enemies = new DrawableCharacter[enemiesNumber];
+        IEnemy[] enemies = new Enemy[enemiesNumber];
 
         for (int index = 0; index < enemiesNumber; index++) {
             IMovementStrategy strategy = new RandomMovementStrategy(50, 100);
-            IEnemy enemy = createEnemy(player, strategy, Player.PLAYER_MEDIUM_SPEED);
-            Tile enemyTile = getRandomEnemyTile(context);
-            enemies[index] = createDrawableEnemy(enemy, enemyTile);
+            enemies[index] = createEnemy(player, strategy, Player.PLAYER_MEDIUM_SPEED);
         }
 
         return enemies;
     }
-
 
     private static Tile getRandomEnemyTile(Context context) {
         Random random = new Random();
@@ -73,16 +88,8 @@ public class EnemiesFactory {
     }
 
     private static Tile getGhostTile(int left, int top, Context context) {
-        AssetsHelper helper = new AssetsHelper(context);
-        InputStream stream = null;
-
-        try {
-            stream = helper.getFileByName("images/ghosts_sprites.png");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Bitmap bitmap = BitmapFactory.decodeStream(stream);
+        BitmapRetriever retriever = new BitmapRetriever(context);
+        Bitmap bitmap = retriever.retrieveBitmapFromAssets("images/ghosts_sprites.png");
         Tile ghost = new Tile(bitmap, left, top, 64, 64);
         return ghost;
     }

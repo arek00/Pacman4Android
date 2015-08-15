@@ -2,7 +2,6 @@ package com.arek00.pacman.Logics.Levels.LevelScenarios;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.util.Log;
 import com.arek00.pacman.Graphics.Listeners.BallsRemainingListener;
 import com.arek00.pacman.Graphics.Listeners.BallsRemainingObservable;
 import com.arek00.pacman.Graphics.Listeners.Lifes.LifeListener;
@@ -15,7 +14,6 @@ import com.arek00.pacman.Logics.Characters.IEnemy;
 import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Characters.MovementDirection;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
-import com.arek00.pacman.Logics.Game.GameState;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.Logics.Levels.Utils.CharacterArea;
 import com.arek00.pacman.Logics.Maps.IMap;
@@ -116,11 +114,11 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
         return false;
     }
 
-    public ICharacter getPlayer() {
+    public IPlayer getPlayer() {
         return player;
     }
 
-    public ICharacter[] getEnemies() {
+    public IEnemy[] getEnemies() {
         return enemies;
     }
 

@@ -1,12 +1,11 @@
 package com.arek00.pacman.Graphics.Views.ConcreteViews;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.NumberPicker;
-import com.arek00.pacman.Logics.Maps.Managers.MapsManager;
+import com.arek00.pacman.Logics.Maps.Managers.MapManager;
 import com.arek00.pacman.Utils.DataHelpers.AssetsHelper;
 
 import java.io.IOException;
@@ -18,7 +17,7 @@ import java.io.InputStream;
  */
 public class MapPicker extends NumberPicker implements NumberPicker.OnValueChangeListener {
 
-    private MapsManager mapsManager;
+    private MapManager mapsManager;
     private Bitmap currentMapBitmap;
     private Context context;
 
@@ -28,13 +27,13 @@ public class MapPicker extends NumberPicker implements NumberPicker.OnValueChang
 
         setWillNotDraw(false);
         this.context = context;
-        this.mapsManager = new MapsManager(context);
+        this.mapsManager = new MapManager(context);
         initializePicker(mapsManager);
         setOnValueChangedListener(this);
         loadBitmap(getValue());
     }
 
-    private void initializePicker(MapsManager manager) {
+    private void initializePicker(MapManager manager) {
         setMinValue(0);
         setMaxValue(mapsManager.getMapsNumber() - 1);
         setOrientation(NumberPicker.HORIZONTAL);

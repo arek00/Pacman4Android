@@ -6,11 +6,11 @@ import com.arek00.pacman.R;
 
 /**
  */
-public class MapsManager {
+public class MapManager {
 
     private String[] mapSchemesPath;
 
-    public MapsManager(Context context) {
+    public MapManager(Context context) {
         this.mapSchemesPath = context.getResources().getStringArray(R.array.mapSchemes);
     }
 

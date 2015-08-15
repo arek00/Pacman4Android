@@ -3,10 +3,8 @@ package com.arek00.pacman.Logics.Levels;
 import android.graphics.Point;
 import android.graphics.PointF;
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
-import com.arek00.pacman.Logics.Characters.ICharacter;
-import com.arek00.pacman.Logics.Characters.MovementDirection;
-import com.arek00.pacman.Logics.Characters.MovementHandlers.IMovementHandler;
-import com.arek00.pacman.Logics.Game.GameState;
+import com.arek00.pacman.Logics.Characters.IEnemy;
+import com.arek00.pacman.Logics.Characters.IPlayer;
 
 /**
  * Abstraction of game level.
@@ -19,9 +17,9 @@ public interface ILevel {
 
     public boolean isFinished();
 
-    public ICharacter getPlayer();
+    public IPlayer getPlayer();
 
-    public ICharacter[] getEnemies();
+    public IEnemy[] getEnemies();
 
     public int getFieldValue(int x, int y);
 

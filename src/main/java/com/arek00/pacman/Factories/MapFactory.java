@@ -5,7 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
+import com.arek00.pacman.Logics.Maps.Generators.ImageMapGenerator;
+import com.arek00.pacman.Logics.Maps.IMap;
+import com.arek00.pacman.Logics.Maps.Managers.MapManager;
 import com.arek00.pacman.Utils.DataHelpers.AssetsHelper;
+import com.arek00.pacman.Utils.DataHelpers.BitmapRetriever;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +28,6 @@ public class MapFactory {
             e.printStackTrace();
         }
 
-
         Bitmap bitmap = BitmapFactory.decodeStream(bitmapStream);
 
         Tile[] mapTiles = new Tile[]{new Tile(bitmap, 64, 128, 64, 64), //WALL
@@ -36,5 +39,16 @@ public class MapFactory {
         };
 
         return mapTiles;
+    }
+
+    public static IMap createMap(int mapID, Context context) {
+        ImageMapGenerator generator = new ImageMapGenerator();
+        MapManager manager = new MapManager(context);
+        BitmapRetriever bitmapRetriever = new BitmapRetriever(context);
+        Bitmap mapScheme = bitmapRetriever.retrieveBitmapFromAssets(manager.getMapSchemePathById(mapID));
+
+        IMap map = generator.generateMap("NONE", mapScheme);
+
+        return map;
     }
 }

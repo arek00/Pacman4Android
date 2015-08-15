@@ -2,7 +2,6 @@ package com.arek00.pacman.Graphics.Renderers.ConcreteRenderers;
 
 import android.content.res.Resources;
 import android.graphics.*;
-import android.util.Log;
 import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.DrawableCharacter;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.MapTileField;
@@ -12,6 +11,8 @@ import com.arek00.pacman.Graphics.Renderers.Utils.Occlusion;
 import com.arek00.pacman.Graphics.Renderers.Utils.OcclusionEstimator;
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
+import com.arek00.pacman.Logics.Characters.IEnemy;
+import com.arek00.pacman.Logics.Characters.IPlayer;
 import com.arek00.pacman.Logics.Fields.FieldsEnum;
 import com.arek00.pacman.Logics.Levels.ILevel;
 import com.arek00.pacman.R;
@@ -167,11 +168,11 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         return level.isFinished();
     }
 
-    public ICharacter getPlayer() {
+    public IPlayer getPlayer() {
         return level.getPlayer();
     }
 
-    public ICharacter[] getEnemies() {
+    public IEnemy[] getEnemies() {
         return level.getEnemies();
     }
 

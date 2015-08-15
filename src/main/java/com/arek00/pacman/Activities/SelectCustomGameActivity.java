@@ -1,16 +1,11 @@
 package com.arek00.pacman.Activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.GridLayout;
-import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Toast;
-import com.arek00.pacman.Graphics.Views.ConcreteViews.MapPicker;
-import com.arek00.pacman.Logics.Maps.Managers.MapsManager;
 import com.arek00.pacman.R;
 
 /**
