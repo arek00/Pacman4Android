@@ -7,16 +7,19 @@ import android.util.Log;
 import android.view.View;
 import com.arek00.pacman.Activities.Listeners.FinishGameListener;
 import com.arek00.pacman.Activities.Listeners.FinishGameObservable;
+import com.arek00.pacman.Activities.Listeners.OnTickListener;
+import com.arek00.pacman.Activities.Listeners.OnTickObservable;
 import com.arek00.pacman.Inputs.Handlers.InputHandler;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Levels.ILevel;
+import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Game implements IGame, FinishGameObservable {
+public class Game implements IGame, FinishGameObservable, OnTickObservable {
 
     private ILevel level;
     private final long intervalTime = (long) 1000 / 60;
@@ -26,6 +29,8 @@ public class Game implements IGame, FinishGameObservable {
     private Activity activity;
     private InputHandler inputHandler;
     private List<FinishGameListener> onFinishGameListeners = new ArrayList<FinishGameListener>();
+    private List<OnTickListener> tickListeners = new ArrayList<OnTickListener>();
+
 
     private GameState state = GameState.PAUSED;
 
@@ -104,6 +109,20 @@ public class Game implements IGame, FinishGameObservable {
         }
     }
 
+    public void addListener(OnTickListener listener) {
+        tickListeners.add(listener);
+    }
+
+    public void removeListener(OnTickListener listener) {
+        tickListeners.remove(listener);
+    }
+
+    public void informListeners() {
+        for (OnTickListener listener : tickListeners) {
+            listener.onTick();
+        }
+    }
+
     private class MainLoopThread implements Runnable {
         private UIThread uiDrawThread;
 
@@ -120,11 +139,15 @@ public class Game implements IGame, FinishGameObservable {
                 if (state == GameState.RUNNING) {
                     level.update();
                 }
-              //  activity.runOnUiThread(uiDrawThread);
+                //  activity.runOnUiThread(uiDrawThread);
 
                 if (isFinishedGame()) {
                     finishGame();
                 }
+
+                Log.i("Delta time", TimeHelper.getDeltaTime() + " ");
+
+                informListeners();
 
                 try {
                     synchronized (this) {

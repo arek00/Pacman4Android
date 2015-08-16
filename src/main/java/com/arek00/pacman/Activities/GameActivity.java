@@ -8,17 +8,10 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.*;
 import android.widget.*;
+import com.arek00.pacman.Activities.Listeners.*;
 import com.arek00.pacman.Config.AccelerometerConfig;
 import com.arek00.pacman.Config.GraphicsConfig;
 import com.arek00.pacman.Factories.LevelFactory;
-import com.arek00.pacman.Activities.Listeners.BallsRemainingListener;
-import com.arek00.pacman.Activities.Listeners.BallsRemainingObservable;
-import com.arek00.pacman.Activities.Listeners.FinishGameListener;
-import com.arek00.pacman.Activities.Listeners.FinishGameObservable;
-import com.arek00.pacman.Activities.Listeners.LifeListener;
-import com.arek00.pacman.Activities.Listeners.LifeObservable;
-import com.arek00.pacman.Activities.Listeners.PointsListener;
-import com.arek00.pacman.Activities.Listeners.PointsObservable;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
 import com.arek00.pacman.Graphics.Views.ConcreteViews.GameView;
 import com.arek00.pacman.Inputs.Handlers.ConcreteHandlers.AccelerometerHandler;
@@ -96,19 +89,17 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
 
         Renderer gameRenderer = LevelFactory.createLevelRenderer(level, context);
         this.view = new GameView(context, gameRenderer);
-        this.view.addListener(new TimeHelper());
-
         InputHandler inputHandler = new AccelerometerHandler(context, 100);
 
-        this.game = new Game(level, this.view, inputHandler, this);
+        this.game = new Game((ILevel)gameRenderer, this.view, inputHandler, this);
         ((FinishGameObservable) this.game).addOnFinishGameListener(this);
-
+        ((OnTickObservable) this.game).addListener(new TimeHelper());
     }
 
     private void initializeLayout() {
         FrameLayout layout = (FrameLayout) findViewById(R.id.mainGameView);
         layout.addView(view);
-        View child = findViewById(R.id.pauseGameInfoButton);
+        View child = findViewById(R.id.ingameMenuLayout);
         layout.bringChildToFront(child);
         pausedGameButtonVisibilityHandler = new ViewVisibilityHandler(child, layout);
     }
@@ -130,17 +121,12 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
     }
 
     @Override
-    public boolean onKeyDown(int i, KeyEvent keyEvent) {
-        inputHandler.onKeyDown(i, keyEvent);
+    public void onBackPressed() {
+        game.pauseGame();
 
-        return false;
-    }
-
-    @Override
-    public boolean onKeyUp(int i, KeyEvent keyEvent) {
-        inputHandler.onKeyUp(i, keyEvent);
-
-        return false;
+        pausedGameButtonVisibilityHandler.setVisible();
+        runOnUiThread(pausedGameButtonVisibilityHandler);
+        moveTaskToBack(true);
     }
 
     private void setScreenResolution() {
@@ -171,6 +157,12 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
         pausedGameButtonVisibilityHandler.setInvisible();
 
         runOnUiThread(pausedGameButtonVisibilityHandler);
+    }
+
+    public void onExitButtonClicked(View view) {
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void onFinishGame() {

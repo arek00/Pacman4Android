@@ -21,6 +21,7 @@ public class DrawableCharacter implements Drawable, ICharacter {
         NullPointerValidator.validate(character);
         NullPointerValidator.validate(drawable);
 
+
         this.character = character;
         this.drawable = drawable;
     }

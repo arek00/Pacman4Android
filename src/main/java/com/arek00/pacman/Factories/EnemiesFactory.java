@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.DrawableCharacter;
+import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.MoveAnimatedCharacter;
+import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.MoveAnimatedEnemy;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Logics.Characters.ConcreteCharacters.Enemy;
@@ -12,6 +14,7 @@ import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IEnemy;
 import com.arek00.pacman.Logics.Characters.MovementStrategies.ConcreteStrategies.RandomMovementStrategy;
 import com.arek00.pacman.Logics.Characters.MovementStrategies.IMovementStrategy;
+import com.arek00.pacman.Utils.DataHelpers.AssetsHelper;
 import com.arek00.pacman.Utils.DataHelpers.BitmapRetriever;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 import com.arek00.pacman.Utils.Validators.NumberValidator;
@@ -30,24 +33,20 @@ public class EnemiesFactory {
         return enemy;
     }
 
-    public static DrawableCharacter createDrawableEnemy(IEnemy enemy, Drawable enemyTile) {
-        return new DrawableCharacter(enemy, enemyTile);
-    }
-
-    public static DrawableCharacter[] createEnemies(IEnemy[] enemies, Context context) {
+    public static MoveAnimatedEnemy[] createAnimatedEnemies(IEnemy[] enemies, Context context) {
         NullPointerValidator.validate(enemies);
 
         int enemiesAmount = enemies.length;
-        DrawableCharacter[] enemiesDrawable = new DrawableCharacter[enemiesAmount];
+        MoveAnimatedEnemy[] animatedCharacters = new MoveAnimatedEnemy[enemiesAmount];
 
         for (int index = 0; index < enemiesAmount; index++) {
-            Tile enemyTile = getRandomEnemyTile(context);
-            IEnemy enemy = enemies[index];
-            enemiesDrawable[index] = createDrawableEnemy(enemy, enemyTile);
+            IEnemy character = enemies[index];
+            Tile[] tiles = getRandomAnimatedEnemy(context);
+            animatedCharacters[index] = new MoveAnimatedEnemy(character, tiles);
         }
-
-        return enemiesDrawable;
+        return animatedCharacters;
     }
+
 
     public static IEnemy[] createEnemies(int enemiesNumber, ICharacter player) {
         NumberValidator.checkNegativeNumber(enemiesNumber);
@@ -62,46 +61,53 @@ public class EnemiesFactory {
         return enemies;
     }
 
-    private static Tile getRandomEnemyTile(Context context) {
+    private static Tile[] getRandomAnimatedEnemy(Context context) {
         Random random = new Random();
         int nextInt = random.nextInt(4);
 
         switch (nextInt) {
             case 0:
-                return getBlueGhostTile(context);
+                return getAnimatedBlueEnemy(context);
             case 1:
-                return getRedGhostTile(context);
+                return getAnimatedOrangeEnemy(context);
             case 2:
-                return getPinkGhostTile(context);
+                return getAnimatedPinkEnemy(context);
             case 3:
-                return getOrangeGhostTile(context);
+                return getAnimatedRedEnemy(context);
             default:
-                return getOrangeGhostTile(context);
+                return getAnimatedRedEnemy(context);
         }
     }
 
-    private static Tile getGhostTile(int left, int top, Context context) {
+
+    private static Tile[] getAnimatedEnemy(int startingY, Context context) {
         BitmapRetriever retriever = new BitmapRetriever(context);
-        Bitmap bitmap = retriever.retrieveBitmapFromAssets("images/ghosts_sprites.png");
-        Tile ghost = new Tile(bitmap, left, top, 64, 64);
-        return ghost;
+        Bitmap tileSheet = retriever.retrieveBitmapFromAssets("images/ghosts_sprites.png");
+
+        Tile[] tiles = new Tile[]{
+                new Tile(tileSheet, 0, startingY, 64, 64), //NONE
+                new Tile(tileSheet, 128, startingY, 64, 64), //UP
+                new Tile(tileSheet, 0, startingY, 64, 64), //DOWN
+                new Tile(tileSheet, 128, startingY, 64, 64), //LEFT
+                new Tile(tileSheet, 256, startingY, 64, 64), //RIGHT
+        };
+        return tiles;
     }
 
-    private static Tile getRedGhostTile(Context context) {
-        return getGhostTile(1000, 100, context);
+    private static Tile[] getAnimatedRedEnemy(Context context) {
+        return getAnimatedEnemy(0, context);
     }
 
-    private static Tile getPinkGhostTile(Context context) {
-        return getGhostTile(1000, 164, context);
+    private static Tile[] getAnimatedPinkEnemy(Context context) {
+        return getAnimatedEnemy(64, context);
     }
 
-    private static Tile getBlueGhostTile(Context context) {
-        return getGhostTile(1000, 228, context);
+    private static Tile[] getAnimatedBlueEnemy(Context context) {
+        return getAnimatedEnemy(128, context);
     }
 
-    private static Tile getOrangeGhostTile(Context context) {
-        return getGhostTile(1000, 292, context);
+    private static Tile[] getAnimatedOrangeEnemy(Context context) {
+        return getAnimatedEnemy(192, context);
     }
-
 
 }

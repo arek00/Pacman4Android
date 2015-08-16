@@ -6,8 +6,7 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.View;
 import com.arek00.pacman.Config.GraphicsConfig;
-import com.arek00.pacman.Activities.Listeners.OnDrawListener;
-import com.arek00.pacman.Activities.Listeners.OnDrawObservable;
+import com.arek00.pacman.Activities.Listeners.OnTickListener;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
@@ -17,12 +16,10 @@ import java.util.List;
 /**
  * View that handle displaying of all views like in-game view or menu view.
  */
-public class GameView extends View implements OnDrawObservable, View.OnTouchListener {
+public class GameView extends View {
 
     private Renderer renderer;
     private Context context;
-
-    private List<OnDrawListener> listeners = new ArrayList<OnDrawListener>();
 
     public GameView(Context context, Renderer renderer) {
         super(context);
@@ -38,7 +35,6 @@ public class GameView extends View implements OnDrawObservable, View.OnTouchList
         invalidate();
         refreshCanvas(canvas);
         doDraw(canvas);
-        informListeners();
 
         // Log.i("ONDRAW", "DRAW FRAME");
     }
@@ -57,25 +53,4 @@ public class GameView extends View implements OnDrawObservable, View.OnTouchList
         canvas.drawColor(Color.BLACK);
     }
 
-    public void addListener(OnDrawListener listener) {
-        NullPointerValidator.validate(listener);
-
-        listeners.add(listener);
-    }
-
-    public void removeListener(OnDrawListener listener) {
-        NullPointerValidator.validate(listener);
-
-        listeners.remove(listener);
-    }
-
-    public void informListeners() {
-        for (OnDrawListener listener : listeners) {
-            listener.onDraw();
-        }
-    }
-
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        return false;
-    }
 }

@@ -69,7 +69,6 @@ public class AccelerometerHandler implements InputHandler, SensorEventListener {
 
         accelerometerData.set(x, y);
 
-        Log.i("Accelerometer data: ", accelerometerData.x + " " + accelerometerData.y);
     }
 
     public void onAccuracyChanged(Sensor sensor, int i) {

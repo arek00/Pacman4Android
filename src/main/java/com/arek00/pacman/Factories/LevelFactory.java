@@ -1,8 +1,7 @@
 package com.arek00.pacman.Factories;
 
 import android.content.Context;
-import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.DrawableCharacter;
-import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.MapTileField;
+import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.*;
 import com.arek00.pacman.Graphics.Drawables.Interfaces.Drawable;
 import com.arek00.pacman.Graphics.Renderers.ConcreteRenderers.SimpleLevelRenderer;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
@@ -36,8 +35,12 @@ public class LevelFactory {
         IMap map = MapFactory.createMap(mapID, context);
         IPlayer player = PlayerFactory.createPlayer(livesCount);
         IEnemy[] enemies = EnemiesFactory.createEnemies(enemiesCount, player);
+
+        MoveAnimatedPlayer animatedPlayer = PlayerFactory.createDrawablePlayer(player, context);
+        MoveAnimatedEnemy[] animatedEnemies = EnemiesFactory.createAnimatedEnemies(enemies, context);
+
         InputInterpreter interpreter = new AccelerometerInputInterpreter();
-        ILevel level = new NormalGameLevel(map, player, enemies, interpreter);
+        ILevel level = new NormalGameLevel(map, animatedPlayer, animatedEnemies, interpreter);
 
         return level;
     }
@@ -50,8 +53,8 @@ public class LevelFactory {
      * @return
      */
     public static Renderer createLevelRenderer(ILevel level, Context context) {
-        DrawableCharacter playerDrawable = PlayerFactory.createDrawablePlayer(level.getPlayer(), context);
-        DrawableCharacter[] enemiesDrawable = EnemiesFactory.createEnemies(level.getEnemies(), context);
+        MoveAnimatedCharacter playerDrawable = (MoveAnimatedCharacter) level.getPlayer();
+        MoveAnimatedCharacter[] enemiesDrawable = (MoveAnimatedCharacter[])level.getEnemies();
         Drawable[] mapTiles = MapFactory.getMapTiles(context);
 
         Renderer mapRenderer = new SimpleLevelRenderer(level, playerDrawable, enemiesDrawable, mapTiles);

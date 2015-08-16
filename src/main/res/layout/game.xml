@@ -4,48 +4,48 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-<LinearLayout
-android:orientation="horizontal"
-android:layout_width="fill_parent"
-android:layout_height="match_parent"
-android:layout_weight="8">
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="8">
 
-<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/lifes_number_label"
-        android:id="@+id/lifesLabel"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="10dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/lifes_number_label"
+                android:id="@+id/lifesLabel"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"/>
 
-<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/lifesNumber"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="10dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/lifesNumber"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"/>
 
-<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/points_number_label"
-        android:id="@+id/pointsLabel"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="10dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/points_number_label"
+                android:id="@+id/pointsLabel"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"/>
 
 
-<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/pointsNumber"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="10dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/pointsNumber"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"/>
 
         <TextView
                 android:layout_width="wrap_content"
@@ -65,36 +65,62 @@ android:layout_weight="8">
                 android:layout_marginRight="10dp"
                 android:layout_gravity="center_vertical"/>
 
-</LinearLayout>
+    </LinearLayout>
 
-<FrameLayout
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:id="@+id/mainGameView"
-android:layout_weight="1">
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mainGameView"
+            android:layout_weight="1">
 
-        <Button
+        <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/game_paused"
-                android:id="@+id/pauseGameInfoButton"
                 android:layout_gravity="center"
-                android:background="@drawable/button_bg"
-                android:textColor="#ffffffff"
-                android:textSize="25dp"
-                android:clickable="true"
-                android:singleLine="false"
-                android:padding="20dp"
                 android:visibility="visible"
-                android:onClick="onResumeButtonClicked"
-                android:enabled="true"
-                android:alpha="50"/>
-</FrameLayout>
+                android:id="@+id/ingameMenuLayout">
 
-        <!--<com.arek00.pacman.Graphics.Views.ConcreteViews.GameView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_weight="1"/>-->
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/continue_game"
+                    android:id="@+id/pauseGameInfoButton"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_bg"
+                    android:textColor="#ffffffff"
+                    android:textSize="25dp"
+                    android:clickable="true"
+                    android:singleLine="false"
+                    android:padding="20dp"
+                    android:visibility="visible"
+                    android:onClick="onResumeButtonClicked"
+                    android:enabled="true"
+                    android:alpha="50"/>
 
-
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exit_game"
+                    android:id="@+id/exitGameButton"
+                    android:background="@drawable/button_bg"
+                    android:textColor="#ffffffff"
+                    android:textSize="25dp"
+                    android:clickable="true"
+                    android:singleLine="false"
+                    android:padding="20dp"
+                    android:visibility="visible"
+                    android:onClick="onExitButtonClicked"
+                    android:enabled="true"
+                    android:alpha="50"/>
         </LinearLayout>
+
+    </FrameLayout>
+
+    <!--<com.arek00.pacman.Graphics.Views.ConcreteViews.GameView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1"/>-->
+
+
+</LinearLayout>
