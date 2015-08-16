@@ -47,18 +47,7 @@
                 android:minHeight="40dp"
                 android:onClick="onStartGameTouch"/>
 
-        <Button
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="@string/settings_button"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:id="@+id/optionsButton"
-                android:textColor="#ffffffff"
-                android:background="@drawable/button_bg"
-                />
-
-        <Button
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="@string/calibration_button"
@@ -69,14 +58,5 @@
                 android:background="@drawable/button_bg"
                 android:onClick="onCalibrationButtonTouch"/>
 
-        <Button
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="@string/about_button"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:id="@+id/aboutButton"
-                android:textColor="#ffffffff"
-                android:background="@drawable/button_bg"/>
     </LinearLayout>
 </LinearLayout>

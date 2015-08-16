@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.Toast;
+import com.arek00.pacman.Activities.ConcreteKeyListeners.BackOnReturn;
+import com.arek00.pacman.Activities.ConcreteKeyListeners.OnReturnKeyStrategy;
 import com.arek00.pacman.R;
 
 /**
@@ -20,10 +22,14 @@ public class SelectCustomGameActivity extends Activity {
     public static final String STARTING_LIVES_MESSAGE = "com.arek00.Activities.startingLives";
     public static final String STARTING_ENEMIES_MESSAGE = "com.arek00.Activities.startingEnemies";
 
+    private OnReturnKeyStrategy onReturnKeyStrategy;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_game_menu);
         initializePickers();
+
+        onReturnKeyStrategy = new BackOnReturn(this, MenuActivity.class);
     }
 
     public void onStartGame(View view) {
@@ -67,4 +73,10 @@ public class SelectCustomGameActivity extends Activity {
         picker.setMaxValue(maxValue);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        onReturnKeyStrategy.executeOnReturnKey();
+    }
 }

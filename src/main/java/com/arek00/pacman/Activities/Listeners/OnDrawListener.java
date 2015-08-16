@@ -1,4 +1,4 @@
-package com.arek00.pacman.Graphics.Listeners;
+package com.arek00.pacman.Activities.Listeners;
 
 /**
  * Called when observed view draw.

@@ -28,7 +28,6 @@ public class Player implements IPlayer {
         NullPointerValidator.validate(playerPosition);
         NumberValidator.checkNegativeNumber(startingLife);
         NumberValidator.checkNegativeNumber(speed);
-        NumberValidator.checkNumberIsZero(startingLife);
         NumberValidator.checkNumberIsZero(speed);
 
         this.playerPosition = playerPosition;

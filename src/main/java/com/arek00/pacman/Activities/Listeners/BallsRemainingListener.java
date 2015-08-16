@@ -1,4 +1,4 @@
-package com.arek00.pacman.Graphics.Listeners;
+package com.arek00.pacman.Activities.Listeners;
 
 /**
  * Created by Admin on 2015-08-10.

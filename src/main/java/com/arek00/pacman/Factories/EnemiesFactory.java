@@ -2,7 +2,6 @@ package com.arek00.pacman.Factories;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.DrawableCharacter;
 import com.arek00.pacman.Graphics.Drawables.ConcreteDrawables.Tile;
@@ -13,13 +12,10 @@ import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IEnemy;
 import com.arek00.pacman.Logics.Characters.MovementStrategies.ConcreteStrategies.RandomMovementStrategy;
 import com.arek00.pacman.Logics.Characters.MovementStrategies.IMovementStrategy;
-import com.arek00.pacman.Utils.DataHelpers.AssetsHelper;
 import com.arek00.pacman.Utils.DataHelpers.BitmapRetriever;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 import com.arek00.pacman.Utils.Validators.NumberValidator;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Random;
 
 /**
@@ -55,7 +51,6 @@ public class EnemiesFactory {
 
     public static IEnemy[] createEnemies(int enemiesNumber, ICharacter player) {
         NumberValidator.checkNegativeNumber(enemiesNumber);
-        NumberValidator.checkNumberIsZero(enemiesNumber);
 
         IEnemy[] enemies = new Enemy[enemiesNumber];
 

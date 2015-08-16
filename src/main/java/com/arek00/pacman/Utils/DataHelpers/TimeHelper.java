@@ -1,9 +1,6 @@
 package com.arek00.pacman.Utils.DataHelpers;
 
-import android.util.Log;
-import com.arek00.pacman.Graphics.Listeners.OnDrawListener;
-
-import java.sql.Time;
+import com.arek00.pacman.Activities.Listeners.OnDrawListener;
 
 /**
  * Helps with time in game

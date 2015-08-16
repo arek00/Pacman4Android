@@ -9,6 +9,8 @@ import android.graphics.PointF;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
+import com.arek00.pacman.Activities.ConcreteKeyListeners.BackOnReturn;
+import com.arek00.pacman.Activities.ConcreteKeyListeners.OnReturnKeyStrategy;
 import com.arek00.pacman.Config.AccelerometerConfig;
 import com.arek00.pacman.Graphics.Views.ConcreteViews.CalibrationView;
 import com.arek00.pacman.R;
@@ -19,11 +21,12 @@ import java.util.List;
 /**
  *
  */
-public class CalibrationActivity extends Activity {
+public class CalibrationActivity extends Activity{
 
     private List<RadioButton> xAxisRadioButtons;
     private List<RadioButton> yAxisRadioButtons;
     private CalibrationView calibrationView;
+    private OnReturnKeyStrategy onReturnKeyStrategy;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,8 @@ public class CalibrationActivity extends Activity {
         setCalibrationView();
         loadSettings();
         setValues();
+
+        onReturnKeyStrategy = new BackOnReturn(this, MenuActivity.class);
     }
 
     @Override
@@ -161,5 +166,13 @@ public class CalibrationActivity extends Activity {
         SharedPreferences settings = getSharedPreferences(AccelerometerConfig.CALIBRATION_SETTINGS_FILE_NAME, Context.MODE_PRIVATE);
         AccelerometerConfig.loadSettings(settings);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        onReturnKeyStrategy.executeOnReturnKey();
+    }
+
 
 }

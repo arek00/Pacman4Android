@@ -1,4 +1,4 @@
-package com.arek00.pacman.Graphics.Listeners.Points;
+package com.arek00.pacman.Activities.Listeners;
 
 /**
  *

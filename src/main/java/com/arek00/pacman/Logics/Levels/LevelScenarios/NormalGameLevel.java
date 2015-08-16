@@ -2,12 +2,12 @@ package com.arek00.pacman.Logics.Levels.LevelScenarios;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import com.arek00.pacman.Graphics.Listeners.BallsRemainingListener;
-import com.arek00.pacman.Graphics.Listeners.BallsRemainingObservable;
-import com.arek00.pacman.Graphics.Listeners.Lifes.LifeListener;
-import com.arek00.pacman.Graphics.Listeners.Lifes.LifeObservable;
-import com.arek00.pacman.Graphics.Listeners.Points.PointsListener;
-import com.arek00.pacman.Graphics.Listeners.Points.PointsObservable;
+import com.arek00.pacman.Activities.Listeners.BallsRemainingListener;
+import com.arek00.pacman.Activities.Listeners.BallsRemainingObservable;
+import com.arek00.pacman.Activities.Listeners.LifeListener;
+import com.arek00.pacman.Activities.Listeners.LifeObservable;
+import com.arek00.pacman.Activities.Listeners.PointsListener;
+import com.arek00.pacman.Activities.Listeners.PointsObservable;
 import com.arek00.pacman.Inputs.Interpreters.InputInterpreter;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Characters.IEnemy;

@@ -3,12 +3,11 @@ package com.arek00.pacman.Graphics.Views.ConcreteViews;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import com.arek00.pacman.Config.GraphicsConfig;
-import com.arek00.pacman.Graphics.Listeners.OnDrawListener;
-import com.arek00.pacman.Graphics.Listeners.OnDrawObservable;
+import com.arek00.pacman.Activities.Listeners.OnDrawListener;
+import com.arek00.pacman.Activities.Listeners.OnDrawObservable;
 import com.arek00.pacman.Graphics.Renderers.Renderer;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
