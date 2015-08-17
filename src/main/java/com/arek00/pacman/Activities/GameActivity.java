@@ -33,7 +33,6 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
 
     private IGame game;
     private GameView view;
-    private KeyHandler inputHandler;
     private GameViewRefresher refresher;
     private ViewVisibilityHandler pausedGameButtonVisibilityHandler;
 
@@ -57,7 +56,7 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
         setTitle(R.string.app_name);
     }
 
-//    @Override
+    //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(com.arek00.pacman.R.menu.main, menu);
@@ -89,9 +88,9 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
 
         Renderer gameRenderer = LevelFactory.createLevelRenderer(level, context);
         this.view = new GameView(context, gameRenderer);
-        InputHandler inputHandler = new AccelerometerHandler(context, 100);
+        InputHandler inputHandler = AccelerometerHandler.getInstance(this);
 
-        this.game = new Game((ILevel)gameRenderer, this.view, inputHandler, this);
+        this.game = new Game((ILevel) gameRenderer, this.view, inputHandler);
         ((FinishGameObservable) this.game).addOnFinishGameListener(this);
         ((OnTickObservable) this.game).addListener(new TimeHelper());
     }
@@ -121,12 +120,26 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
     }
 
     @Override
-    public void onBackPressed() {
-        game.pauseGame();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (event.getAction() == KeyEvent.ACTION_MULTIPLE) {
+                exitApplication();
+            }
+            pauseGame();
+        }
 
+        return true;
+    }
+
+    private void pauseGame() {
+        game.pauseGame();
         pausedGameButtonVisibilityHandler.setVisible();
         runOnUiThread(pausedGameButtonVisibilityHandler);
-        moveTaskToBack(true);
+    }
+
+    private void exitApplication() {
+        finish();
+        System.exit(0);
     }
 
     private void setScreenResolution() {
@@ -162,6 +175,8 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
     public void onExitButtonClicked(View view) {
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
+
+        game.finishGame();
         finish();
     }
 
@@ -173,8 +188,9 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
         intent.putExtra(POINTS_MESSAGE, points);
         intent.putExtra(LIVES_MESSAGE, lives);
         startActivity(intent);
-        finish();
 
+        game.finishGame();
+        finish();
     }
 
     public void onBallsRemainingChanged(int ballsRemainingNumber) {

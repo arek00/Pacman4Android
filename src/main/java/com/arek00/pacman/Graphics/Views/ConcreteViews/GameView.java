@@ -3,6 +3,7 @@ package com.arek00.pacman.Graphics.Views.ConcreteViews;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import com.arek00.pacman.Config.GraphicsConfig;

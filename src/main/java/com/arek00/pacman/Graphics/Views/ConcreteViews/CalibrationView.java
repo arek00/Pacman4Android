@@ -21,7 +21,7 @@ public class CalibrationView extends View {
 
     public CalibrationView(Context context) {
         super(context);
-        accelerometer = new AccelerometerHandler(context, 100);
+        accelerometer = AccelerometerHandler.getInstance(context);
     }
 
     private void calculateViewSize() {

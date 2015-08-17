@@ -19,6 +19,20 @@ import com.arek00.pacman.Utils.Validators.NumberValidator;
  */
 public class AccelerometerHandler implements InputHandler, SensorEventListener {
 
+    private static AccelerometerHandler instance;
+    private static final int SENSOR_SENSITIVE = 100; //sensitive in ms of refreshing state
+
+
+    public static AccelerometerHandler getInstance(Context context) {
+
+        if (instance == null) {
+            instance = new AccelerometerHandler(context, AccelerometerHandler.SENSOR_SENSITIVE);
+        }
+
+        return instance;
+    }
+
+
     private Context context;
     private int accelerometerSensitive;
     private Sensor accelerometer;
@@ -29,17 +43,15 @@ public class AccelerometerHandler implements InputHandler, SensorEventListener {
      * Set context to activity in order to access to system services and set interval between reading accelerometer states.
      *
      * @param context
-     * @param accelerometerSensitive - Sensitive in miliseconds
      */
-    public AccelerometerHandler(Context context, int accelerometerSensitive) {
+    private AccelerometerHandler(Context context, int sensitive) {
         NullPointerValidator.validate(context);
-        NumberValidator.checkNegativeNumber(accelerometerSensitive);
-        NumberValidator.checkNumberIsZero(accelerometerSensitive);
+        NumberValidator.checkNegativeNumber(sensitive);
+        NumberValidator.checkNumberIsZero(sensitive);
 
         this.context = context;
-        this.accelerometerSensitive = accelerometerSensitive;
+        this.accelerometerSensitive = sensitive;
         registeredSensor(context, accelerometerSensitive);
-
     }
 
     private void registeredSensor(Context context, int sensitive) {
@@ -68,7 +80,6 @@ public class AccelerometerHandler implements InputHandler, SensorEventListener {
         float y = (sensorEvent.values[axis.y] + offset.y) * flip.y;
 
         accelerometerData.set(x, y);
-
     }
 
     public void onAccuracyChanged(Sensor sensor, int i) {

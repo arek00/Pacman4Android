@@ -7,7 +7,7 @@ import com.arek00.pacman.Activities.Listeners.OnTickListener;
  */
 public class TimeHelper implements OnTickListener {
 
-    private static long lastFrameTime = System.nanoTime();
+    private static long lastFrameTime = System.currentTimeMillis();
 
     static {
         tick();
@@ -19,14 +19,14 @@ public class TimeHelper implements OnTickListener {
      * @return time from rendering last frame to current in seconds.
      */
     public static float getDeltaTime() {
-        return (System.nanoTime() - lastFrameTime) / 1000000000f;
+        return (System.currentTimeMillis() - lastFrameTime) / 1000f;
     }
 
     /**
      * This method should be used with rendering to refresh the clock and delta counter.
      */
     public static void tick() {
-        lastFrameTime = System.nanoTime();
+        lastFrameTime = System.currentTimeMillis();
     }
 
     public void onTick() {

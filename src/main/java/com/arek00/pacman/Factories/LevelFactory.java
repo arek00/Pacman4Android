@@ -58,6 +58,7 @@ public class LevelFactory {
         Drawable[] mapTiles = MapFactory.getMapTiles(context);
 
         Renderer mapRenderer = new SimpleLevelRenderer(level, playerDrawable, enemiesDrawable, mapTiles);
+
         return mapRenderer;
     }
 

@@ -25,8 +25,6 @@ public class Game implements IGame, FinishGameObservable, OnTickObservable {
     private final long intervalTime = (long) 1000 / 60;
     private Thread mainLoop;
     private View renderer;
-    private Canvas canvas;
-    private Activity activity;
     private InputHandler inputHandler;
     private List<FinishGameListener> onFinishGameListeners = new ArrayList<FinishGameListener>();
     private List<OnTickListener> tickListeners = new ArrayList<OnTickListener>();
@@ -34,17 +32,14 @@ public class Game implements IGame, FinishGameObservable, OnTickObservable {
 
     private GameState state = GameState.PAUSED;
 
-    public Game(ILevel level, View renderer, InputHandler input, Activity activity) {
+    public Game(ILevel level, View renderer, InputHandler input) {
         NullPointerValidator.validate(level);
         NullPointerValidator.validate(renderer);
-        NullPointerValidator.validate(activity);
         NullPointerValidator.validate(input);
 
         this.level = level;
-        mainLoop = new Thread(new MainLoopThread(new UIThread()));
+        mainLoop = new Thread(new MainLoopThread());
         this.renderer = renderer;
-        this.canvas = new Canvas();
-        this.activity = activity;
         this.inputHandler = input;
     }
 
@@ -56,7 +51,6 @@ public class Game implements IGame, FinishGameObservable, OnTickObservable {
 
     public void finishGame() {
         state = GameState.FINISHED;
-        informOnFinishGameListeners();
     }
 
     private boolean isFinishedGame() {
@@ -124,11 +118,6 @@ public class Game implements IGame, FinishGameObservable, OnTickObservable {
     }
 
     private class MainLoopThread implements Runnable {
-        private UIThread uiDrawThread;
-
-        public MainLoopThread(UIThread uiDrawThread) {
-            this.uiDrawThread = uiDrawThread;
-        }
 
         public void run() {
             while (state != GameState.FINISHED) {
@@ -139,16 +128,13 @@ public class Game implements IGame, FinishGameObservable, OnTickObservable {
                 if (state == GameState.RUNNING) {
                     level.update();
                 }
-                //  activity.runOnUiThread(uiDrawThread);
 
                 if (isFinishedGame()) {
+                    informOnFinishGameListeners();
                     finishGame();
                 }
 
-                Log.i("Delta time", TimeHelper.getDeltaTime() + " ");
-
                 informListeners();
-
                 try {
                     synchronized (this) {
                         wait(intervalTime);
@@ -158,14 +144,6 @@ public class Game implements IGame, FinishGameObservable, OnTickObservable {
                     e.printStackTrace();
                 }
             }
-        }
-
-
-    }
-
-    private class UIThread implements Runnable {
-        public void run() {
-            renderer.draw(canvas);
         }
     }
 }
