@@ -1,7 +1,5 @@
 package com.arek00.pacman.Logics.Game;
 
-import android.app.Activity;
-import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +10,6 @@ import com.arek00.pacman.Activities.Listeners.OnTickObservable;
 import com.arek00.pacman.Inputs.Handlers.InputHandler;
 import com.arek00.pacman.Logics.Characters.ICharacter;
 import com.arek00.pacman.Logics.Levels.ILevel;
-import com.arek00.pacman.Utils.DataHelpers.TimeHelper;
 import com.arek00.pacman.Utils.Validators.NullPointerValidator;
 
 import java.util.ArrayList;

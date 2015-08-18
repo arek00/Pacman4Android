@@ -36,8 +36,6 @@ public class GameView extends View {
         invalidate();
         refreshCanvas(canvas);
         doDraw(canvas);
-
-        // Log.i("ONDRAW", "DRAW FRAME");
     }
 
     public void setRenderer(Renderer renderer) {

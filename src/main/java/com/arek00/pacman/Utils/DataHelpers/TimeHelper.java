@@ -31,7 +31,5 @@ public class TimeHelper implements OnTickListener {
 
     public void onTick() {
         TimeHelper.tick();
-
-        //  Log.i("TIME HELPER INFO", "Last interval between frames: " + TimeHelper.getDeltaTime());
     }
 }

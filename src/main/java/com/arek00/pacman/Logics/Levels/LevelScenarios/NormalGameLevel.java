@@ -93,18 +93,6 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
     }
 
     /**
-     * Do it to finish game
-     */
-    public void finishLevel() {
-        //TODO do when level finished
-        if (player.getLife() < 0) {
-            //TODO losing scenario
-        } else if (remainingBalls < 1) {
-            //TODO winning scenario
-        }
-    }
-
-    /**
      * Check if game should be finished and return current game state
      */
     public boolean isFinished() {
@@ -137,8 +125,6 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
     public void setInput(PointF input) {
         NullPointerValidator.validate(input);
 
-        // Log.i("SET INPUT", "GET INPUT FROM GAME: X: " + input.x + " Y: " + input.y);
-
         this.inputInformation = input;
     }
 
@@ -146,38 +132,6 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
         movePlayer();
         moveEnemies();
         isEnemyCaughtPlayer();
-
-
-        // Log.i("Player position: ", player.getPosition().x + " " + player.getPosition().y);
-
-
-        //PointF movement = player.getPosition();
-
-//        PointF playerMove = MovementEstimator.calculateMove(player, destinationPoint, TimeHelper.getDeltaTime());
-
-//        player.move(movement);
-//
-//        if (isCharacterCollides(player)) {
-//            undoCharacterMove(player, movement);
-//        }
-//
-//        if (checkCollectedBalls(player)) {
-//            collectBall(player.getPosition());
-//        }
-
-
-        //TODO class should has method move thats use before player takes a move
-        //in this method a collisions, collected balls and enemies will be checked
-
-        //TODO
-        //Get player input
-        //update characters position
-        //check collisions
-        //update Map
-        //go to step 1.
-
-        //Log.i("TICK", "TICK");
-
     }
 
     private void movePlayer() {
@@ -332,7 +286,6 @@ public class NormalGameLevel implements ILevel, LifeObservable, PointsObservable
             }
         }
     }
-
 
     class LifeObservableHandler implements LifeObservable {
         private List<LifeListener> listeners = new ArrayList<LifeListener>();

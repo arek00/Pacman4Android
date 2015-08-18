@@ -13,8 +13,6 @@ public interface ILevel {
 
     public void startLevel();
 
-    public void finishLevel();
-
     public boolean isFinished();
 
     public IPlayer getPlayer();
