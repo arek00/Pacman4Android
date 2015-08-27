@@ -15,7 +15,7 @@ import java.io.InputStream;
 /**
  *
  */
-public class MapPicker extends NumberPicker implements NumberPicker.OnValueChangeListener {
+public class MapPicker extends NumberPicker{
 
     private MapManager mapsManager;
     private Bitmap currentMapBitmap;
@@ -29,8 +29,6 @@ public class MapPicker extends NumberPicker implements NumberPicker.OnValueChang
         this.context = context;
         this.mapsManager = new MapManager(context);
         initializePicker(mapsManager);
-        setOnValueChangedListener(this);
-        loadBitmap(getValue());
     }
 
     private void initializePicker(MapManager manager) {
@@ -38,23 +36,5 @@ public class MapPicker extends NumberPicker implements NumberPicker.OnValueChang
         setMaxValue(mapsManager.getMapsNumber() - 1);
         setOrientation(NumberPicker.HORIZONTAL);
         setGravity(Gravity.CENTER_HORIZONTAL);
-    }
-
-    private void loadBitmap(int currentValue) {
-        String path = this.mapsManager.getMapSchemePathById(currentValue);
-        AssetsHelper helper = new AssetsHelper(this.context);
-        InputStream bitmapStream = null;
-
-        try {
-            bitmapStream = helper.getFileByName(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        this.currentMapBitmap = BitmapFactory.decodeStream(bitmapStream);
-    }
-
-    public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
-        loadBitmap(newValue);
     }
 }

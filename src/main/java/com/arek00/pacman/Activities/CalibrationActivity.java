@@ -129,7 +129,6 @@ public class CalibrationActivity extends Activity{
         RadioGroup axisYRadioGroup = (RadioGroup) findViewById(R.id.yAxleRadioGroup);
         RadioButton yButton = (RadioButton) findViewById(axisYRadioGroup.getCheckedRadioButtonId());
 
-
         int xAxis = AccelerometerConfig.getAxisIdFromString(xButton.getText().toString());
         int yAxis = AccelerometerConfig.getAxisIdFromString(yButton.getText().toString());
 

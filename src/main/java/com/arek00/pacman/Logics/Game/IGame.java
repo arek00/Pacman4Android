@@ -27,5 +27,4 @@ public interface IGame {
     public View getRenderer();
 
     public GameState getGameState();
-
 }

@@ -56,6 +56,13 @@ public class GameActivity extends Activity implements PointsListener, LifeListen
         setTitle(R.string.app_name);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        pauseGame();
+    }
+
     //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.

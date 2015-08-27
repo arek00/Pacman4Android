@@ -76,7 +76,6 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
 
         drawMap(canvas);
         drawCharacters(canvas);
-        drawOffsets(offsetX, offsetY, canvas);
     }
 
     private void drawOffsets(float offsetX, float offsetY, Canvas canvas) {
@@ -161,9 +160,6 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
         level.startLevel();
     }
 
-    public void finishLevel() {
-        level.finishLevel();
-    }
 
     public boolean isFinished() {
         return level.isFinished();
@@ -211,6 +207,5 @@ public class SimpleLevelRenderer implements Renderer, ILevel {
 
         this.offsetX = centerX - playerOnScreenX;
         this.offsetY = centerY - playerOnScreenY;
-
     }
 }
